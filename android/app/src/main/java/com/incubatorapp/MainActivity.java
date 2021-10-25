@@ -2,6 +2,8 @@ package com.incubatorapp;
 
 import com.facebook.react.ReactActivity;
 import android.view.KeyEvent;
+import com.rnfs.RNFSPackage;  // <--- import
+
 
 public class MainActivity extends ReactActivity {
 

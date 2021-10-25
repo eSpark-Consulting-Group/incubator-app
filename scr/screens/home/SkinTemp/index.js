@@ -1,5 +1,17 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image, StatusBar, Dimensions, TouchableOpacity,TextInput,ScrollView,FlatList } from 'react-native';
+import React, {Component} from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  StatusBar,
+  Dimensions,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import style from './Style';
 import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,14 +21,21 @@ import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import modalStyle from './modalsStyling';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import Check from 'react-native-vector-icons/AntDesign';
+import {useAsyncStorage} from '@react-native-community/async-storage';
 
-const { height, width } = Dimensions.get('window');
+import {createResource} from '../../../config/SimpleApiCall';
+import {skin_Temp} from '../../../config/WebServices';
+
+const {getItem, setItem} = useAsyncStorage('userInfo');
+
+const {height, width} = Dimensions.get('window');
+let id = 0;
 
 export default class App extends Component {
   state = {
     isModalVisible: false,
-    skinTemp:true,
-    currentSkinemperature:31,
+    skinTemp: true,
+    currentSkinemperature: 31,
     currentTemp: 0,
     setTemp: 0,
     preWei: 3,
@@ -24,193 +43,280 @@ export default class App extends Component {
     currentAirTemperature: 35,
     setTempList: [],
     airTempList: [],
-    temperatureHistory:[],
+    temperatureHistory: [],
     date: new Date().getDate(),
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
     hour: new Date().getHours(),
     minutes: new Date().getMinutes(),
-  }
-  componentDidMount(){
+  };
+  componentDidMount() {
     const high = this.props.skinHighTemp;
     const lower = this.props.skinLowerTemp;
-  
-      if(this.state.currentSkinemperature > high || this.state.currentSkinemperature < lower){
-        this.setState({airTemp:false})
-      }else{
-        this.setState({airTemp:true})
-      }
+
+    // this.sendSkinTemp();
+    if (
+      this.state.currentSkinemperature > high ||
+      this.state.currentSkinemperature < lower
+    ) {
+      this.setState({airTemp: false});
+    } else {
+      this.setState({airTemp: true});
     }
-    _renderMyList = ({ item }) => (
-      <View style={{ flex: 1, }}>
-        <View style={modalStyle.renderMyListContainer}>
-          <Text style={modalStyle.renderListHeading1}>
-            {this.state.date}/{this.state.month}/{this.state.year}
-          </Text>
-          <Text style={modalStyle.renderListHeading2}>
-            {this.state.hour}:{this.state.minutes}
-          </Text>
-          <Text style={modalStyle.renderListSetTemp}>
-            {item.setTemperature}
-          </Text>
-          <Text style={modalStyle.renderListAirTemp}>
+  }
+
+  populateArray = () => {
+    this.state.temperatureHistory.push({
+      id: id++,
+      currentTemperature: this.state.currentTemp + '\u2103',
+      setTemperature: this.state.currentTemp - 1 + '\u2103',
+    });
+  };
+
+  randomVal() {
+    this.skinTemp = setInterval(() => {
+      const rand = Math.random() * 40;
+      this.setState({currentTemp: rand.toFixed()});
+      this.props.handleSkinTemp(this.state.currentTemp);
+      this.populateArray();
+    }, 15000);
+  }
+
+  sendSkinTemp = async () => {
+    const {currentTemp, setTemp} = this.state;
+
+    let userInfo = await getItem();
+    let _ = JSON.parse(userInfo);
+
+    let payload = {
+      current_temp: currentTemp,
+      estimate_temp: setTemp,
+      userId: _.login_user[0]._id,
+    };
+
+    createResource(skin_Temp, payload, _.token)
+      .then((res) => {
+        Alert.alert('Success', 'Successfully Added Skin Temprature!');
+      })
+      .catch((error) => {
+        // this.setState({isloading: false});
+        if (error.response) {
+          Alert.alert('Error', error.response.data.msg);
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          Alert.alert('Error', 'Something Went Wrong');
+
+          console.log(error.request);
+        } else {
+          Alert.alert('Error', error.msg);
+
+          ErrorHelper.handleErrors(error.msg, true);
+        }
+      });
+  };
+
+  _renderMyList = ({item}) => (
+    <View style={{flex: 1}}>
+      <View style={modalStyle.renderMyListContainer}>
+        <Text style={modalStyle.renderListHeading1}>
+          {this.state.date}/{this.state.month}/{this.state.year}
+        </Text>
+        <Text style={modalStyle.renderListHeading2}>
+          {this.state.hour}:{this.state.minutes}
+        </Text>
+        <Text style={modalStyle.renderListSetTemp}>{item.setTemperature}</Text>
+        <Text style={modalStyle.renderListAirTemp}>
           {item.currentTemperature}
-          </Text>
-        </View>
+        </Text>
       </View>
-    )
-    openToggel = () => {
-      this.setState({ toggle: !this.state.toggle, currentTemp: null,setTemp:null })
+    </View>
+  );
+  openToggel = () => {
+    this.setState({
+      toggle: !this.state.toggle,
+      currentTemp: null,
+      setTemp: null,
+    });
+  };
+  submitCondition = () => {
+    const historyData = this.state.currentTemp;
+    const historyData2 = this.state.setTemp;
+    let unit;
+    !this.props.value ? (unit = '\u2103') : (unit = '\u2109');
+    if (this.state.currentTemp == null || this.state.setTemp == null) {
+      alert('Type Plase Or Go Back');
+    } else if (
+      this.state.currentTemp <= 20 ||
+      this.state.currentTemp >= 39 ||
+      this.state.setTemp <= 20 ||
+      this.state.setTemp >= 39
+    ) {
+      alert(
+        'Not Accepted Temperature Will Set Greater Then 20 And Less Than 39',
+      );
+    } else {
+      this.setState({toggle: !this.state.toggle});
+      this.state.temperatureHistory.push({
+        currentTemperature: this.state.currentTemp + unit,
+        setTemperature: this.state.setTemp + unit,
+      });
     }
-    submitCondition = () => {
-      const historyData = this.state.currentTemp;
-      const historyData2 = this.state.setTemp;
-      let unit;
-      !this.props.value ? (unit = '\u2103') : (unit = '\u2109');
-      if (this.state.currentTemp == null || this.state.setTemp == null) {
-        alert('Type Plase Or Go Back')
-      }
-      else if(this.state.currentTemp <= 20 || this.state.currentTemp >= 39 || this.state.setTemp <= 20 || this.state.setTemp >= 39){
-        alert('Not Accepted Temperature Will Set Greater Then 20 And Less Than 39')
-      }
-      else {
-        this.setState({ toggle: !this.state.toggle });
-        this.state.temperatureHistory.push({currentTemperature:this.state.currentTemp + unit,setTemperature:this.state.setTemp + unit}); 
-      }
-    };
-  
-    toggleModal = () => {
-      this.setState({ isModalVisible: !this.state.isModalVisible });
-    };
+  };
+
+  toggleModal = () => {
+    this.setState({isModalVisible: !this.state.isModalVisible});
+  };
   render() {
+    if (this.props.activate && this.props.run2) {
+      setTimeout(() => {
+        this.randomVal();
+        console.log('true aya');
+      }, 50);
+    }
+    if (this.props.deactivate && this.props.run2) {
+      console.log('chala');
+      setTimeout(() => {
+        clearInterval(this.skinTemp);
+        this.setState({currentTemp: 0});
+        console.log('false aya');
+      }, 50);
+    }
     return (
       <View>
-        {
-          this.props.locker ? (
-            <View style={style.TemperatureView} >
-              <View style={style.Temperature}>
-                <View style={style.skinInerContainer}>
-                  <View style={style.skinIner}>
-                    <View style={{ flex: 1, }}>
-                      <Text style={style.currentTempText}>
-                        Current Temperature
-                      </Text>
-                      <View style={style.boxUperStyle}>
-                        <TouchableOpacity style={style.likeInputOxygen} onPress={() => this.openToggel()}>
-                          <Text
-                            style={style.tempInputCur} >
-                            {this.state.currentTemp}
+        {this.props.locker ? (
+          <View style={style.TemperatureView}>
+            <View style={style.Temperature}>
+              <View style={style.skinInerContainer}>
+                <View style={style.skinIner}>
+                  <View style={{flex: 1}}>
+                    <Text style={style.currentTempText}>
+                      Current Temperature
+                    </Text>
+                    <View style={style.boxUperStyle}>
+                      <TouchableOpacity
+                        style={style.likeInputOxygen}
+                        onPress={() => this.openToggel()}>
+                        <Text style={style.tempInputCur}>
+                          {this.state.currentTemp}
+                          {/* val  //todo: here is the */}
+                        </Text>
+                      </TouchableOpacity>
+                      {!this.props.value ? (
+                        <Text style={style.centiUper}>{'\u2103'}</Text>
+                      ) : (
+                        <Text style={style.centiUper}>{'\u2109'}</Text>
+                      )}
+                      <TouchableOpacity
+                        style={style.iconOpenRow}
+                        onPress={() => this.toggleModal()}>
+                        <NewOpen
+                          name="open-in-new"
+                          size={width * 0.035}
+                          color="black"
+                        />
+                      </TouchableOpacity>
+                      <View
+                        style={{
+                          position: 'absolute',
+                          right: width * -0.01,
+                          top: height * 0.09,
+                        }}>
+                        <Alarm
+                          name={'alarm-light'}
+                          size={width * 0.055}
+                          color={this.state.skinTemp ? '#0ae916' : 'red'}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', flex: 1}}>
+                    <View>
+                      <Text style={style.setTemp}>Set Temperature</Text>
+                      <View style={style.boxLowerStyle}>
+                        <TouchableOpacity
+                          style={style.likeInputMin}
+                          onPress={() => this.openToggel()}>
+                          <Text style={style.tempInputSet}>
+                            {this.state.setTemp}
                           </Text>
                         </TouchableOpacity>
                         {!this.props.value ? (
-                          <Text style={style.centiUper}>
-                            {'\u2103'}
-                          </Text>
+                          <Text style={style.centiLower}>{'\u2103'}</Text>
                         ) : (
-                            <Text style={style.centiUper}>
-                              {'\u2109'}
-                            </Text>
-                          )
-                        }
-                        <TouchableOpacity style={style.iconOpenRow} onPress={() => this.toggleModal()}>
-                          <NewOpen name="open-in-new" size={width * .035} color="black" />
-                        </TouchableOpacity>
-                        <View style={{ position: 'absolute', right: width * -.01, top: height * .09, }}>
-                          <Alarm name={'alarm-light'} size={width * .055} color={this.state.skinTemp ? '#0ae916' : 'red'} />
-                        </View>
-                      </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', flex: 1, }}>
-                      <View>
-                        <Text style={style.setTemp}>
-                          Set Temperature
-                      </Text>
-                        <View style={style.boxLowerStyle}>
-                          <TouchableOpacity style={style.likeInputMin} onPress={() => this.openToggel()}>
-                            <Text style={style.tempInputSet}>
-                              {this.state.setTemp}
-                            </Text>
-                          </TouchableOpacity>
-                          {!this.props.value ? (
-                            <Text style={style.centiLower}>
-                              {'\u2103'}
-                            </Text>
-                          ) : (
-                              <Text style={style.centiLower}>
-                                {'\u2109'}
-                              </Text>
-                            )
-                          }
-                        </View>
+                          <Text style={style.centiLower}>{'\u2109'}</Text>
+                        )}
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
             </View>
-          ) : (
-              <View style={style.TemperatureView}>
-                <View style={style.Temperature}>
-                  <View style={style.skinInerContainer}>
-                    <View style={style.skinIner}>
-                      <View style={{ flex: 1, }}>
-                        <Text style={style.currentTempText}>
-                          Current Temperature
+          </View>
+        ) : (
+          <View style={style.TemperatureView}>
+            <View style={style.Temperature}>
+              <View style={style.skinInerContainer}>
+                <View style={style.skinIner}>
+                  <View style={{flex: 1}}>
+                    <Text style={style.currentTempText}>
+                      Current Temperature
+                    </Text>
+                    <View style={style.boxUperStyle}>
+                      <View style={style.likeInputOxygen}>
+                        <Text style={style.tempInputCur}>
+                          {this.state.currentTemp}
                         </Text>
-                        <View style={style.boxUperStyle}>
-                          <View style={style.likeInputOxygen}>
-                            <Text
-                              style={style.tempInputCur} >
-                              {this.state.currentTemp}
-                            </Text>
-                          </View>
-                          {!this.props.value ? (
-                            <Text style={style.centiUper}>
-                              {'\u2103'}
-                            </Text>
-                          ) : (
-                              <Text style={style.centiUper}>
-                                {'\u2109'}
-                              </Text>
-                            )
-                          }
-                          <View style={style.iconOpenRow}>
-                            <NewOpen name="open-in-new" size={width * .035} color="red" />
-                          </View>
-                          <View style={{ position: 'absolute', right: width * -.01, top: height * .09, }}>
-                            <Alarm name={'alarm-light'} size={width * .055} color={this.state.skinTemp ? '#0ae916' : 'red'} />
-                          </View>
-                        </View>
                       </View>
-                      <View style={{ flexDirection: 'row', flex: 1, }}>
-                        <View>
-                          <Text style={style.setTemp}>
-                            Set Temperature
+                      {!this.props.value ? (
+                        <Text style={style.centiUper}>{'\u2103'}</Text>
+                      ) : (
+                        <Text style={style.centiUper}>{'\u2109'}</Text>
+                      )}
+                      <View style={style.iconOpenRow}>
+                        <NewOpen
+                          name="open-in-new"
+                          size={width * 0.035}
+                          color="red"
+                        />
+                      </View>
+                      <View
+                        style={{
+                          position: 'absolute',
+                          right: width * -0.01,
+                          top: height * 0.09,
+                        }}>
+                        <Alarm
+                          name={'alarm-light'}
+                          size={width * 0.055}
+                          color={this.state.skinTemp ? '#0ae916' : 'red'}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', flex: 1}}>
+                    <View>
+                      <Text style={style.setTemp}>Set Temperature</Text>
+                      <View style={style.boxLowerStyle}>
+                        <View style={style.likeInputMin}>
+                          <Text style={style.tempInputSet}>
+                            {this.props.airLowerTemp}
                           </Text>
-                          <View style={style.boxLowerStyle}>
-                            <View style={style.likeInputMin}>
-                              <Text style={style.tempInputSet}>
-                                {this.props.airLowerTemp}
-                              </Text>
-                            </View>
-                            {!this.props.value ? (
-                              <Text style={style.centiLower}>
-                                {'\u2103'}
-                              </Text>
-                            ) : (
-                                <Text style={style.centiLower}>
-                                  {'\u2109'}
-                                </Text>
-                              )
-                            }
-                          </View>
                         </View>
+                        {!this.props.value ? (
+                          <Text style={style.centiLower}>{'\u2103'}</Text>
+                        ) : (
+                          <Text style={style.centiLower}>{'\u2109'}</Text>
+                        )}
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
-            )}
+            </View>
+          </View>
+        )}
         <Modal
           animationIn="bounceIn"
           animationOut="bounceOut"
@@ -220,8 +326,14 @@ export default class App extends Component {
             <View style={modalStyle.insertWeightInner}>
               <View style={modalStyle.insertWeightHeader}>
                 <View style={modalStyle.inserWeightHeaderInner}>
-                  <TouchableOpacity onPress={this.openToggel} style={modalStyle.inserBackBotton}>
-                    <Back name={'keyboard-backspace'} size={width * .03} color='white' />
+                  <TouchableOpacity
+                    onPress={this.openToggel}
+                    style={modalStyle.inserBackBotton}>
+                    <Back
+                      name={'keyboard-backspace'}
+                      size={width * 0.03}
+                      color="white"
+                    />
                   </TouchableOpacity>
                   <Text style={modalStyle.inserHeaderHeading}>
                     Skin Temperature
@@ -235,23 +347,18 @@ export default class App extends Component {
                   </Text>
                   <View style={modalStyle.inserTextinputView}>
                     <TextInput
-                      placeholder='Type Here'
+                      placeholder="Type Here"
                       keyboardType="number-pad"
                       maxLength={3}
                       style={modalStyle.inserTextinput}
-                      onChangeText={e => this.setState({ currentTemp: e })}
+                      onChangeText={(e) => this.setState({currentTemp: e})}
                     />
                   </View>
                   {!this.props.value ? (
-                    <Text style={style.centiLower}>
-                      {'\u2103'}
-                    </Text>
+                    <Text style={style.centiLower}>{'\u2103'}</Text>
                   ) : (
-                      <Text style={style.centiLower}>
-                        {'\u2109'}
-                      </Text>
-                    )
-                  }
+                    <Text style={style.centiLower}>{'\u2109'}</Text>
+                  )}
                 </View>
                 <View style={modalStyle.inserBodyInner}>
                   <Text style={modalStyle.inserTypeHeading}>
@@ -259,33 +366,32 @@ export default class App extends Component {
                   </Text>
                   <View style={modalStyle.inserTextinputView}>
                     <TextInput
-                      placeholder='Type Here'
+                      placeholder="Type Here"
                       keyboardType="number-pad"
                       maxLength={3}
                       style={modalStyle.inserTextinput}
-                      onChangeText={e => this.setState({ setTemp: e })}
+                      onChangeText={(e) => this.setState({setTemp: e})}
                     />
                   </View>
                   {!this.props.value ? (
-                    <Text style={style.centiLower}>
-                      {'\u2103'}
-                    </Text>
+                    <Text style={style.centiLower}>{'\u2103'}</Text>
                   ) : (
-                      <Text style={style.centiLower}>
-                        {'\u2109'}
-                      </Text>
-                    )
-                  }
+                    <Text style={style.centiLower}>{'\u2109'}</Text>
+                  )}
                 </View>
               </View>
               <View style={modalStyle.inserFooterContainer}>
                 <View style={modalStyle.inserFooterInner}>
-                  <TouchableOpacity style={modalStyle.inserSubmitBottonView}
+                  <TouchableOpacity
+                    style={modalStyle.inserSubmitBottonView}
                     onPress={this.submitCondition}>
-                    <Text style={modalStyle.inserSubmitText}>
-                      Submit
-                    </Text>
-                    <Check name={'checkcircle'} size={width * .012} color='white' style={modalStyle.check} />
+                    <Text style={modalStyle.inserSubmitText}>Submit</Text>
+                    <Check
+                      name={'checkcircle'}
+                      size={width * 0.012}
+                      color="white"
+                      style={modalStyle.check}
+                    />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -297,14 +403,16 @@ export default class App extends Component {
           animationOut="slideOutDown"
           isVisible={this.state.isModalVisible}
           style={modalStyle.modalMainContainer}>
-          <View style={{ flex: 1, }}>
+          <View style={{flex: 1}}>
             <View style={modalStyle.haiderContainer}>
               <View style={modalStyle.headerInner}>
                 <Text style={modalStyle.headerHeading}>
                   Skin Temperature History
                 </Text>
-                <View >
-                  <TouchableOpacity onPress={() => this.toggleModal()} style={modalStyle.submit}>
+                <View>
+                  <TouchableOpacity
+                    onPress={() => this.toggleModal()}
+                    style={modalStyle.submit}>
                     <Text style={modalStyle.alarmText}>Done</Text>
                   </TouchableOpacity>
                 </View>
@@ -313,12 +421,8 @@ export default class App extends Component {
             <View style={modalStyle.bodyMainContainer}>
               <View style={modalStyle.bodyContainer}>
                 <View style={modalStyle.historyContentHeadingView}>
-                  <Text style={modalStyle.headingDate}>
-                    Date
-                                    </Text>
-                  <Text style={modalStyle.headingTime}>
-                    Time
-                                    </Text>
+                  <Text style={modalStyle.headingDate}>Date</Text>
+                  <Text style={modalStyle.headingTime}>Time</Text>
                   <Text style={modalStyle.headingWeight}>
                     Previous Set Temperature
                   </Text>
@@ -326,25 +430,25 @@ export default class App extends Component {
                     Previous Skin Temperature
                   </Text>
                 </View>
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                >
-                  <View style={{
-                    flexDirection: 'row'
-                  }}>
+                <View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}>
                     <FlatList
-                      style={{ marginTop: height * .01 }}
+                      style={{marginTop: height * 0.01}}
                       data={this.state.temperatureHistory}
                       renderItem={this._renderMyList}
+                      keyExtractor={(item) => item.id}
+                      showsVerticalScrollIndicator={false}
                     />
                   </View>
-                </ScrollView>
+                </View>
               </View>
             </View>
           </View>
         </Modal>
-      </View >
-
-    )
+      </View>
+    );
   }
 }

@@ -130,8 +130,9 @@ android {
 
     defaultConfig {
         applicationId "com.incubatorapp"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 21
+        compileSdkVersion 29
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -152,20 +153,20 @@ android {
             keyPassword 'android'
         }
         release {
-storeFile file(MYAPP_RELEASE_STORE_FILE)
-storePassword MYAPP_RELEASE_STORE_PASSWORD
-keyAlias MYAPP_RELEASE_KEY_ALIAS
-keyPassword MYAPP_RELEASE_KEY_PASSWORD
-}
+            storeFile file(MYAPP_RELEASE_STORE_FILE)
+            storePassword MYAPP_RELEASE_STORE_PASSWORD
+            keyAlias MYAPP_RELEASE_KEY_ALIAS
+            keyPassword MYAPP_RELEASE_KEY_PASSWORD
+        }
 
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
-         release {
-signingConfig signingConfigs.release
-}
+        release {
+            signingConfig signingConfigs.release
+        }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
@@ -199,7 +200,9 @@ signingConfig signingConfigs.release
 }
 
 dependencies {
+    compile project(':react-native-file-viewer')
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(':react-native-fs')
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
