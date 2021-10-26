@@ -50,6 +50,15 @@ export default styles = StyleSheet.create({
         fontFamily:Fonts.Montserrat,
         color: '#484149c5',
     },
+    aboveTopText:{
+        fontSize: width * .015,
+        marginHorizontal: width * .01
+    },
+    topText:{
+        fontSize: width * .018,
+        fontFamily:Fonts.Montserrat,
+        color: '#484149c5',
+    },
     
     airHeading:{
         fontSize:width * .03,

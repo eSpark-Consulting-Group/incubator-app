@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>incubatorApp</string>
+	<string>incubatorAppRun</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,8 +26,6 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -55,6 +53,23 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Aladin-Regular.ttf</string>
+		<string>Baloo2-Regular.ttf</string>
+		<string>BalooChettan2-Bold.ttf</string>
+		<string>BalooChettan2-Regular.ttf</string>
+		<string>Comfortaa-VariableFont_wght.ttf</string>
+		<string>FiraCode-VariableFont_wght.ttf</string>
+		<string>Handlee-Regular.ttf</string>
+		<string>MeriendaOne-Regular.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>NotoSansJP-Bold.otf</string>
+		<string>NotoSansJP-Medium.otf</string>
+		<string>NotoSansJP-Regular.otf</string>
+		<string>NotoSansJP-Thin.otf</string>
+		<string>OxygenMono-Regular.ttf</string>
+		<string>Tabitha.ttf</string>
+		<string>Xerox Serif Narrow Bold.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
@@ -71,40 +86,6 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>NovaSquare-Regular.ttf</string>
-		<string>MetalMania-Regular.ttf</string>
-		<string>Monospace.ttf</string>
-		<string>MonospaceBold.ttf</string>
-		<string>MonospaceOblique.ttf</string>
-		<string>Fiddler's_Cove_Condensed_Italic.ttf</string>
-		<string>metalMania-Regular.ttf</string>
-		<string>monospace.ttf</string>
-		<string>monospaceBold.ttf</string>
-		<string>notoserif.ttf</string>
-		<string>novaSquare.ttf</string>
-		<string>Roboto-Black.ttf</string>
-		<string>Roboto_medium.ttf</string>
-		<string>Roboto.ttf</string>
-		<string>rubicon-icon-font.ttf</string>
-		<string>fontAwesome.ttf</string>
-		<string>roboto.ttf</string>
-		<string>Baloo2-Regular.ttf</string>
-		<string>BalooChettan2-Bold.ttf</string>
-		<string>BalooChettan2-Regular.ttf</string>
-		<string>Comfortaa-VariableFont_wght.ttf</string>
-		<string>FiraCode-VariableFont_wght.ttf</string>
-		<string>Handlee-Regular.ttf</string>
-		<string>MeriendaOne-Regular.ttf</string>
-		<string>NotoSansJP-Regular.otf</string>
-		<string>NotoSansJP-Thin.otf</string>
-		<string>OxygenMono-Regular.ttf</string>
-		<string>Tabitha.ttf</string>
-		<string>Xerox Serif Narrow Bold.ttf</string>
-		<string>Aladin-Regular.ttf</string>
-		<string>Montserrat-Medium.ttf</string>
-		<string>Montserrat-SemiBold.ttf</string>
-		<string>NotoSansJP-Bold.otf</string>
-		<string>NotoSansJP-Medium.otf</string>
 	</array>
 </dict>
 </plist>

@@ -6,7 +6,4 @@ export const Fonts = {
   Aladin: 'Aladin-Regular',
   Montserrat: 'Montserrat-SemiBold',
   NotoSansJP: 'NotoSansJP-Medium',
-
-
-
 };
