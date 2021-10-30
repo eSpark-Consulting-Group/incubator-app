@@ -71,10 +71,10 @@ export default class App extends Component {
     };
 
     createResource(babyWeight, payload, _.token)
-      .then((res) => {
+      .then(res => {
         Alert.alert('Success', 'Successfully Added Baby Weight!');
       })
-      .catch((error) => {
+      .catch(error => {
         // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
@@ -210,6 +210,7 @@ export default class App extends Component {
         <Modal
           animationIn="bounceIn"
           animationOut="bounceOut"
+          statusBarTranslucent
           isVisible={this.state.toggle}
           style={style.insertWeightModal}>
           <View style={style.insertWeightContainer}>
@@ -237,7 +238,7 @@ export default class App extends Component {
                       keyboardType="number-pad"
                       maxLength={3}
                       style={style.inserTextinput}
-                      onChangeText={(e) => this.setState({currentWei: e})}
+                      onChangeText={e => this.setState({currentWei: e})}
                     />
                   </View>
                   {!this.props.value ? (
@@ -268,6 +269,7 @@ export default class App extends Component {
         <Modal
           animationIn="slideInUp"
           animationOut="slideOutDown"
+          statusBarTranslucent
           isVisible={this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>

@@ -76,10 +76,10 @@ export default class App extends Component {
     };
 
     createResource(spHr, payload, _.token)
-      .then((res) => {
+      .then(res => {
         Alert.alert('Success', 'Successfully Added SPhr!');
       })
-      .catch((error) => {
+      .catch(error => {
         // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
@@ -214,6 +214,7 @@ export default class App extends Component {
         <Modal
           animationIn="slideInUp"
           animationOut="slideOutDown"
+          statusBarTranslucent
           onBackdropPress={() => this.toggleModal()}
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"

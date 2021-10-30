@@ -8,6 +8,7 @@ import {
   StatusBar,
   Dimensions,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
@@ -85,29 +86,37 @@ export default class App extends Component {
         <Modal
           animationIn="slideInDown"
           animationOut="slideOutUp"
+          statusBarTranslucent
           isVisible={this.state.airTemp}
           style={style.modal}>
-          <View style={style.modalInner}>
-            <View style={style.modalContainer}>
-              <View style={style.modalContainerInner}>
-                <View style={style.headerContainer}>
-                  <View style={style.headerInner}>
-                    <TouchableOpacity
-                      onPress={this.toggleAir}
-                      style={style.backBotton}>
-                      <Back
-                        name={'keyboard-backspace'}
-                        size={width * 0.03}
-                        color="white"
-                      />
-                    </TouchableOpacity>
-                    <Text style={style.headerHeading}>SPO2</Text>
+          <KeyboardAvoidingView
+            style={{
+              height: height,
+              alignItems: 'center',
+              // backgroundColor: 'pink',
+            }}
+            behavior="position">
+            <View style={style.modalInner}>
+              <View style={style.modalContainer}>
+                <View style={style.modalContainerInner}>
+                  <View style={style.headerContainer}>
+                    <View style={style.headerInner}>
+                      <TouchableOpacity
+                        onPress={this.toggleAir}
+                        style={style.backBotton}>
+                        <Back
+                          name={'keyboard-backspace'}
+                          size={width * 0.03}
+                          color="white"
+                        />
+                      </TouchableOpacity>
+                      <Text style={style.headerHeading}>SPO2</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={style.bodyContainer}>
-                  <View style={style.bodyInner}>
-                    <Text style={style.currentHeading}>Upper Limit</Text>
-                    {/* <TextInput
+                  <View style={style.bodyContainer}>
+                    <View style={style.bodyInner}>
+                      <Text style={style.currentHeading}>Upper Limit</Text>
+                      {/* <TextInput
                                                 placeholder='Type Here'
                                                 keyboardType="number-pad"
                                                 maxLength={5}
@@ -115,42 +124,43 @@ export default class App extends Component {
                                                 onChangeText={airCurrentTemp => this.setState({airCurrentTemp})}
                                                 
                                             /> */}
-                    <NumericInput
-                      onChange={(uperLimit) => this.setState({uperLimit})}
-                      totalWidth={width * 0.15}
-                      totalHeight={height * 0.05}
-                      initValue={this.state.uperLimit}
-                      rounded
-                    />
-
-                    <Text style={style.currentHeading}>Lower Limit</Text>
-                    <NumericInput
-                      onChange={(lowerLimit) => this.setState({lowerLimit})}
-                      totalWidth={width * 0.15}
-                      totalHeight={height * 0.05}
-                      initValue={this.state.lowerLimit}
-                      rounded
-                    />
-                  </View>
-                </View>
-                <View style={style.footerContainer}>
-                  <View style={style.footerInner}>
-                    <TouchableOpacity
-                      style={style.bottonView}
-                      onPress={this.changeValueHandler}>
-                      <Text style={style.bottonText}>Submit</Text>
-                      <Check
-                        name={'checkcircle'}
-                        size={width * 0.015}
-                        color="white"
-                        style={style.check}
+                      <NumericInput
+                        onChange={uperLimit => this.setState({uperLimit})}
+                        totalWidth={width * 0.15}
+                        totalHeight={height * 0.05}
+                        initValue={this.state.uperLimit}
+                        rounded
                       />
-                    </TouchableOpacity>
+
+                      <Text style={style.currentHeading}>Lower Limit</Text>
+                      <NumericInput
+                        onChange={lowerLimit => this.setState({lowerLimit})}
+                        totalWidth={width * 0.15}
+                        totalHeight={height * 0.05}
+                        initValue={this.state.lowerLimit}
+                        rounded
+                      />
+                    </View>
+                  </View>
+                  <View style={style.footerContainer}>
+                    <View style={style.footerInner}>
+                      <TouchableOpacity
+                        style={style.bottonView}
+                        onPress={this.changeValueHandler}>
+                        <Text style={style.bottonText}>Submit</Text>
+                        <Check
+                          name={'checkcircle'}
+                          size={width * 0.015}
+                          color="white"
+                          style={style.check}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </Modal>
       </View>
     );

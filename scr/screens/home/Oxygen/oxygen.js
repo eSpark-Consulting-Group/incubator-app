@@ -58,10 +58,10 @@ export default class App extends Component {
     };
 
     createResource(oxygen, payload, _.token)
-      .then((res) => {
+      .then(res => {
         Alert.alert('Success', 'Successfully Added Oxygen!');
       })
-      .catch((error) => {
+      .catch(error => {
         // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
@@ -192,6 +192,7 @@ export default class App extends Component {
         <Modal
           animationIn="slideInUp"
           animationOut="slideOutDown"
+          statusBarTranslucent
           onBackdropPress={() => this.toggleModal()}
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
@@ -232,7 +233,7 @@ export default class App extends Component {
                       style={{marginTop: height * 0.01}}
                       data={this.state.oxygenHistory}
                       renderItem={this._renderMyList}
-                      keyExtractor={(item) => item.id}
+                      keyExtractor={item => item.id}
                       showsVerticalScrollIndicator={false}
                     />
                   </View>

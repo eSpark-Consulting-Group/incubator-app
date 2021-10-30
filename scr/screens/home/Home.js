@@ -40,7 +40,7 @@ let skinLow = false;
 let airHigh = false;
 let airLow = false;
 
-var siren = new Sound(require('../../assets/audio/siren.mp3'), (e) => {
+var siren = new Sound(require('../../assets/audio/siren.mp3'), e => {
   if (e) {
     console.log('Failed load Sound', e);
     return;
@@ -55,7 +55,7 @@ var siren = new Sound(require('../../assets/audio/siren.mp3'), (e) => {
   );
 });
 
-var siren2 = new Sound(require('../../assets/audio/siren.mp3'), (e) => {
+var siren2 = new Sound(require('../../assets/audio/siren.mp3'), e => {
   if (e) {
     console.log('Failed load Sound', e);
     return;
@@ -212,22 +212,22 @@ export default class App extends Component {
       skinHigherTemp: child,
     });
   }
-  handleSpo2Uper = (child) => {
+  handleSpo2Uper = child => {
     this.setState({
       spo2Uper: child,
     });
   };
-  handleSpo2Lower = (child) => {
+  handleSpo2Lower = child => {
     this.setState({
       spo2Lower: child,
     });
   };
-  handleHrUper = (child) => {
+  handleHrUper = child => {
     this.setState({
       hrUper: child,
     });
   };
-  handleHrLower = (child) => {
+  handleHrLower = child => {
     this.setState({
       hrLower: child,
     });
@@ -237,12 +237,12 @@ export default class App extends Component {
       tempSign: child,
     });
   }
-  handleParameter = (child) => {
+  handleParameter = child => {
     this.setState({
       parameter: child,
     });
   };
-  handleSwitchAir = (child) => {
+  handleSwitchAir = child => {
     this.setState({
       switchAir: child,
     });
@@ -273,27 +273,27 @@ export default class App extends Component {
     });
   }
 
-  handlePatientID = (child) => {
+  handlePatientID = child => {
     this.setState({patientId: child});
   };
 
-  handleAge = (child) => {
+  handleAge = child => {
     this.setState({age: child});
   };
 
-  handleTheWeight = (child) => {
+  handleTheWeight = child => {
     this.setState({weight: child});
   };
 
-  handleFatherName = (child) => {
+  handleFatherName = child => {
     this.setState({fatherName: child});
   };
 
-  handleDrName = (child) => {
+  handleDrName = child => {
     this.setState({DrName: child});
   };
 
-  _getData = async (value) => {
+  _getData = async value => {
     try {
       let _ = await getItem();
     } catch (error) {
@@ -312,16 +312,16 @@ export default class App extends Component {
     this.setState({lock: !this.state.lock}), alert('System Locked');
   };
 
-  oxyValue = (child) => {
+  oxyValue = child => {
     this.setState({oxy: child});
   };
 
-  skinTempValue = (child) => {
+  skinTempValue = child => {
     this.setState({skinTemp: child});
     this.skinTempAlarm();
   };
 
-  airTempValue = (child) => {
+  airTempValue = child => {
     this.setState({airTemp: child});
     this.airTempAlarm();
   };
@@ -404,7 +404,7 @@ export default class App extends Component {
     }
   };
 
-  handleAirTempActivate = (child) => {
+  handleAirTempActivate = child => {
     if (child) {
       this.setState({
         airTempActivate: true,
@@ -416,7 +416,7 @@ export default class App extends Component {
     }
   };
 
-  handleAirTempDeactivate = (child) => {
+  handleAirTempDeactivate = child => {
     if (child) {
       this.setState({
         airTempActivate: false,
@@ -428,7 +428,7 @@ export default class App extends Component {
     }
   };
 
-  handleSkinTempActivate = (child) => {
+  handleSkinTempActivate = child => {
     if (child) {
       this.setState({
         skinTempActivate: true,
@@ -440,7 +440,7 @@ export default class App extends Component {
     }
   };
 
-  handleSkinTempDeactivate = (child) => {
+  handleSkinTempDeactivate = child => {
     if (child) {
       this.setState({
         skinTempActivate: false,
@@ -452,7 +452,7 @@ export default class App extends Component {
     }
   };
 
-  handleOxygenActivate = (child) => {
+  handleOxygenActivate = child => {
     if (child) {
       this.setState({
         oxygenActivate: true,
@@ -464,7 +464,7 @@ export default class App extends Component {
     }
   };
 
-  handleOxygenDeactivate = (child) => {
+  handleOxygenDeactivate = child => {
     if (child) {
       this.setState({
         oxygenActivate: false,
@@ -600,7 +600,9 @@ export default class App extends Component {
             }}></View>
           <Modal
             visible={this.state.msgBoxShow}
+            // visible={true}
             transparent={true}
+            statusBarTranslucent
             animationType="fade">
             <View
               style={{
@@ -613,18 +615,16 @@ export default class App extends Component {
               }}>
               <View
                 style={{
-                  flex: 1,
                   padding: height * 0.02,
                   justifyContent: 'flex-end',
                   flexDirection: 'row',
-                  // backgroundColor: 'pink',
                 }}>
                 <View
                   style={{
                     flex: 1,
-                    // backgroundColor: 'yellow',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    marginHorizontal: height * 0.05,
                   }}>
                   <Text style={{color: 'red', fontSize: height * 0.05}}>
                     Alarm Alert

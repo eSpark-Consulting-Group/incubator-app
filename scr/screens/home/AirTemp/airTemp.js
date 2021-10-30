@@ -80,10 +80,10 @@ export default class App extends Component {
     };
 
     createResource(air_Temp, payload, _.token)
-      .then((res) => {
+      .then(res => {
         Alert.alert('Success', 'Successfully Added Air Temprature!');
       })
-      .catch((error) => {
+      .catch(error => {
         // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
@@ -327,6 +327,7 @@ export default class App extends Component {
         <Modal
           animationIn="bounceIn"
           animationOut="bounceOut"
+          statusBarTranslucent
           isVisible={this.state.toggle}
           style={modalStyle.insertWeightModal}>
           <View style={modalStyle.insertWeightContainer}>
@@ -358,7 +359,7 @@ export default class App extends Component {
                       keyboardType="number-pad"
                       maxLength={3}
                       style={modalStyle.inserTextinput}
-                      onChangeText={(e) => this.setState({currentTemp: e})}
+                      onChangeText={e => this.setState({currentTemp: e})}
                     />
                   </View>
                   {!this.props.value ? (
@@ -377,7 +378,7 @@ export default class App extends Component {
                       keyboardType="number-pad"
                       maxLength={3}
                       style={modalStyle.inserTextinput}
-                      onChangeText={(e) => this.setState({setTemp: e})}
+                      onChangeText={e => this.setState({setTemp: e})}
                     />
                   </View>
                   {!this.props.value ? (
@@ -411,6 +412,7 @@ export default class App extends Component {
         <Modal
           animationIn="slideInUp"
           animationOut="slideOutDown"
+          statusBarTranslucent
           isVisible={this.state.isModalVisible}
           style={modalStyle.modalMainContainer}>
           <View style={{flex: 1}}>
@@ -449,7 +451,7 @@ export default class App extends Component {
                       style={{marginTop: height * 0.01}}
                       data={this.state.temperatureHistory}
                       renderItem={this._renderMyList}
-                      keyExtractor={(item) => item.id}
+                      keyExtractor={item => item.id}
                       showsVerticalScrollIndicator={false}
                     />
                   </View>

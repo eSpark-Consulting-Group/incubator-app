@@ -48,7 +48,7 @@ export default class App extends Component {
       oxygen: true,
     };
   }
-  onSelectionsChange = (selectedParameter) => {
+  onSelectionsChange = selectedParameter => {
     // selectedFruits is array of { label, value }
 
     this.setState({selectedParameter});
@@ -103,6 +103,7 @@ export default class App extends Component {
         <Modal
           animationIn="slideInDown"
           animationOut="slideOutUp"
+          statusBarTranslucent
           isVisible={this.state.isModalVisible}
           style={{
             elevation: width * 0.005,
@@ -147,9 +148,7 @@ export default class App extends Component {
                             placeholder="Your Password"
                             secureTextEntry={true}
                             style={style.currentInput}
-                            onChangeText={(password) =>
-                              this.setState({password})
-                            }
+                            onChangeText={password => this.setState({password})}
                           />
                         </View>
                       </View>

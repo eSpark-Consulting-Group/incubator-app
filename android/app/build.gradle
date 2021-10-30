@@ -130,6 +130,10 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    lintOptions { 
+      checkReleaseBuilds false 
+    }
+
     defaultConfig {
         applicationId "com.incubatorapprun"
         minSdkVersion rootProject.ext.minSdkVersion

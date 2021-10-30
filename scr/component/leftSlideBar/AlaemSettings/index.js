@@ -81,32 +81,32 @@ export default class App extends Component {
       skinLowTemp: child,
     });
   }
-  handleSpo2Uper = (child) => {
+  handleSpo2Uper = child => {
     this.setState({
       spo2Upper: child,
     });
   };
-  handleSpo2Lower = (child) => {
+  handleSpo2Lower = child => {
     this.setState({
       spo2Lower: child,
     });
   };
-  handleHrUper = (child) => {
+  handleHrUper = child => {
     this.setState({
       hrUpper: child,
     });
   };
-  handleHrLower = (child) => {
+  handleHrLower = child => {
     this.setState({
       hrLower: child,
     });
   };
 
-  handleAirHigh = (child) => {
+  handleAirHigh = child => {
     this.setState({higherAirValue: child});
   };
 
-  handleAirLow = (child) => {
+  handleAirLow = child => {
     this.setState({lowerAirValue: child});
   };
 
@@ -124,6 +124,7 @@ export default class App extends Component {
         <Modal
           animationIn="slideInDown"
           animationOut="slideOutUp"
+          statusBarTranslucent
           isVisible={this.state.isModalVisible}
           style={style.modalContainer}>
           <View style={style.modalInner}>

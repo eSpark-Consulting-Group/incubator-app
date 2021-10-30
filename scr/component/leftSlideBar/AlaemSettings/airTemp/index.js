@@ -8,6 +8,7 @@ import {
   StatusBar,
   Dimensions,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
@@ -95,29 +96,39 @@ export default class App extends Component {
         <Modal
           animationIn="slideInDown"
           animationOut="slideOutUp"
+          statusBarTranslucent
           isVisible={this.state.airTemp}
           style={style.modal}>
-          <View style={style.modalInner}>
-            <View style={style.modalContainer}>
-              <View style={style.modalContainerInner}>
-                <View style={style.headerContainer}>
-                  <View style={style.headerInner}>
-                    <TouchableOpacity
-                      onPress={this.toggleAir}
-                      style={style.backBotton}>
-                      <Back
-                        name={'keyboard-backspace'}
-                        size={width * 0.03}
-                        color="white"
-                      />
-                    </TouchableOpacity>
-                    <Text style={style.headerHeading}>Air Temperature</Text>
+          <KeyboardAvoidingView
+            style={{
+              height: height,
+              alignItems: 'center',
+              // backgroundColor: 'pink',
+            }}
+            behavior="position">
+            <View style={style.modalInner}>
+              <View style={style.modalContainer}>
+                <View style={style.modalContainerInner}>
+                  <View style={style.headerContainer}>
+                    <View style={style.headerInner}>
+                      <TouchableOpacity
+                        onPress={this.toggleAir}
+                        style={style.backBotton}>
+                        <Back
+                          name={'keyboard-backspace'}
+                          size={width * 0.03}
+                          color="white"
+                        />
+                      </TouchableOpacity>
+                      <Text style={style.headerHeading}>Air Temperature</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={style.bodyContainer}>
-                  <View style={style.bodyInner}>
-                    <Text style={style.currentHeading}>Higher Temperature</Text>
-                    {/* <TextInput
+                  <View style={style.bodyContainer}>
+                    <View style={style.bodyInner}>
+                      <Text style={style.currentHeading}>
+                        Higher Temperature
+                      </Text>
+                      {/* <TextInput
                                                 placeholder='Type Here'
                                                 keyboardType="number-pad"
                                                 maxLength={5}
@@ -125,45 +136,48 @@ export default class App extends Component {
                                                 onChangeText={airCurrentTemp => this.setState({airCurrentTemp})}
                                                 
                                             /> */}
-                    <NumericInput
-                      onChange={(airHightTemp) => this.setState({airHightTemp})}
-                      totalWidth={width * 0.15}
-                      totalHeight={height * 0.05}
-                      initValue={this.state.airHightTemp}
-                      rounded
-                    />
-
-                    <Text style={style.currentHeading}>Lower Temperature</Text>
-                    <NumericInput
-                      onChange={(airLowerTemp) => this.setState({airLowerTemp})}
-                      totalWidth={width * 0.15}
-                      totalHeight={height * 0.05}
-                      initValue={this.state.airLowerTemp}
-                      rounded
-                    />
-                  </View>
-                </View>
-                <View style={style.footerContainer}>
-                  <View style={style.footerInner}>
-                    <TouchableOpacity
-                      style={style.bottonView}
-                      onPress={() => {
-                        this.runFunction();
-                        this.toggleAir();
-                      }}>
-                      <Text style={style.bottonText}>Submit</Text>
-                      <Check
-                        name={'checkcircle'}
-                        size={width * 0.015}
-                        color="white"
-                        style={style.check}
+                      <NumericInput
+                        onChange={airHightTemp => this.setState({airHightTemp})}
+                        totalWidth={width * 0.15}
+                        totalHeight={height * 0.05}
+                        initValue={this.state.airHightTemp}
+                        rounded
                       />
-                    </TouchableOpacity>
+
+                      <Text style={style.currentHeading}>
+                        Lower Temperature
+                      </Text>
+                      <NumericInput
+                        onChange={airLowerTemp => this.setState({airLowerTemp})}
+                        totalWidth={width * 0.15}
+                        totalHeight={height * 0.05}
+                        initValue={this.state.airLowerTemp}
+                        rounded
+                      />
+                    </View>
+                  </View>
+                  <View style={style.footerContainer}>
+                    <View style={style.footerInner}>
+                      <TouchableOpacity
+                        style={style.bottonView}
+                        onPress={() => {
+                          this.runFunction();
+                          this.toggleAir();
+                        }}>
+                        <Text style={style.bottonText}>Submit</Text>
+                        <Check
+                          name={'checkcircle'}
+                          size={width * 0.015}
+                          color="white"
+                          style={style.check}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </Modal>
       </View>
     );

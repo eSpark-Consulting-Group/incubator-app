@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Alert,
   ToastAndroid,
+  KeyboardAvoidingView,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
@@ -120,22 +121,22 @@ export default class App extends Component {
       skinLowTemp: child,
     });
   }
-  handleSpo2Uper = (child) => {
+  handleSpo2Uper = child => {
     this.setState({
       spo2Upper: child,
     });
   };
-  handleSpo2Lower = (child) => {
+  handleSpo2Lower = child => {
     this.setState({
       spo2Lower: child,
     });
   };
-  handleHrUper = (child) => {
+  handleHrUper = child => {
     this.setState({
       hrUpper: child,
     });
   };
-  handleHrLower = (child) => {
+  handleHrLower = child => {
     this.setState({
       hrLower: child,
     });
@@ -179,6 +180,7 @@ export default class App extends Component {
                   'Added Patient Succesfully',
                   ToastAndroid.SHORT,
                 );
+                this.setState({isModalVisible: !this.state.isModalVisible});
               }, 50);
               setTimeout(() => {
                 this.props.handleRunData(true);
@@ -205,200 +207,212 @@ export default class App extends Component {
         <Modal
           animationIn="slideInDown"
           animationOut="slideOutUp"
+          statusBarTranslucent
           isVisible={this.state.isModalVisible}
           style={style.modalContainer}>
-          <View style={style.modalInner}>
-            <View style={style.boxConatainer}>
-              <View style={style.boxInner}>
-                {/* Box Header */}
-                <View style={style.boxHeader}>
-                  <View style={style.boxHeaderInner}>
-                    <TouchableOpacity onPress={this.toggleModal}>
-                      <Back
-                        name={'keyboard-backspace'}
-                        size={width * 0.04}
-                        color="white"
+          <KeyboardAvoidingView
+            style={{
+              height: height,
+              alignItems: 'center',
+              justifyContent: 'center',
+              // backgroundColor: 'pink',
+            }}
+            behavior="position">
+            <View style={style.modalInner}>
+              <View style={style.boxConatainer}>
+                <View style={style.boxInner}>
+                  {/* Box Header */}
+                  <View style={style.boxHeader}>
+                    <View style={style.boxHeaderInner}>
+                      <TouchableOpacity onPress={this.toggleModal}>
+                        <Back
+                          name={'keyboard-backspace'}
+                          size={width * 0.04}
+                          color="white"
+                        />
+                      </TouchableOpacity>
+                      <Text style={style.headerHeading}>
+                        Patient Information
+                      </Text>
+                      <TouchableOpacity
+                        style={style.headerbotton}
+                        onPress={this.saveData.bind(this)}>
+                        <Text style={style.bottonText}>Submit</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  {/* Box Body */}
+                  {/* <ScrollView> */}
+                  <View style={style.boxBody}>
+                    <View style={style.boxBodyInner}>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          // fontSize: width * .04,
+                          color: 'red',
+                        }}>
+                        Patient ID:
+                      </Text>
+                      <TextInput
+                        placeholder="Type Here"
+                        onChangeText={val => this.setState({patentId: val})}
+                        style={{
+                          fontFamily: Fonts.BalooChettan2,
+                          borderColor: 'gray',
+                          width: width * 0.25,
+                          height: height * 0.08,
+                          color: 'gray',
+                          backgroundColor: '#23212016',
+                          fontSize: width * 0.015,
+                          paddingLeft: width * 0.01,
+                          // borderRadius: width * .002,
+                        }}
                       />
-                    </TouchableOpacity>
-                    <Text style={style.headerHeading}>Patient Information</Text>
-                    <TouchableOpacity
-                      style={style.headerbotton}
-                      onPress={this.saveData.bind(this)}>
-                      <Text style={style.bottonText}>Submit</Text>
-                    </TouchableOpacity>
+                    </View>
+                    <View style={style.boxBodyInner}>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          // fontSize: width * .04,
+                          color: 'red',
+                        }}>
+                        Age:
+                      </Text>
+                      <TextInput
+                        placeholder="Type Here"
+                        keyboardType="number-pad"
+                        onChangeText={val => this.setState({age: val})}
+                        style={{
+                          fontFamily: Fonts.BalooChettan2,
+                          borderColor: 'gray',
+                          width: width * 0.25,
+                          height: height * 0.08,
+                          color: 'gray',
+                          backgroundColor: '#23212016',
+                          fontSize: width * 0.015,
+                          paddingLeft: width * 0.01,
+                          borderRadius: width * 0.002,
+                        }}
+                      />
+                    </View>
+                    <View style={style.boxBodyInner}>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          // fontSize: width * .04,
+                          color: 'red',
+                        }}>
+                        Weight:
+                      </Text>
+                      <TextInput
+                        placeholder="Type Here"
+                        keyboardType="number-pad"
+                        onChangeText={val => this.setState({weight: val})}
+                        style={{
+                          fontFamily: Fonts.BalooChettan2,
+                          borderColor: 'gray',
+                          width: width * 0.25,
+                          height: height * 0.08,
+                          color: 'gray',
+                          backgroundColor: '#23212016',
+                          fontSize: width * 0.015,
+                          paddingLeft: width * 0.01,
+                          borderRadius: width * 0.002,
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        padding: width * 0.002,
+                        paddingLeft: width * 0.028,
+                        paddingRight: width * 0.04,
+                        flexDirection: 'row',
+                        // backgroundColor:'red',
+                        borderTopRightRadius: width * 0.005,
+                        borderTopLeftRadius: width * 0.025,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <RadioButton
+                        value="first"
+                        status={checked === 'first' ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                          this.setState({checked: 'first'});
+                        }}
+                      />
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          // fontSize: width * .04,
+                          color: 'red',
+                        }}>
+                        S/o
+                      </Text>
+                      <RadioButton
+                        value="second"
+                        status={checked === 'second' ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                          this.setState({checked: 'second'});
+                        }}
+                      />
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          // fontSize: width * .04,
+                          color: 'red',
+                        }}>
+                        D/o:
+                      </Text>
+                      <TextInput
+                        placeholder="Type Here"
+                        onChangeText={val => this.setState({fatherName: val})}
+                        style={{
+                          fontFamily: Fonts.BalooChettan2,
+                          borderColor: 'gray',
+                          width: width * 0.25,
+                          height: height * 0.08,
+                          color: 'gray',
+                          backgroundColor: '#23212016',
+                          fontSize: width * 0.015,
+                          paddingLeft: width * 0.01,
+                          borderRadius: width * 0.002,
+                          marginLeft: width * 0.035,
+                        }}
+                      />
+                    </View>
+                    <View style={style.boxBodyInner}>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          // fontSize: width * .04,
+                          color: 'red',
+                        }}>
+                        Doctor Name:
+                      </Text>
+                      <TextInput
+                        placeholder="Type Here"
+                        onChangeText={val =>
+                          this.setState({drName: this.state.dr + val})
+                        }
+                        style={{
+                          fontFamily: Fonts.BalooChettan2,
+                          borderColor: 'gray',
+                          width: width * 0.25,
+                          color: 'gray',
+                          height: height * 0.08,
+                          backgroundColor: '#23212016',
+                          fontSize: width * 0.015,
+                          paddingLeft: width * 0.01,
+                          borderRadius: width * 0.002,
+                        }}
+                      />
+                    </View>
                   </View>
+                  {/* </ScrollView> */}
                 </View>
-                {/* Box Body */}
-                {/* <ScrollView> */}
-                <View style={style.boxBody}>
-                  <View style={style.boxBodyInner}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Handlee,
-                        // fontSize: width * .04,
-                        color: 'red',
-                      }}>
-                      Patient ID:
-                    </Text>
-                    <TextInput
-                      placeholder="Type Here"
-                      onChangeText={(val) => this.setState({patentId: val})}
-                      style={{
-                        fontFamily: Fonts.BalooChettan2,
-                        borderColor: 'gray',
-                        width: width * 0.25,
-                        height: height * 0.08,
-                        color: 'gray',
-                        backgroundColor: '#23212016',
-                        fontSize: width * 0.015,
-                        paddingLeft: width * 0.01,
-                        // borderRadius: width * .002,
-                      }}
-                    />
-                  </View>
-                  <View style={style.boxBodyInner}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Handlee,
-                        // fontSize: width * .04,
-                        color: 'red',
-                      }}>
-                      Age:
-                    </Text>
-                    <TextInput
-                      placeholder="Type Here"
-                      keyboardType="number-pad"
-                      onChangeText={(val) => this.setState({age: val})}
-                      style={{
-                        fontFamily: Fonts.BalooChettan2,
-                        borderColor: 'gray',
-                        width: width * 0.25,
-                        height: height * 0.08,
-                        color: 'gray',
-                        backgroundColor: '#23212016',
-                        fontSize: width * 0.015,
-                        paddingLeft: width * 0.01,
-                        borderRadius: width * 0.002,
-                      }}
-                    />
-                  </View>
-                  <View style={style.boxBodyInner}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Handlee,
-                        // fontSize: width * .04,
-                        color: 'red',
-                      }}>
-                      Weight:
-                    </Text>
-                    <TextInput
-                      placeholder="Type Here"
-                      keyboardType="number-pad"
-                      onChangeText={(val) => this.setState({weight: val})}
-                      style={{
-                        fontFamily: Fonts.BalooChettan2,
-                        borderColor: 'gray',
-                        width: width * 0.25,
-                        height: height * 0.08,
-                        color: 'gray',
-                        backgroundColor: '#23212016',
-                        fontSize: width * 0.015,
-                        paddingLeft: width * 0.01,
-                        borderRadius: width * 0.002,
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      padding: width * 0.002,
-                      paddingLeft: width * 0.028,
-                      paddingRight: width * 0.04,
-                      flexDirection: 'row',
-                      // backgroundColor:'red',
-                      borderTopRightRadius: width * 0.005,
-                      borderTopLeftRadius: width * 0.025,
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <RadioButton
-                      value="first"
-                      status={checked === 'first' ? 'checked' : 'unchecked'}
-                      onPress={() => {
-                        this.setState({checked: 'first'});
-                      }}
-                    />
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Handlee,
-                        // fontSize: width * .04,
-                        color: 'red',
-                      }}>
-                      S/o
-                    </Text>
-                    <RadioButton
-                      value="second"
-                      status={checked === 'second' ? 'checked' : 'unchecked'}
-                      onPress={() => {
-                        this.setState({checked: 'second'});
-                      }}
-                    />
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Handlee,
-                        // fontSize: width * .04,
-                        color: 'red',
-                      }}>
-                      D/o:
-                    </Text>
-                    <TextInput
-                      placeholder="Type Here"
-                      onChangeText={(val) => this.setState({fatherName: val})}
-                      style={{
-                        fontFamily: Fonts.BalooChettan2,
-                        borderColor: 'gray',
-                        width: width * 0.25,
-                        height: height * 0.08,
-                        color: 'gray',
-                        backgroundColor: '#23212016',
-                        fontSize: width * 0.015,
-                        paddingLeft: width * 0.01,
-                        borderRadius: width * 0.002,
-                        marginLeft: width * 0.035,
-                      }}
-                    />
-                  </View>
-                  <View style={style.boxBodyInner}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Handlee,
-                        // fontSize: width * .04,
-                        color: 'red',
-                      }}>
-                      Doctor Name:
-                    </Text>
-                    <TextInput
-                      placeholder="Type Here"
-                      onChangeText={(val) =>
-                        this.setState({drName: this.state.dr + val})
-                      }
-                      style={{
-                        fontFamily: Fonts.BalooChettan2,
-                        borderColor: 'gray',
-                        width: width * 0.25,
-                        color: 'gray',
-                        height: height * 0.08,
-                        backgroundColor: '#23212016',
-                        fontSize: width * 0.015,
-                        paddingLeft: width * 0.01,
-                        borderRadius: width * 0.002,
-                      }}
-                    />
-                  </View>
-                </View>
-                {/* </ScrollView> */}
               </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </Modal>
       </View>
     );

@@ -12,6 +12,7 @@ import {
   ToastAndroid,
   TextInput,
   FlatList,
+  KeyboardAvoidingView,
 } from 'react-native';
 import style from './styles';
 import Modal from 'react-native-modal';
@@ -39,6 +40,7 @@ import PatientInfo from './PatientInfo/index';
 // import SysSettings from 'react-native-vector-icons/Octicons';
 import {Fonts} from '../../utils/fonts';
 import {ScrollView} from 'react-native-gesture-handler';
+import styles from '../../screens/home/styles';
 
 const {height, width} = Dimensions.get('window');
 
@@ -153,7 +155,7 @@ export default class App extends Component {
       () => this.props.skinHighTemp(this.state.skinHigherTemp),
     );
   }
-  handleSpo2Upper = (child) => {
+  handleSpo2Upper = child => {
     this.setState(
       {
         spo2Uper: child,
@@ -161,7 +163,7 @@ export default class App extends Component {
       () => this.props.spo2Uper(this.state.spo2Uper),
     );
   };
-  handleSpo2Lower = (child) => {
+  handleSpo2Lower = child => {
     this.setState(
       {
         spo2Lower: child,
@@ -169,7 +171,7 @@ export default class App extends Component {
       () => this.props.spo2Lower(this.state.spo2Lower),
     );
   };
-  handleHrUpper = (child) => {
+  handleHrUpper = child => {
     this.setState(
       {
         hrUpper: child,
@@ -177,7 +179,7 @@ export default class App extends Component {
       () => this.props.hrUper(this.state.hrUpper),
     );
   };
-  handleHRLower = (child) => {
+  handleHRLower = child => {
     this.setState(
       {
         hrLower: child,
@@ -214,38 +216,38 @@ export default class App extends Component {
     this.setState(() => this.props.switchOxygen(child));
   }
 
-  handleRunData = (child) => {
+  handleRunData = child => {
     this.setState({started: child});
     this.startData();
   };
 
-  handlePatientID = (child) => {
+  handlePatientID = child => {
     this.props.getPatientID(child);
     this.setState({patientId: child});
     console.log('chala patient id slider me');
   };
 
-  handleAge = (child) => {
+  handleAge = child => {
     this.props.getAge(child);
   };
 
-  handleFatherName = (child) => {
+  handleFatherName = child => {
     this.props.getFatherName(child);
   };
 
-  handleWeight = (child) => {
+  handleWeight = child => {
     this.props.getWeight(child);
   };
 
-  handleDrName = (child) => {
+  handleDrName = child => {
     this.props.getDrName(child);
   };
 
-  handleCondActive = (child) => {
+  handleCondActive = child => {
     this.setState({isActive: child});
   };
 
-  handleIsDischarged = (child) => {
+  handleIsDischarged = child => {
     this.setState({isDischarged: child});
     console.log(clc.xterm(191)('no longer discharged'));
   };
@@ -275,10 +277,10 @@ export default class App extends Component {
   saveHistoryData = () => {
     const myPath = RNFS.ExternalStorageDirectoryPath + '/Patent/Data.txt';
     RNFS.writeFile(myPath, JSON.stringify(this.state.theHistoryArray), 'utf8')
-      .then((success) => {
+      .then(success => {
         console.log(clc.xterm(202)('History Saved!'));
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err.message);
       });
   };
@@ -453,12 +455,12 @@ export default class App extends Component {
     } else return null;
   };
 
-  searchFilterFunction = (text) => {
+  searchFilterFunction = text => {
     this.setState({
       text: text,
     });
 
-    const newData = this.arrayholder.filter((item) => {
+    const newData = this.arrayholder.filter(item => {
       const itemData = item.patientId.toLowerCase();
 
       const textData = text.toLowerCase();
@@ -504,6 +506,7 @@ export default class App extends Component {
         <Modal
           animationIn="slideInRight"
           animationOut="slideOutRight"
+          statusBarTranslucent
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
           isVisible={this.state.isModalVisible}
@@ -552,7 +555,7 @@ export default class App extends Component {
                       thumbTintColor="red"
                       step={0.01}
                       value={this.state.brightness}
-                      onValueChange={(brightness) => {
+                      onValueChange={brightness => {
                         this.setState({brightness});
                         SystemSetting.setBrightness(brightness);
                       }}
@@ -626,10 +629,11 @@ export default class App extends Component {
             </View>
             {/*
             //! Password Verification Modal 
-            */}
+          */}
             <Modal
               animationIn="slideInRight"
               animationOut="slideOutRight"
+              statusBarTranslucent
               isVisible={this.state.checker}
               style={{
                 elevation: width * 0.005,
@@ -642,123 +646,131 @@ export default class App extends Component {
                 maxWidth: width * 0.35,
                 top: height * 0.15,
               }}>
-              <View
+              <KeyboardAvoidingView
                 style={{
-                  flex: 1,
-                  justifyContent: 'center',
+                  height: height,
                   alignItems: 'center',
-                }}>
+                  // backgroundColor: 'pink',
+                }}
+                behavior="position">
                 <View
                   style={{
-                    width: width * 0.32,
-                    height: height * 0.45,
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
                   <View
                     style={{
-                      flex: 1,
-                      backgroundColor: 'white',
-                      borderBottomLeftRadius: width * 0.005,
-                      borderTopRightRadius: width * 0.005,
-                      borderTopLeftRadius: width * 0.025,
-                      borderBottomRightRadius: width * 0.025,
-                      elevation: width * 0.015,
+                      width: width * 0.32,
+                      height: height * 0.45,
                     }}>
                     <View
                       style={{
-                        width: width * 0.32,
-                        height: height * 0.12,
+                        flex: 1,
+                        backgroundColor: 'white',
+                        borderBottomLeftRadius: width * 0.005,
+                        borderTopRightRadius: width * 0.005,
+                        borderTopLeftRadius: width * 0.025,
+                        borderBottomRightRadius: width * 0.025,
+                        elevation: width * 0.015,
                       }}>
                       <View
                         style={{
-                          flex: 1,
-                          borderTopRightRadius: width * 0.005,
-                          borderTopLeftRadius: width * 0.025,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: Fonts.Handlee,
-                            fontSize: width * 0.03,
-                            color: 'red',
-                          }}>
-                          Enter Password:
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        width: width * 0.32,
-                        height: height * 0.2,
-                      }}>
-                      <View
-                        style={{
-                          flex: 1,
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                          width: width * 0.32,
+                          height: height * 0.12,
                         }}>
                         <View
                           style={{
-                            flexDirection: 'row',
-                            margin: width * 0.02,
-                          }}>
-                          <TextInput
-                            placeholder="Type Here"
-                            onChangeText={(val) =>
-                              this.setState({password: val})
-                            }
-                            secureTextEntry
-                            autoCapitalize="none"
-                            style={{
-                              fontFamily: Fonts.BalooChettan2,
-                              borderColor: 'gray',
-                              width: width * 0.25,
-                              height: height * 0.08,
-                              color: 'gray',
-                              backgroundColor: '#23212016',
-                              fontSize: width * 0.015,
-                              paddingLeft: width * 0.01,
-                            }}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        width: width * 0.32,
-                        height: height * 0.13,
-                      }}>
-                      <View
-                        style={{
-                          flex: 1,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <TouchableOpacity
-                          style={{
-                            width: width * 0.2,
-                            height: height * 0.07,
-                            backgroundColor: '#e44f3bfd',
-                            elevation: width * 0.003,
+                            flex: 1,
+                            borderTopRightRadius: width * 0.005,
+                            borderTopLeftRadius: width * 0.025,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            borderRadius: width * 0.1,
-                          }}
-                          onPress={this.markIt}>
+                          }}>
                           <Text
                             style={{
-                              fontSize: width * 0.023,
                               fontFamily: Fonts.Handlee,
-                              color: 'white',
+                              fontSize: width * 0.03,
+                              color: 'red',
                             }}>
-                            Done
+                            Enter Password:
                           </Text>
-                        </TouchableOpacity>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          width: width * 0.32,
+                          height: height * 0.2,
+                        }}>
+                        <View
+                          style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              margin: width * 0.02,
+                            }}>
+                            <TextInput
+                              placeholder="Type Here"
+                              onChangeText={val =>
+                                this.setState({password: val})
+                              }
+                              secureTextEntry
+                              autoCapitalize="none"
+                              style={{
+                                fontFamily: Fonts.BalooChettan2,
+                                borderColor: 'gray',
+                                width: width * 0.25,
+                                height: height * 0.08,
+                                color: 'gray',
+                                backgroundColor: '#23212016',
+                                fontSize: width * 0.015,
+                                paddingLeft: width * 0.01,
+                              }}
+                            />
+                          </View>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          width: width * 0.32,
+                          height: height * 0.13,
+                        }}>
+                        <View
+                          style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <TouchableOpacity
+                            style={{
+                              width: width * 0.2,
+                              height: height * 0.07,
+                              backgroundColor: '#e44f3bfd',
+                              elevation: width * 0.003,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              borderRadius: width * 0.1,
+                            }}
+                            onPress={this.markIt}>
+                            <Text
+                              style={{
+                                fontSize: width * 0.023,
+                                fontFamily: Fonts.Handlee,
+                                color: 'white',
+                              }}>
+                              Done
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
                   </View>
                 </View>
-              </View>
+              </KeyboardAvoidingView>
             </Modal>
             {/*
             //! Data modal for only patient ID
@@ -766,6 +778,7 @@ export default class App extends Component {
             <Modal
               animationIn="slideInRight"
               animationOut="slideOutRight"
+              statusBarTranslucent
               isVisible={this.state.showDataModal}
               style={{
                 elevation: width * 0.005,
@@ -778,121 +791,135 @@ export default class App extends Component {
                 maxWidth: width * 0.35,
                 top: height * 0.15,
               }}>
-              <View
+              <KeyboardAvoidingView
                 style={{
-                  flex: 1,
-                  justifyContent: 'center',
+                  height: height,
                   alignItems: 'center',
-                }}>
+                  // backgroundColor: 'pink',
+                }}
+                behavior="position">
                 <View
                   style={{
-                    width: width * 0.32,
-                    height: height * 0.45,
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
                   <View
                     style={{
-                      flex: 1,
-                      backgroundColor: 'white',
-                      borderBottomLeftRadius: width * 0.005,
-                      borderTopRightRadius: width * 0.005,
-                      borderTopLeftRadius: width * 0.025,
-                      borderBottomRightRadius: width * 0.025,
-                      elevation: width * 0.015,
+                      width: width * 0.32,
+                      height: height * 0.45,
                     }}>
                     <View
                       style={{
-                        width: width * 0.32,
-                        height: height * 0.12,
+                        flex: 1,
+                        backgroundColor: 'white',
+                        borderBottomLeftRadius: width * 0.005,
+                        borderTopRightRadius: width * 0.005,
+                        borderTopLeftRadius: width * 0.025,
+                        borderBottomRightRadius: width * 0.025,
+                        elevation: width * 0.015,
                       }}>
                       <View
                         style={{
-                          flex: 1,
-                          flexDirection: 'row',
-                          borderTopRightRadius: width * 0.005,
-                          borderTopLeftRadius: width * 0.025,
-                          // justifyContent: 'center',
-                          alignItems: 'center',
+                          width: width * 0.32,
+                          height: height * 0.12,
                         }}>
-                        <Back
-                          name="arrow-left"
-                          size={height * 0.04}
-                          color="red"
-                          style={{
-                            position: 'absolute',
-                            right: width * 0.29,
-                          }}
-                          onPress={() => {
-                            console.log('History', this.state.theHistoryArray);
-                            this.setState({
-                              showDataModal: !this.state.showDataModal,
-                            });
-                          }}
-                        />
-                        <Text
-                          style={{
-                            fontFamily: Fonts.Handlee,
-                            fontSize: width * 0.03,
-                            left: width * 0.05,
-                            color: 'red',
-                          }}>
-                          Data
-                        </Text>
                         <View
                           style={{
-                            position: 'absolute',
-                            left: width * 0.12,
-                            margin: width * 0.02,
-                            justifyContent: 'center',
+                            flex: 1,
+                            flexDirection: 'row',
+                            borderTopRightRadius: width * 0.005,
+                            borderTopLeftRadius: width * 0.025,
+                            // justifyContent: 'center',
                             alignItems: 'center',
                           }}>
-                          <TextInput
+                          <Back
+                            name="arrow-left"
+                            size={height * 0.04}
+                            color="red"
                             style={{
-                              fontFamily: Fonts.BalooChettan2,
-                              width: width * 0.16,
-                              height: height * 0.07,
-                              fontSize: width * 0.015,
-                              paddingLeft: width * 0.01,
-                              backgroundColor: '#23212016',
-                              color: 'grey',
+                              position: 'absolute',
+                              right: width * 0.29,
                             }}
-                            onChangeText={(text) =>
-                              this.searchFilterFunction(text)
-                            }
-                            value={this.state.text}
-                            underlineColorAndroid="transparent"
-                            placeholder="Search Here"
+                            onPress={() => {
+                              console.log(
+                                'History',
+                                this.state.theHistoryArray,
+                              );
+                              this.setState({
+                                showDataModal: !this.state.showDataModal,
+                              });
+                            }}
                           />
-                          <Close
-                            name="close"
-                            size={height * 0.035}
-                            color="grey"
-                            style={{position: 'absolute', left: width * 0.133}}
-                            onPress={() =>
-                              this.setState({text: ''}, () =>
-                                this.searchFilterFunction(this.state.text),
-                              )
-                            }
-                          />
+                          <Text
+                            style={{
+                              fontFamily: Fonts.Handlee,
+                              fontSize: width * 0.03,
+                              left: width * 0.05,
+                              color: 'red',
+                            }}>
+                            Data
+                          </Text>
+                          <View
+                            style={{
+                              position: 'absolute',
+                              left: width * 0.12,
+                              margin: width * 0.02,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <TextInput
+                              style={{
+                                fontFamily: Fonts.BalooChettan2,
+                                width: width * 0.16,
+                                height: height * 0.07,
+                                fontSize: width * 0.015,
+                                paddingLeft: width * 0.01,
+                                backgroundColor: '#23212016',
+                                color: 'grey',
+                              }}
+                              onChangeText={text =>
+                                this.searchFilterFunction(text)
+                              }
+                              value={this.state.text}
+                              underlineColorAndroid="transparent"
+                              placeholder="Search Here"
+                            />
+                            <Close
+                              name="close"
+                              size={height * 0.035}
+                              color="grey"
+                              style={{
+                                position: 'absolute',
+                                left: width * 0.133,
+                              }}
+                              onPress={() =>
+                                this.setState({text: ''}, () =>
+                                  this.searchFilterFunction(this.state.text),
+                                )
+                              }
+                            />
+                          </View>
                         </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        width: width * 0.32,
-                        backgroundColor: '#ffffff',
-                      }}>
-                      <FlatList
-                        data={this.state.theHistoryArray}
-                        renderItem={this.renderItem}
-                        ItemSeparatorComponent={this.ListViewItemSeparator}
-                        keyExtractor={(item) => item.patientId}
-                        removeClippedSubviews={true}
-                      />
+                      <View
+                        style={{
+                          flex: 1,
+                          width: width * 0.32,
+                          backgroundColor: '#ffffff',
+                        }}>
+                        <FlatList
+                          data={this.state.theHistoryArray}
+                          renderItem={this.renderItem}
+                          ItemSeparatorComponent={this.ListViewItemSeparator}
+                          keyExtractor={item => item.patientId}
+                          removeClippedSubviews={true}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
+              </KeyboardAvoidingView>
             </Modal>
             {/*
             //! Listing Data Modal with all sensor values
@@ -900,6 +927,7 @@ export default class App extends Component {
             <Modal
               animationIn="slideInRight"
               animationOut="slideOutRight"
+              statusBarTranslucent
               isVisible={this.state.showListModal}
               style={{
                 elevation: width * 0.005,
@@ -1034,7 +1062,7 @@ export default class App extends Component {
                       <FlatList
                         data={this.state.listDataArray}
                         renderItem={this.renderListItem}
-                        keyExtractor={(item) => item.time}
+                        keyExtractor={item => item.time}
                         style={{paddingLeft: width * 0.02}}
                       />
                     </View>
@@ -1046,6 +1074,7 @@ export default class App extends Component {
             <Modal
               animationIn="slideInRight"
               animationOut="slideOutRight"
+              statusBarTranslucent
               // onBackdropPress={() => this.toggleModalLock()}
               // onSwipeComplete={() => this.toggleModalLock()}
               // swipeDirection="right"
