@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Modal,
+  BackHandler,
 } from 'react-native';
 import style from './styles';
 import Modal2 from 'react-native-modal';
@@ -133,6 +134,8 @@ export default class App extends Component {
       weight: '',
       fatherName: '',
       DrName: '',
+      gender: '',
+      isKg: false,
       msgBoxShow: false,
     }),
       (this.handleWeight = this.handleWeight.bind(this));
@@ -149,6 +152,15 @@ export default class App extends Component {
     this.alarmFanFn();
     this.alarmSenFn();
     this.alarmSysFn();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
   }
 
   alarmPowFn = () => {
@@ -425,7 +437,23 @@ export default class App extends Component {
       });
       this.setState({run: false});
       console.log('gaya deactivate');
+      this.setState((state = this.state) => {
+        state.patientId = '';
+        state.DrName = '';
+        state.weight = '';
+        state.age = '';
+        state.fatherName = '';
+        state.gender = '';
+      });
     }
+  };
+
+  handleSex = child => {
+    this.setState({gender: child});
+  };
+
+  handleWeightUnit = child => {
+    this.setState({isKg: child});
   };
 
   handleSkinTempActivate = child => {
@@ -580,11 +608,17 @@ export default class App extends Component {
           </View>
           <View style={style.iconAndText}>
             <Text style={style.aboveTopText}>Weight</Text>
-            <Text style={style.topText}>{this.state.weight} lb</Text>
+            <Text style={style.topText}>
+              {this.state.weight} {this.state.isKg ? 'kg' : 'lb'}
+            </Text>
           </View>
           <View style={style.iconAndText}>
-            <Text style={style.aboveTopText}>S/o</Text>
+            <Text style={style.aboveTopText}>Parent</Text>
             <Text style={style.topText}>{this.state.fatherName}</Text>
+          </View>
+          <View style={style.iconAndText}>
+            <Text style={style.aboveTopText}>Gender</Text>
+            <Text style={style.topText}>{this.state.gender}</Text>
           </View>
           <View style={style.iconAndText}>
             <Text style={style.aboveTopText}>Doctor Name</Text>
@@ -684,6 +718,9 @@ export default class App extends Component {
             getWeight={this.handleTheWeight}
             getFatherName={this.handleFatherName}
             getDrName={this.handleDrName}
+            getSex={this.handleSex}
+            getWeightUnit={this.handleWeightUnit}
+            navigation={this.props.navigation}
           />
         </View>
         <View style={style.inerContainer1}>

@@ -27,6 +27,9 @@ export default styles = StyleSheet.create({
     color: '#484149c5',
     // fontFamily:'MetalMania-Regular'
   },
+  spinnerTextStyle: {
+    color: 'red',
+  },
   toggleContainer: {
     width: width * 0.09,
     height: height * 0.07,

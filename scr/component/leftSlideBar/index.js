@@ -30,6 +30,7 @@ import Data from 'react-native-vector-icons/FontAwesome';
 import Slider from '@react-native-community/slider';
 import SwitchToggle from 'react-native-switch-toggle';
 import SystemSetting from 'react-native-system-setting';
+import Spinner from 'react-native-loading-spinner-overlay';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 
@@ -82,6 +83,8 @@ export default class App extends Component {
       listDataArray: [],
       text: '',
       started: false,
+      showListModal: false,
+      spinner: false,
     };
     this.arrayholder = [];
     this.handleAirHigher = this.handleAirHigher.bind(this);
@@ -100,8 +103,8 @@ export default class App extends Component {
 
   componentDidMount() {
     this.readTxtFile();
-    console.log(clc.xterm(216)('Left Slider Component chala'));
     this.readHistoryData();
+    console.log(clc.xterm(216)('Left Slider Component chala'));
   }
 
   componentWillUnmount() {
@@ -243,6 +246,14 @@ export default class App extends Component {
     this.props.getDrName(child);
   };
 
+  handleWeightUnit = child => {
+    this.props.getWeightUnit(child);
+  };
+
+  handleSex = child => {
+    this.props.getSex(child);
+  };
+
   handleCondActive = child => {
     this.setState({isActive: child});
   };
@@ -293,38 +304,47 @@ export default class App extends Component {
       this.arrayholder = JSON.parse(contents);
       console.log('aya data', contents);
     } catch (e) {
+      alert('No Data of Patients Add a Patient');
       console.log(e, 'error at history data');
     }
   };
 
   handleDischargePatient = () => {
-    Alert.alert('Are you Sure?', 'Discharge the patient', [
-      {
-        text: 'Cancel',
-        onPress: () => {
-          console.log('Cancel on Discharge Patient');
+    if (this.state.isActive) {
+      Alert.alert('Are you Sure?', 'Discharge the patient', [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            console.log('Cancel on Discharge Patient');
+          },
+          style: 'cancel',
         },
-        style: 'cancel',
-      },
-      {
-        text: 'Yes',
-        onPress: () => {
-          console.log('Done');
-          this.setState({isActive: false});
-          this.props.siren.stop();
-          this.props.siren2.stop();
-          this.setHistoryData();
+        {
+          text: 'Yes',
+          onPress: () => {
+            this.setState({spinner: true});
+            console.log('Done');
+            this.setState({isActive: false});
+            this.props.siren.stop();
+            this.props.siren2.stop();
+            this.setHistoryData();
 
-          clearInterval(this.theInterval);
-          this.props.handleAirTempDeactivate(true);
-          this.props.handleSkinTempDeactivate(true);
-          this.props.handleOxygenDeactivate(true);
-          this.setState({isDischarged: true});
+            clearInterval(this.theInterval);
+            this.props.handleAirTempDeactivate(true);
+            this.props.handleSkinTempDeactivate(true);
+            this.props.handleOxygenDeactivate(true);
+            this.setState({isDischarged: true});
 
-          ToastAndroid.show('Discharged', ToastAndroid.SHORT);
+            ToastAndroid.show('Discharged', ToastAndroid.SHORT);
+            setTimeout(() => {
+              this.setState({spinner: false});
+            }, 100);
+          },
         },
-      },
-    ]);
+      ]);
+    } else {
+      ToastAndroid.show('No Patient to Discharge', ToastAndroid.SHORT);
+    }
   };
 
   readTxtFile = async () => {
@@ -342,16 +362,24 @@ export default class App extends Component {
   checkCredentials = () => {
     let {password} = this.state;
     const StringVal = this.state.txtFileData;
-    const Pass = StringVal.match(/[^\spass:].*[\w\W]$/);
-    if (Pass == password)
+    const passMatch = StringVal.match(/(pass:)\s.+/g).toString();
+    const Pass = passMatch.substr(6);
+    if (Pass == password) {
+      this.setState({
+        checker: !this.state.checker,
+      });
       return (
         ToastAndroid.show('Success', ToastAndroid.SHORT),
         this.setState({showDataModal: true, password: ''})
       );
-    else return ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
+    } else {
+      this.setState({password: ''});
+      return ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
+    }
   };
 
   checkForData = () => {
+    this.readHistoryData();
     console.log('pressed');
     this.setState({checker: true});
   };
@@ -361,6 +389,10 @@ export default class App extends Component {
       <View
         style={{
           padding: width * 0.01,
+          backgroundColor: '#9a98983d',
+          marginHorizontal: height * 0.025,
+          marginVertical: height * 0.008,
+          borderRadius: height * 0.005,
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -375,38 +407,73 @@ export default class App extends Component {
 
   renderListItem = ({item}) => {
     return (
-      <View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{fontSize: height * 0.015}}>{item.date}</Text>
-          <Text style={{fontSize: height * 0.015, marginLeft: width * 0.025}}>
-            {item.time}
-          </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        }}>
+        <View
+          style={{
+            width: height * 0.18,
+            right: height * 0.026,
+            overflow: 'hidden',
+          }}>
           <Text
             style={{
-              width: width * 0.02,
-              fontSize: height * 0.015,
-              left: width * 0.15,
-              position: 'absolute',
+              fontSize: height * 0.025,
+              textAlign: 'center',
+            }}>
+            {item.date}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: height * 0.18,
+            right: height * 0.18,
+            overflow: 'hidden',
+          }}>
+          <Text
+            style={{
+              fontSize: height * 0.025,
+              textAlign: 'center',
+            }}>
+            {item.time}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: height * 0.05,
+            right: height * 0.26,
+          }}>
+          <Text
+            style={{
+              fontSize: height * 0.025,
               textAlign: 'center',
             }}>
             {item.oxygen}
           </Text>
+        </View>
+        <View
+          style={{
+            right: height * 0.2,
+            width: height * 0.05,
+          }}>
           <Text
             style={{
-              width: width * 0.02,
-              fontSize: height * 0.015,
-              left: width * 0.24,
-              position: 'absolute',
+              fontSize: height * 0.025,
               textAlign: 'center',
             }}>
             {item.skinTemperature}
           </Text>
+        </View>
+        <View
+          style={{
+            right: height * 0.1,
+            width: height * 0.05,
+          }}>
           <Text
             style={{
-              width: width * 0.02,
-              fontSize: height * 0.015,
-              left: width * 0.362,
-              position: 'absolute',
+              fontSize: height * 0.025,
               textAlign: 'center',
             }}>
             {item.airTemperature}
@@ -417,10 +484,7 @@ export default class App extends Component {
   };
 
   markIt = () => {
-    this.setState({
-      checker: !this.state.checker,
-    });
-    this.readHistoryData();
+    // this.readHistoryData();
     this.checkCredentials();
   };
 
@@ -485,6 +549,10 @@ export default class App extends Component {
     );
   };
 
+  logOut = () => {
+    this.props.navigation.replace('Login');
+  };
+
   render() {
     console.log(
       clc.xterm(111)('aya airhigh leftsilder me', this.state.higherAirValue),
@@ -494,6 +562,12 @@ export default class App extends Component {
     );
     return (
       <View>
+        <Spinner
+          visible={this.state.spinner}
+          textContent={'Loading...'}
+          textStyle={style.spinnerTextStyle}
+          color="red"
+        />
         {this.props.locker ? (
           <TouchableOpacity onPress={this.toggleModal}>
             <MenuOpen name="menufold" size={width * 0.04} color="black" />
@@ -509,6 +583,7 @@ export default class App extends Component {
           statusBarTranslucent
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
+          onBackdropPress={() => this.toggleModal()}
           isVisible={this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
@@ -524,7 +599,24 @@ export default class App extends Component {
                   </TouchableOpacity>
                   <Text style={style.headerHeading}>Settings</Text>
                 </View>
-                <Setting name="settings" size={width * 0.02} color="red" />
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onPress={() => this.logOut()}>
+                  <Text
+                    style={{
+                      fontFamily: Fonts.Handlee,
+                      color: 'red',
+                      fontSize: height * 0.03,
+                      marginRight: height * 0.01,
+                    }}>
+                    LogOut
+                  </Text>
+                  <Setting name="log-out" size={width * 0.02} color="red" />
+                </TouchableOpacity>
               </View>
             </View>
             <View style={style.modalBodyContainer}>
@@ -582,6 +674,8 @@ export default class App extends Component {
                   getAge={this.handleAge}
                   getWeight={this.handleWeight}
                   getDrName={this.handleDrName}
+                  getSex={this.handleSex}
+                  getWeightUnit={this.handleWeightUnit}
                   getFatherName={this.handleFatherName}
                   condActive={this.handleCondActive}
                   isActive={this.state.isActive}
@@ -590,7 +684,7 @@ export default class App extends Component {
                 />
                 {/* <TouchableOpacity style={style.listView}>
                                     <Text style={style.listText}>Patient Information</Text>
-                                    <Graph name={'area-graph'} size={width * .02} />
+                  <Graph name={'area-graph'} size={width * .02} />
                                 </TouchableOpacity> */}
                 {/* <TouchableOpacity style={style.listView}>
                   <Text style={style.listText}>Calibaration</Text>
@@ -635,24 +729,26 @@ export default class App extends Component {
               animationOut="slideOutRight"
               statusBarTranslucent
               isVisible={this.state.checker}
-              style={{
-                elevation: width * 0.005,
-                borderBottomLeftRadius: width * 0.005,
-                borderTopRightRadius: width * 0.005,
-                borderTopLeftRadius: width * 0.025,
-                borderBottomRightRadius: width * 0.025,
-                backgroundColor: 'white',
-                maxHeight: height * 0.5,
-                maxWidth: width * 0.35,
-                top: height * 0.15,
-              }}>
+              // isVisible={true}
+              // style={{
+              //   elevation: width * 0.005,
+              //   borderBottomLeftRadius: width * 0.005,
+              //   borderTopRightRadius: width * 0.005,
+              //   borderTopLeftRadius: width * 0.025,
+              //   borderBottomRightRadius: width * 0.025,
+              //   backgroundColor: 'white',
+              //   maxHeight: height * 0.5,
+              //   maxWidth: width * 0.35,
+              //   top: height * 0.15,
+              // }}
+            >
               <KeyboardAvoidingView
                 style={{
                   height: height,
                   alignItems: 'center',
                   // backgroundColor: 'pink',
                 }}
-                behavior="position">
+                behavior="padding">
                 <View
                   style={{
                     flex: 1,
@@ -668,10 +764,8 @@ export default class App extends Component {
                       style={{
                         flex: 1,
                         backgroundColor: 'white',
-                        borderBottomLeftRadius: width * 0.005,
-                        borderTopRightRadius: width * 0.005,
-                        borderTopLeftRadius: width * 0.025,
-                        borderBottomRightRadius: width * 0.025,
+                        borderRadius: width * 0.025,
+
                         elevation: width * 0.015,
                       }}>
                       <View
@@ -714,6 +808,7 @@ export default class App extends Component {
                               margin: width * 0.02,
                             }}>
                             <TextInput
+                              value={this.state.password}
                               placeholder="Type Here"
                               onChangeText={val =>
                                 this.setState({password: val})
@@ -776,32 +871,21 @@ export default class App extends Component {
             //! Data modal for only patient ID
             */}
             <Modal
-              animationIn="slideInRight"
-              animationOut="slideOutRight"
+              animationIn="slideInDown"
+              animationOut="slideOutUp"
               statusBarTranslucent
               isVisible={this.state.showDataModal}
-              style={{
-                elevation: width * 0.005,
-                borderBottomLeftRadius: width * 0.005,
-                borderTopRightRadius: width * 0.005,
-                borderTopLeftRadius: width * 0.025,
-                borderBottomRightRadius: width * 0.025,
-                backgroundColor: 'white',
-                maxHeight: height * 0.5,
-                maxWidth: width * 0.35,
-                top: height * 0.15,
-              }}>
+              // isVisible={true}
+            >
               <KeyboardAvoidingView
                 style={{
                   height: height,
                   alignItems: 'center',
-                  // backgroundColor: 'pink',
                 }}
                 behavior="position">
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: 'center',
                     alignItems: 'center',
                   }}>
                   <View
@@ -813,10 +897,8 @@ export default class App extends Component {
                       style={{
                         flex: 1,
                         backgroundColor: 'white',
-                        borderBottomLeftRadius: width * 0.005,
-                        borderTopRightRadius: width * 0.005,
-                        borderTopLeftRadius: width * 0.025,
                         borderBottomRightRadius: width * 0.025,
+                        borderBottomLeftRadius: width * 0.025,
                         elevation: width * 0.015,
                       }}>
                       <View
@@ -828,9 +910,6 @@ export default class App extends Component {
                           style={{
                             flex: 1,
                             flexDirection: 'row',
-                            borderTopRightRadius: width * 0.005,
-                            borderTopLeftRadius: width * 0.025,
-                            // justifyContent: 'center',
                             alignItems: 'center',
                           }}>
                           <Back
@@ -907,11 +986,23 @@ export default class App extends Component {
                           flex: 1,
                           width: width * 0.32,
                           backgroundColor: '#ffffff',
+                          borderRadius: width * 0.025,
                         }}>
+                        <Text
+                          style={{
+                            fontSize: height * 0.025,
+                            color: 'red',
+                            fontFamily: Fonts.Handlee,
+                            borderBottomColor: 'red',
+                            borderBottomWidth: 1,
+                            marginLeft: 4,
+                          }}>
+                          Patient List By ID
+                        </Text>
                         <FlatList
                           data={this.state.theHistoryArray}
                           renderItem={this.renderItem}
-                          ItemSeparatorComponent={this.ListViewItemSeparator}
+                          // ItemSeparatorComponent={this.ListViewItemSeparator}
                           keyExtractor={item => item.patientId}
                           removeClippedSubviews={true}
                         />
@@ -925,146 +1016,142 @@ export default class App extends Component {
             //! Listing Data Modal with all sensor values
             */}
             <Modal
-              animationIn="slideInRight"
-              animationOut="slideOutRight"
+              animationIn="slideInDown"
+              animationOut="slideOutUp"
               statusBarTranslucent
               isVisible={this.state.showListModal}
-              style={{
-                elevation: width * 0.005,
-                borderBottomLeftRadius: width * 0.005,
-                borderTopRightRadius: width * 0.005,
-                borderTopLeftRadius: width * 0.025,
-                borderBottomRightRadius: width * 0.025,
-                backgroundColor: 'white',
-                maxHeight: height * 0.5,
-                maxWidth: width * 0.5,
-                top: height * 0.15,
-              }}>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+              // isVisible={true}
+            >
+              <View style={{height: height}}>
                 <View
                   style={{
-                    width: width * 0.45,
-                    height: height * 0.45,
+                    flex: 1,
+                    alignItems: 'center',
+                    // justifyContent: 'center',
+                    borderBottomRightRadius: width * 0.025,
+                    borderBottomLeftRadius: width * 0.025,
                   }}>
                   <View
                     style={{
-                      flex: 1,
-                      backgroundColor: 'white',
-                      borderBottomLeftRadius: width * 0.005,
-                      borderTopRightRadius: width * 0.005,
-                      borderTopLeftRadius: width * 0.025,
+                      width: width * 0.75,
+                      height: height * 0.75,
                       borderBottomRightRadius: width * 0.025,
-                      elevation: width * 0.015,
+                      borderBottomLeftRadius: width * 0.025,
                     }}>
                     <View
                       style={{
-                        width: width * 0.45,
-                        height: height * 0.12,
-                      }}>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: 'row',
-                          borderTopRightRadius: width * 0.005,
-                          borderTopLeftRadius: width * 0.025,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Back
-                          name="arrow-left"
-                          size={height * 0.04}
-                          color="red"
-                          style={{
-                            position: 'absolute',
-                            right: width * 0.42,
-                          }}
-                          onPress={() => {
-                            console.log('History', this.state.listDataArray);
-                            this.setState({
-                              showListModal: !this.state.showListModal,
-                            });
-                          }}
-                        />
-                        <Text
-                          style={{
-                            fontFamily: Fonts.Handlee,
-                            fontSize: width * 0.03,
-                            color: 'red',
-                          }}>
-                          Listing Data
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
                         flex: 1,
-                        width: width * 0.45,
-                        borderTopWidth: height * 0.002,
-                        borderTopColor: 'red',
+                        backgroundColor: 'white',
+                        borderBottomRightRadius: width * 0.025,
+                        borderBottomLeftRadius: width * 0.025,
+                        elevation: width * 0.015,
                       }}>
                       <View
                         style={{
-                          paddingHorizontal: width * 0.02,
-                          paddingTop: height * 0.01,
-                          paddingBottom: height * 0.01,
+                          width: width * 0.75,
+                          height: height * 0.12,
                         }}>
                         <View
                           style={{
+                            flex: 1,
                             flexDirection: 'row',
-                            paddingLeft: width * 0.01,
+                            borderRadius: width * 0.025,
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}>
+                          <Back
+                            name="arrow-left"
+                            size={height * 0.06}
+                            color="red"
+                            style={{
+                              position: 'absolute',
+                              left: height * 0.05,
+                            }}
+                            onPress={() => {
+                              console.log('History', this.state.listDataArray);
+                              this.setState({
+                                showListModal: !this.state.showListModal,
+                              });
+                            }}
+                          />
                           <Text
                             style={{
-                              fontSize: height * 0.018,
+                              fontFamily: Fonts.Handlee,
+                              fontSize: width * 0.03,
                               color: 'red',
                             }}>
-                            Date
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: height * 0.018,
-                              color: 'red',
-                              marginLeft: width * 0.048,
-                            }}>
-                            Time
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: height * 0.018,
-                              color: 'red',
-                              marginLeft: width * 0.032,
-                            }}>
-                            Oxygen
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: height * 0.018,
-                              color: 'red',
-                              marginLeft: width * 0.03,
-                            }}>
-                            Skin Temperature
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: height * 0.018,
-                              color: 'red',
-                              marginLeft: width * 0.03,
-                            }}>
-                            Air Temperature
+                            Listing Data
                           </Text>
                         </View>
                       </View>
-                      <FlatList
-                        data={this.state.listDataArray}
-                        renderItem={this.renderListItem}
-                        keyExtractor={item => item.time}
-                        style={{paddingLeft: width * 0.02}}
-                      />
+                      <View
+                        style={{
+                          flex: 1,
+                          width: width * 0.75,
+                          borderTopWidth: height * 0.002,
+                          borderTopColor: 'red',
+                          borderBottomRightRadius: width * 0.025,
+                          borderBottomLeftRadius: width * 0.025,
+                        }}>
+                        <View
+                          style={{
+                            paddingHorizontal: width * 0.02,
+                            paddingTop: height * 0.01,
+                            paddingBottom: height * 0.01,
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              paddingLeft: width * 0.01,
+                              justifyContent: 'space-around',
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: height * 0.025,
+                                color: 'red',
+                              }}>
+                              Date
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: height * 0.025,
+                                color: 'red',
+                              }}>
+                              Time
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: height * 0.025,
+                                color: 'red',
+                              }}>
+                              Oxygen
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: height * 0.025,
+                                color: 'red',
+                              }}>
+                              Skin Temperature
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: height * 0.025,
+                                color: 'red',
+                              }}>
+                              Air Temperature
+                            </Text>
+                          </View>
+                        </View>
+                        <FlatList
+                          data={this.state.listDataArray}
+                          renderItem={this.renderListItem}
+                          keyExtractor={item => item.time}
+                          style={{
+                            borderBottomRightRadius: width * 0.025,
+                            borderBottomLeftRadius: width * 0.025,
+                          }}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>

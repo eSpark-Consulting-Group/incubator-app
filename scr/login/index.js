@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
 } from 'react-native';
-
+import Spinner from 'react-native-loading-spinner-overlay';
 import RNFS from 'react-native-fs';
 
 import axios from 'axios';
@@ -25,13 +25,14 @@ export default class LoginView extends Component {
     password: '',
     isLoading: false,
     txtFileData: '',
+    spinner: false,
   };
 
   componentDidMount() {
     this.ReadTxtFile();
   }
 
-  _storeData = async (value) => {
+  _storeData = async value => {
     try {
       await setItem(JSON.stringify(value));
     } catch (error) {
@@ -53,16 +54,36 @@ export default class LoginView extends Component {
   };
 
   checkCredentials = () => {
-    const {email, password} = this.state;
-    const StringVal = this.state.txtFileData;
-    const emailID = StringVal.match(/[^email:\s].*/).toString();
-    const pass = StringVal.match(/[^\spass:].*[\w\W]$/).toString();
-    if (emailID == email && pass == password)
-      return this.props.navigation.navigate('Home');
-    else return ToastAndroid.show('Wrong Credentials', ToastAndroid.SHORT);
+    this.setState((state = this.state) => {
+      state.spinner = true;
+    });
+    try {
+      const {email, password} = this.state;
+      const StringVal = this.state.txtFileData;
+      const emailMatch = StringVal.match(/(email:)\s.+/g).toString();
+      const passMatch = StringVal.match(/(pass:)\s.+/g).toString();
+      const emailID = emailMatch.slice(7);
+      const pass = passMatch.substr(6);
+      if (emailID == email && pass == password) {
+        this.setState((state = this.state) => {
+          state.spinner = false;
+        });
+        return this.props.navigation.navigate('Home');
+      } else {
+        this.setState((state = this.state) => {
+          state.spinner = false;
+        });
+        ToastAndroid.show('Wrong Credentials', ToastAndroid.SHORT);
+      }
+    } catch (e) {
+      this.setState((state = this.state) => {
+        state.spinner = false;
+      });
+      alert('Something when wrong', e);
+    }
   };
 
-  onClickListener = (viewId) => {
+  onClickListener = viewId => {
     const {email, password} = this.state;
     let data = {
       email,
@@ -77,7 +98,7 @@ export default class LoginView extends Component {
           'Content-Type': 'application/json',
         },
       })
-      .then((response) => {
+      .then(response => {
         this.setState({isLoading: false});
 
         if (response.data.login_user.length) {
@@ -85,7 +106,7 @@ export default class LoginView extends Component {
           this.props.navigation.navigate('Home');
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('LoginView -> error', error);
       });
     // // Alert.alert('Alert', 'Button pressed ' + viewId);
@@ -104,6 +125,7 @@ export default class LoginView extends Component {
 
     return (
       <View style={styles.container}>
+        <Spinner visible={this.state.spinner} color="red" />
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
@@ -112,7 +134,7 @@ export default class LoginView extends Component {
             autoCapitalize="none"
             autoCorrect={false}
             underlineColorAndroid="transparent"
-            onChangeText={(email) => this.setState({email})}
+            onChangeText={email => this.setState({email})}
             value={email}
           />
         </View>
@@ -126,7 +148,7 @@ export default class LoginView extends Component {
             autoCapitalize="none"
             value={password}
             underlineColorAndroid="transparent"
-            onChangeText={(password) => this.setState({password})}
+            onChangeText={password => this.setState({password})}
           />
         </View>
 

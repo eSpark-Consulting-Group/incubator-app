@@ -270,6 +270,7 @@ export default class App extends Component {
           animationIn="slideInUp"
           animationOut="slideOutDown"
           statusBarTranslucent
+          onBackdropPress={() => this.setState({isModalVisible: false})}
           isVisible={this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>

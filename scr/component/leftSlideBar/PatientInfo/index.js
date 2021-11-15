@@ -17,6 +17,7 @@ import Modal from 'react-native-modal';
 import SwitchToggle from 'react-native-switch-toggle';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
+import Spinner from 'react-native-loading-spinner-overlay';
 // import AirTemp from './airTemp/index';
 // import SkinTemp from './skinTemp/index';
 // import Spo2 from './spo2/index';
@@ -59,7 +60,10 @@ export default class App extends Component {
       age: '',
       drName: '',
       checked: 'first',
+      sex: 'Male',
       dr: 'Dr.',
+      isKg: false,
+      spinner: false,
       oxyArray: [],
       skinArray: [],
       tempArray: [],
@@ -165,6 +169,7 @@ export default class App extends Component {
           text: 'Yes',
           onPress: () => {
             if (!this.props.isActive) {
+              this.setState({spinner: true});
               setTimeout(() => {
                 this.props.condActive(true);
                 this.props.handleAirTempActivate(true);
@@ -175,12 +180,17 @@ export default class App extends Component {
                 this.props.getWeight(this.state.weight);
                 this.props.getFatherName(this.state.fatherName);
                 this.props.getDrName(this.state.drName);
+                this.props.getSex(this.state.sex);
+                this.props.getWeightUnit(this.state.isKg);
                 this.props.handleIsDischarged(false);
                 ToastAndroid.show(
                   'Added Patient Succesfully',
                   ToastAndroid.SHORT,
                 );
-                this.setState({isModalVisible: !this.state.isModalVisible});
+                this.setState({
+                  isModalVisible: !this.state.isModalVisible,
+                  spinner: false,
+                });
               }, 50);
               setTimeout(() => {
                 this.props.handleRunData(true);
@@ -194,7 +204,7 @@ export default class App extends Component {
   }
 
   render() {
-    const {checked} = this.state;
+    const {checked, sex} = this.state;
 
     return (
       <View>
@@ -204,19 +214,27 @@ export default class App extends Component {
           <Alarm name={'alarm-light'} size={width * 0.02} />
         </TouchableOpacity>
         {/* Modal */}
+        <Spinner
+          visible={this.state.spinner}
+          textContent={'Loading...'}
+          textStyle={style.spinnerTextStyle}
+          color="red"
+        />
         <Modal
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
           isVisible={this.state.isModalVisible}
-          style={style.modalContainer}>
+          // isVisible={true}
+          // style={style.modalContainer}
+        >
           <KeyboardAvoidingView
             style={{
               height: height,
               alignItems: 'center',
               justifyContent: 'center',
-              // backgroundColor: 'pink',
             }}
+            keyboardVerticalOffset={-100}
             behavior="position">
             <View style={style.modalInner}>
               <View style={style.boxConatainer}>
@@ -269,7 +287,75 @@ export default class App extends Component {
                         }}
                       />
                     </View>
-                    <View style={style.boxBodyInner}>
+                    <View style={[style.boxBodyInner]}>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          color: 'red',
+                        }}>
+                        Weight:
+                      </Text>
+                      <View style={{flexDirection: 'row'}}>
+                        <TextInput
+                          placeholder="Type Here"
+                          keyboardType="number-pad"
+                          onChangeText={val => this.setState({weight: val})}
+                          style={{
+                            fontFamily: Fonts.BalooChettan2,
+                            borderColor: 'gray',
+                            width: width * 0.15,
+                            height: height * 0.08,
+                            color: 'gray',
+                            backgroundColor: '#23212016',
+                            fontSize: width * 0.015,
+                            paddingLeft: width * 0.01,
+                            borderRadius: width * 0.002,
+                          }}
+                        />
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignSelf: 'center',
+                            marginLeft: height * 0.02,
+                            width: height * 0.15,
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Fonts.Handlee,
+                              fontSize: height * 0.025,
+                              color: 'red',
+                            }}>
+                            lb
+                          </Text>
+                          <SwitchToggle
+                            switchOn={this.state.isKg}
+                            onPress={() =>
+                              this.setState({isKg: !this.state.isKg})
+                            }
+                            useNativeDriver={false}
+                            backgroundColorOn={'#555555'}
+                            circleColorOn={'#f68d80fd'}
+                            backgroundColorOff={'#555555'}
+                            circleColorOff={'#f68d80fd'}
+                            containerStyle={style.toggleContainer}
+                            circleStyle={style.toggleCircle}
+                          />
+                          <Text
+                            style={{
+                              fontFamily: Fonts.Handlee,
+                              fontSize: height * 0.025,
+                              color: 'red',
+                            }}>
+                            kg
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View
+                      style={[
+                        style.boxBodyInner,
+                        {justifyContent: 'space-between'},
+                      ]}>
                       <Text
                         style={{
                           fontFamily: Fonts.Handlee,
@@ -278,50 +364,89 @@ export default class App extends Component {
                         }}>
                         Age:
                       </Text>
-                      <TextInput
-                        placeholder="Type Here"
-                        keyboardType="number-pad"
-                        onChangeText={val => this.setState({age: val})}
-                        style={{
-                          fontFamily: Fonts.BalooChettan2,
-                          borderColor: 'gray',
-                          width: width * 0.25,
-                          height: height * 0.08,
-                          color: 'gray',
-                          backgroundColor: '#23212016',
-                          fontSize: width * 0.015,
-                          paddingLeft: width * 0.01,
-                          borderRadius: width * 0.002,
-                        }}
-                      />
+                      <View style={{flexDirection: 'row'}}>
+                        <TextInput
+                          placeholder="Type Here"
+                          keyboardType="number-pad"
+                          onChangeText={val => this.setState({age: val})}
+                          style={{
+                            fontFamily: Fonts.BalooChettan2,
+                            borderColor: 'gray',
+                            width: width * 0.15,
+                            height: height * 0.08,
+                            color: 'gray',
+                            backgroundColor: '#23212016',
+                            fontSize: width * 0.015,
+                            paddingLeft: width * 0.01,
+                            borderRadius: width * 0.002,
+                          }}
+                        />
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignSelf: 'center',
+                            marginLeft: height * 0.02,
+                            width: height * 0.15,
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Fonts.Handlee,
+                              fontSize: height * 0.025,
+                              color: 'red',
+                            }}>
+                            Days
+                          </Text>
+                        </View>
+                      </View>
                     </View>
                     <View style={style.boxBodyInner}>
                       <Text
                         style={{
                           fontFamily: Fonts.Handlee,
-                          // fontSize: width * .04,
                           color: 'red',
                         }}>
-                        Weight:
+                        Sex:
                       </Text>
-                      <TextInput
-                        placeholder="Type Here"
-                        keyboardType="number-pad"
-                        onChangeText={val => this.setState({weight: val})}
+                      <View
                         style={{
-                          fontFamily: Fonts.BalooChettan2,
-                          borderColor: 'gray',
+                          flexDirection: 'row',
+                          alignSelf: 'flex-start',
+                          alignItems: 'center',
                           width: width * 0.25,
-                          height: height * 0.08,
-                          color: 'gray',
-                          backgroundColor: '#23212016',
-                          fontSize: width * 0.015,
-                          paddingLeft: width * 0.01,
-                          borderRadius: width * 0.002,
-                        }}
-                      />
+                        }}>
+                        <RadioButton
+                          value="first"
+                          status={sex === 'Male' ? 'checked' : 'unchecked'}
+                          onPress={() => {
+                            this.setState({sex: 'Male'});
+                          }}
+                        />
+                        <Text
+                          style={{
+                            fontFamily: Fonts.Handlee,
+                            // fontSize: width * .04,
+                            color: 'red',
+                          }}>
+                          Male
+                        </Text>
+                        <RadioButton
+                          value="second"
+                          status={sex === 'Female' ? 'checked' : 'unchecked'}
+                          onPress={() => {
+                            this.setState({sex: 'Female'});
+                          }}
+                        />
+                        <Text
+                          style={{
+                            fontFamily: Fonts.Handlee,
+                            // fontSize: width * .04,
+                            color: 'red',
+                          }}>
+                          Female
+                        </Text>
+                      </View>
                     </View>
-                    <View
+                    {/* <View
                       style={{
                         padding: width * 0.002,
                         paddingLeft: width * 0.028,
@@ -332,8 +457,9 @@ export default class App extends Component {
                         borderTopLeftRadius: width * 0.025,
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                      }}>
-                      <RadioButton
+                      }}> */}
+                    <View style={style.boxBodyInner}>
+                      {/* <RadioButton
                         value="first"
                         status={checked === 'first' ? 'checked' : 'unchecked'}
                         onPress={() => {
@@ -362,9 +488,17 @@ export default class App extends Component {
                           color: 'red',
                         }}>
                         D/o:
+                      </Text> */}
+                      <Text
+                        style={{
+                          fontFamily: Fonts.Handlee,
+                          // fontSize: width * .04,
+                          color: 'red',
+                        }}>
+                        Parent Name:
                       </Text>
                       <TextInput
-                        placeholder="Type Here"
+                        placeholder="Father or Mother Name..."
                         onChangeText={val => this.setState({fatherName: val})}
                         style={{
                           fontFamily: Fonts.BalooChettan2,
