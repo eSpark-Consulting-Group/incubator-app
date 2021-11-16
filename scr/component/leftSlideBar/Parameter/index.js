@@ -20,6 +20,7 @@ import SelectMultiple from 'react-native-select-multiple';
 import {Fonts} from '../../../utils/fonts';
 
 import {TextInput} from 'react-native-gesture-handler';
+import Spinner from 'react-native-loading-spinner-overlay';
 const {height, width} = Dimensions.get('window');
 const Parameter = [
   {label: 'Air Temperature', value: '1'},
@@ -46,6 +47,7 @@ export default class App extends Component {
       babyWeight: true,
       humidity: true,
       oxygen: true,
+      loading: false,
     };
   }
   onSelectionsChange = selectedParameter => {
@@ -54,27 +56,32 @@ export default class App extends Component {
     this.setState({selectedParameter});
   };
   _logOut = () => {
-    this.setState(
-      {turnOnparameter: false, isModalVisible: !this.state.isModalVisible},
-      () => {
-        this.props.switchAir(this.state.airTemp),
-          this.props.switchSkin(this.state.skinTemp),
-          this.props.switchSpo2(this.state.spo2hr),
-          this.props.switchWeight(this.state.babyWeight),
-          this.props.switchHumidity(this.state.humidity),
+    this.setState({loading: true});
+    setTimeout(() => {
+      this.setState(
+        {turnOnparameter: false, isModalVisible: !this.state.isModalVisible},
+        () => {
+          this.props.switchAir(this.state.airTemp);
+          this.props.switchSkin(this.state.skinTemp);
+          this.props.switchSpo2(this.state.spo2hr);
+          this.props.switchWeight(this.state.babyWeight);
+          this.props.switchHumidity(this.state.humidity);
           this.props.switchOxygen(this.state.oxygen);
-      },
-    );
+          this.setState({loading: false});
+        },
+      );
+    }, 800);
   };
   toggleModal = () => {
     this.setState({isModalVisible: !this.state.isModalVisible});
   };
   _Signin = () => {
-    if (this.state.password == '12345') {
+    if (this.state.password == this.props.passwordValue) {
       this.setState({turnOnparameter: true, password: null});
     } else if (this.state.password == '') {
       alert('Empty Password');
-    } else if (this.state.password != '12345') {
+    } else if (this.state.password != this.props.passwordValue) {
+      this.setState({password: ''});
       Alert.alert('Warning', 'Incorrect Password');
     }
   };
@@ -106,14 +113,14 @@ export default class App extends Component {
           statusBarTranslucent
           isVisible={this.state.isModalVisible}
           style={{
-            elevation: width * 0.005,
-            borderBottomLeftRadius: width * 0.025,
-            borderBottomRightRadius: width * 0.025,
-            backgroundColor: 'white',
+            // elevation: width * 0.005,
+            // borderBottomLeftRadius: width * 0.025,
+            // borderBottomRightRadius: width * 0.025,
+            // backgroundColor: 'white',
             maxHeight: modalHeight,
-            maxWidth: width * 0.5,
+            // maxWidth: width * 0.5,
             top: height * -0.082,
-            left: width * 0.2,
+            // left: width * 0.2,
           }}>
           <View style={style.modalInner}>
             <View
@@ -145,6 +152,7 @@ export default class App extends Component {
                         <Text style={style.currentHeading}>Password</Text>
                         <View style={style.passInputValue}>
                           <TextInput
+                            value={this.state.password}
                             placeholder="Your Password"
                             secureTextEntry={true}
                             style={style.currentInput}
@@ -165,6 +173,12 @@ export default class App extends Component {
                   </View>
                 ) : (
                   <View>
+                    <Spinner
+                      visible={this.state.loading}
+                      textContent={'Loading...'}
+                      textStyle={{color: 'red'}}
+                      color="red"
+                    />
                     <View style={style.boxBody}>
                       <View style={style.boxBodyInner}>
                         <View style={style.switchView}>

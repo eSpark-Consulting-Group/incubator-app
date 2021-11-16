@@ -259,31 +259,31 @@ export default class App extends Component {
       switchAir: child,
     });
   };
-  handleSwitchSkin(child) {
+  handleSwitchSkin = child => {
     this.setState({
       switchSkin: child,
     });
-  }
-  handleSwitchSpo2(child) {
+  };
+  handleSwitchSpo2 = child => {
     this.setState({
       switchSpo2: child,
     });
-  }
-  handleSwitchWeight(child) {
+  };
+  handleSwitchWeight = child => {
     this.setState({
       switchWeight: child,
     });
-  }
-  handleSwitchHumidity(child) {
+  };
+  handleSwitchHumidity = child => {
     this.setState({
       switchHumidity: child,
     });
-  }
-  handleSwitchOxygen(child) {
+  };
+  handleSwitchOxygen = child => {
     this.setState({
       switchOxygen: child,
     });
-  }
+  };
 
   handlePatientID = child => {
     this.setState({patientId: child});

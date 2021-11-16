@@ -98,7 +98,8 @@ export default class App extends Component {
           animationOut="slideOutUp"
           statusBarTranslucent
           isVisible={this.state.airTemp}
-          style={style.modal}>
+          // style={style.modal}
+        >
           <KeyboardAvoidingView
             style={{
               height: height,

@@ -85,10 +85,10 @@ export default styles = StyleSheet.create({
   boxInner: {
     flex: 1,
     backgroundColor: 'white',
-    borderBottomLeftRadius: width * 0.005,
-    borderTopRightRadius: width * 0.005,
-    borderTopLeftRadius: width * 0.025,
-    borderBottomRightRadius: width * 0.025,
+    // borderBottomLeftRadius: width * 0.005,
+    // borderTopRightRadius: width * 0.005,
+    // borderTopLeftRadius: width * 0.025,
+    borderRadius: width * 0.025,
     elevation: width * 0.015,
   },
   boxHeader: {
@@ -97,7 +97,7 @@ export default styles = StyleSheet.create({
   },
   boxHeaderInner: {
     flex: 1,
-    borderTopRightRadius: width * 0.005,
+    borderTopRightRadius: width * 0.025,
     borderTopLeftRadius: width * 0.025,
     justifyContent: 'space-around',
     // paddingHorizontal: width * .02,

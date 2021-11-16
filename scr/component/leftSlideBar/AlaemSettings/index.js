@@ -126,7 +126,9 @@ export default class App extends Component {
           animationOut="slideOutUp"
           statusBarTranslucent
           isVisible={this.state.isModalVisible}
-          style={style.modalContainer}>
+          // isVisible={true}
+          // style={style.modalContainer}
+        >
           <View style={style.modalInner}>
             <View style={style.boxConatainer}>
               <View style={style.boxInner}>

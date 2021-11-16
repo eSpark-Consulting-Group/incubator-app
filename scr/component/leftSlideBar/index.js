@@ -85,6 +85,7 @@ export default class App extends Component {
       started: false,
       showListModal: false,
       spinner: false,
+      thePass: '',
     };
     this.arrayholder = [];
     this.handleAirHigher = this.handleAirHigher.bind(this);
@@ -201,22 +202,22 @@ export default class App extends Component {
     });
   }
   handleSwitchAir(child) {
-    this.setState(() => this.props.switchAir(child));
+    this.props.switchAir(child);
   }
   handleSwitchSkin(child) {
-    this.setState(() => this.props.switchSkin(child));
+    this.props.switchSkin(child);
   }
   handleSwitchSpo2(child) {
-    this.setState(() => this.props.switchSpo2(child));
+    this.props.switchSpo2(child);
   }
   handleSwitchWeight(child) {
-    this.setState(() => this.props.switchWeight(child));
+    this.props.switchWeight(child);
   }
   handleSwitchHumidity(child) {
-    this.setState(() => this.props.switchHumidity(child));
+    this.props.switchHumidity(child);
   }
   handleSwitchOxygen(child) {
-    this.setState(() => this.props.switchOxygen(child));
+    this.props.switchOxygen(child);
   }
 
   handleRunData = child => {
@@ -352,7 +353,9 @@ export default class App extends Component {
     try {
       const path = myPath + '/Patent/Login.txt';
       const contents = await RNFS.readFile(path, 'utf8');
-      this.setState({txtFileData: contents.toString()});
+      this.setState({txtFileData: contents.toString()}, () =>
+        this.checkCredentials(),
+      );
       console.log(this.state.txtFileData, 'aya kia');
     } catch (e) {
       console.log(e, 'error Read Text File');
@@ -364,6 +367,7 @@ export default class App extends Component {
     const StringVal = this.state.txtFileData;
     const passMatch = StringVal.match(/(pass:)\s.+/g).toString();
     const Pass = passMatch.substr(6);
+    this.setState({thePass: Pass});
     if (Pass == password) {
       this.setState({
         checker: !this.state.checker,
@@ -550,6 +554,7 @@ export default class App extends Component {
   };
 
   logOut = () => {
+    this.setState({isModalVisible: false});
     this.props.navigation.replace('Login');
   };
 
@@ -655,14 +660,15 @@ export default class App extends Component {
                   </View>
                   <Bright name={'brightness-7'} size={width * 0.02} />
                 </TouchableOpacity>
-                {/* <Parameter
+                <Parameter
                   switchAir={this.handleSwitchAir}
                   switchSkin={this.handleSwitchSkin}
                   switchSpo2={this.handleSwitchSpo2}
                   switchWeight={this.handleSwitchWeight}
                   switchHumidity={this.handleSwitchHumidity}
                   switchOxygen={this.handleSwitchOxygen}
-                /> */}
+                  passwordValue={this.state.thePass}
+                />
                 <PatientInfo
                   oxy={this.props.oxy}
                   skinTemp={this.props.skinTemp}
@@ -703,7 +709,7 @@ export default class App extends Component {
                   }}>
                   <Text style={style.listText}>Units</Text>
                 </TouchableOpacity>
-                <View style={{height: height * 0.1}} />
+                <View style={{height: height * 0.02}} />
                 <TouchableOpacity
                   onPress={() => {
                     this.handleDischargePatient();
@@ -781,6 +787,18 @@ export default class App extends Component {
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}>
+                          <Back
+                            name="arrow-left"
+                            size={height * 0.06}
+                            color="red"
+                            style={{
+                              position: 'absolute',
+                              left: height * 0.01,
+                            }}
+                            onPress={() => {
+                              this.setState({checker: false});
+                            }}
+                          />
                           <Text
                             style={{
                               fontFamily: Fonts.Handlee,
@@ -881,8 +899,7 @@ export default class App extends Component {
                 style={{
                   height: height,
                   alignItems: 'center',
-                }}
-                behavior="position">
+                }}>
                 <View
                   style={{
                     flex: 1,
@@ -1088,8 +1105,8 @@ export default class App extends Component {
                         style={{
                           flex: 1,
                           width: width * 0.75,
-                          borderTopWidth: height * 0.002,
-                          borderTopColor: 'red',
+                          borderWidth: 2,
+                          borderColor: 'red',
                           borderBottomRightRadius: width * 0.025,
                           borderBottomLeftRadius: width * 0.025,
                         }}>
@@ -1166,17 +1183,19 @@ export default class App extends Component {
               // onSwipeComplete={() => this.toggleModalLock()}
               // swipeDirection="right"
               isVisible={this.state.LockorUnlo}
-              style={{
-                elevation: width * 0.005,
-                borderBottomLeftRadius: width * 0.005,
-                borderTopRightRadius: width * 0.005,
-                borderTopLeftRadius: width * 0.025,
-                borderBottomRightRadius: width * 0.025,
-                backgroundColor: 'white',
-                maxHeight: height * 0.5,
-                maxWidth: width * 0.35,
-                top: height * 0.15,
-              }}>
+              // isVisible={true}
+              // style={{
+              //   elevation: width * 0.005,
+              //   borderBottomLeftRadius: width * 0.005,
+              //   borderTopRightRadius: width * 0.005,
+              //   borderTopLeftRadius: width * 0.025,
+              //   borderBottomRightRadius: width * 0.025,
+              //   backgroundColor: 'white',
+              //   maxHeight: height * 0.5,
+              //   maxWidth: width * 0.35,
+              //   top: height * 0.15,
+              // }}
+            >
               <View
                 style={{
                   flex: 1,
@@ -1192,10 +1211,7 @@ export default class App extends Component {
                     style={{
                       flex: 1,
                       backgroundColor: 'white',
-                      borderBottomLeftRadius: width * 0.005,
-                      borderTopRightRadius: width * 0.005,
-                      borderTopLeftRadius: width * 0.025,
-                      borderBottomRightRadius: width * 0.025,
+                      borderRadius: width * 0.025,
                       elevation: width * 0.015,
                     }}>
                     <View
