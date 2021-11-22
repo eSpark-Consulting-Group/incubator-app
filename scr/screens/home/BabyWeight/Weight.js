@@ -27,12 +27,10 @@ import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import NumericInput from 'react-native-numeric-input';
 import Check from 'react-native-vector-icons/AntDesign';
 
-import {useAsyncStorage} from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {createResource} from '../../../config/SimpleApiCall';
 import {babyWeight} from '../../../config/WebServices';
-
-const {getItem, setItem} = useAsyncStorage('userInfo');
 
 const {height, width} = Dimensions.get('window');
 
@@ -61,7 +59,7 @@ export default class App extends Component {
   sendBabyTemp = async () => {
     const {currentTemp, setTemp} = this.state;
 
-    let userInfo = await getItem();
+    let userInfo = await AsyncStorage.getItem('userInfo');
     let _ = JSON.parse(userInfo);
 
     let payload = {

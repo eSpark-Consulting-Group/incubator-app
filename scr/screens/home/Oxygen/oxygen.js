@@ -17,14 +17,12 @@ import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
 import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 
-import {useAsyncStorage} from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
 
 import {createResource} from '../../../config/SimpleApiCall';
 import {oxygen} from '../../../config/WebServices';
 import modalStyle from './modalsStyling';
-
-const {getItem, setItem} = useAsyncStorage('userInfo');
 
 const {height, width} = Dimensions.get('window');
 let id = 0;
@@ -48,7 +46,7 @@ export default class App extends Component {
   sendOxygenTemp = async () => {
     const {currentTemp, setTemp} = this.state;
 
-    let userInfo = await getItem();
+    let userInfo = await AsyncStorage.getItem('userInfo');
     let _ = JSON.parse(userInfo);
 
     let payload = {

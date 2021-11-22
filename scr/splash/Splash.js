@@ -15,7 +15,17 @@ import {
   ToastAndroid,
 } from 'react-native';
 
+import {
+  PERMISSIONS,
+  RESULTS,
+  request,
+  check,
+  requestMultiple,
+  openSettings,
+} from 'react-native-permissions';
 const {height, width} = Dimensions.get('window');
+
+import clc from 'cli-color';
 
 import style from './style';
 
@@ -29,7 +39,9 @@ export default class Splash extends Component {
   };
   componentDidMount() {
     const {valueHi, valueWelcome} = this.state;
-    this._askPermission();
+    // this._askPermission();
+    this._ack();
+    // this._ask();
     Animated.timing(valueHi, {
       toValue: 1,
       duration: 3000,
@@ -49,17 +61,50 @@ export default class Splash extends Component {
     }, 6000);
   }
 
+  _ask = async () => {
+    try {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION,
+      ).then(res => {
+        if (res == PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('got permission');
+        } else {
+          console.log('deny permission');
+        }
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
+  _ack = async () => {
+    requestMultiple([
+      PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+      PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+    ]).then(statuses => {
+      console.log(
+        'Camera',
+        statuses[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE],
+      );
+      console.log(
+        'FaceID',
+        statuses[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE],
+      );
+    });
+  };
+
   _askPermission = async () => {
     try {
       PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      ]).then((results) => {
+      ]).then(results => {
         if (
           results['android.permission.READ_EXTERNAL_STORAGE'] &&
           results['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted'
         ) {
           this.setState({permissionEnabled: true});
+          console.log(clc.bgRed('Granted Read Write Permissions'));
         } else if (
           (results['android.permission.READ_EXTERNAL_STORAGE'] &&
             results['android.permission.WRITE_EXTERNAL_STORAGE'] ===

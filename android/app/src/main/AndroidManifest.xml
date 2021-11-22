@@ -6,7 +6,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="31" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+
+    <!-- <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="31" /> -->
 
     <application
       android:name=".MainApplication"
@@ -14,6 +17,7 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
+      android:usesCleartextTraffic="true"
       android:requestLegacyExternalStorage="true"
       android:theme="@style/AppTheme">
       <provider

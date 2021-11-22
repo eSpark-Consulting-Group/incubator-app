@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/slider": "^4.1.10",
     "axios": "^0.24.0",
@@ -26,6 +26,7 @@
     "react-native-modal": "^13.0.0",
     "react-native-numeric-input": "^1.9.0",
     "react-native-paper": "^4.9.2",
+    "react-native-permissions": "^3.1.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screen-brightness": "^2.0.0-alpha",
     "react-native-screens": "^3.8.0",
@@ -39,6 +40,7 @@
     "react-native-vector-icons": "^9.0.0",
     "react-navigation": "4.3.9",
     "react-navigation-stack": "2.7.0",
+    "rn-fetch-blob": "^0.12.0",
     "xlsx": "^0.17.3"
   },
   "devDependencies": {

@@ -30,7 +30,7 @@ import PatientInfo from '../../component/leftSlideBar/PatientInfo/index';
 import Close from 'react-native-vector-icons/Fontisto';
 import Sound from 'react-native-sound';
 
-import {useAsyncStorage} from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Sound.setCategory('Playback');
 
@@ -71,7 +71,6 @@ var siren2 = new Sound(require('../../assets/audio/siren.mp3'), e => {
   );
 });
 
-const {getItem, setItem} = useAsyncStorage('userInfo');
 // TODO: What to do with the module?
 
 var clc = require('cli-color');
@@ -307,7 +306,7 @@ export default class App extends Component {
 
   _getData = async value => {
     try {
-      let _ = await getItem();
+      let _ = await AsyncStorage.getItem('userInfo');
     } catch (error) {
       console.log('_getData -> error', error);
       // Error saving data
@@ -505,7 +504,7 @@ export default class App extends Component {
   };
 
   render() {
-    this._getData();
+    // this._getData();
     console.log(
       clc.xterm(227)(
         'Kia aya air high alarm Home me',

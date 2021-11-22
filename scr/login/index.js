@@ -10,14 +10,15 @@ import {
   Alert,
   ActivityIndicator,
   ToastAndroid,
+  PermissionsAndroid,
+  Linking,
 } from 'react-native';
+import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
-import RNFS from 'react-native-fs';
-
+import RNFS, {stat} from 'react-native-fs';
+import RNFetchBlob from 'rn-fetch-blob';
 import axios from 'axios';
-import {useAsyncStorage} from '@react-native-community/async-storage';
-
-const {getItem, setItem} = useAsyncStorage('userInfo');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class LoginView extends Component {
   state = {
@@ -26,19 +27,75 @@ export default class LoginView extends Component {
     isLoading: false,
     txtFileData: '',
     spinner: false,
+    permissionState: false,
   };
 
   componentDidMount() {
-    this.ReadTxtFile();
+    // this.ReadTxtFile();
+    this._permissionCheck();
   }
 
-  _storeData = async value => {
-    try {
-      await setItem(JSON.stringify(value));
-    } catch (error) {
-      console.log('LoginView -> error', error);
-      // Error saving data
+  _checkPermissions = async () => {
+    const readGranted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+    );
+    const writeGranted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    );
+    if (!readGranted || !writeGranted) {
+      console.log('Read and write permissions have not been granted');
+      return;
     }
+  };
+
+  _permissionCheck = async () => {
+    try {
+      const value = await AsyncStorage.getItem('permission');
+      if (value !== null && value == '1') {
+        console.log('XXXX----Yahoo----XXXX');
+      } else {
+        this._check();
+      }
+    } catch (e) {
+      // error reading value
+      // console.warn('permission', e);
+    }
+  };
+
+  _permissionDone = async () => {
+    try {
+      await AsyncStorage.setItem('permission', '1');
+    } catch (e) {
+      // console.warn('permission', e);
+    }
+  };
+
+  // _storeData = async value => {
+  //   try {
+  //     await setItem(JSON.stringify(value));
+  //   } catch (error) {
+  //     console.log('LoginView -> error', error);
+  //     // Error saving data
+  //   }
+  // };
+
+  _check = async () => {
+    Alert.alert('Allow Files Access Permission to Continue', '', [
+      {
+        text: 'Go to Settings',
+        onPress: () => {
+          openSettings();
+          this._permissionDone();
+        },
+        style: 'default',
+      },
+      {
+        text: 'No',
+        onPress: () =>
+          ToastAndroid.show('Allow Files Access Required', ToastAndroid.SHORT),
+        style: 'cancel',
+      },
+    ]);
   };
 
   ReadTxtFile = async () => {
@@ -46,14 +103,17 @@ export default class LoginView extends Component {
     try {
       const path = myPath + '/Patent/Login.txt';
       const contents = await RNFS.readFile(path, 'utf8');
-      this.setState({txtFileData: contents.toString()});
+      this.setState({txtFileData: contents.toString()}, () =>
+        this.checkCredentials(),
+      );
       console.log(this.state.txtFileData, 'Read Text File mil gae');
     } catch (e) {
-      console.log(e, 'error Read Text File');
+      console.warn(e);
+      this._check();
     }
   };
 
-  checkCredentials = () => {
+  checkCredentials = contents => {
     this.setState((state = this.state) => {
       state.spinner = true;
     });
@@ -67,11 +127,15 @@ export default class LoginView extends Component {
       if (emailID == email && pass == password) {
         this.setState((state = this.state) => {
           state.spinner = false;
+          (state.email = ''), (state.password = '');
         });
         return this.props.navigation.navigate('Home');
       } else {
+        console.log('email', email);
+        console.log('pass', password);
         this.setState((state = this.state) => {
           state.spinner = false;
+          (state.email = ''), (state.password = '');
         });
         ToastAndroid.show('Wrong Credentials', ToastAndroid.SHORT);
       }
@@ -83,34 +147,34 @@ export default class LoginView extends Component {
     }
   };
 
-  onClickListener = viewId => {
-    const {email, password} = this.state;
-    let data = {
-      email,
-      password,
-    };
+  // onClickListener = viewId => {
+  //   const {email, password} = this.state;
+  //   let data = {
+  //     email,
+  //     password,
+  //   };
 
-    this.setState({isLoading: true});
-    axios
-      .post(`http://192.168.0.105:8080/users/login`, data, {
-        headers: {
-          // Authorization: accessToken,
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(response => {
-        this.setState({isLoading: false});
+  //   this.setState({isLoading: true});
+  //   axios
+  //     .post(`http://192.168.0.105:8080/users/login`, data, {
+  //       headers: {
+  //         // Authorization: accessToken,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     })
+  //     .then(response => {
+  //       this.setState({isLoading: false});
 
-        if (response.data.login_user.length) {
-          this._storeData(response.data);
-          this.props.navigation.navigate('Home');
-        }
-      })
-      .catch(error => {
-        console.log('LoginView -> error', error);
-      });
-    // // Alert.alert('Alert', 'Button pressed ' + viewId);
-  };
+  //       if (response.data.login_user.length) {
+  //         this._storeData(response.data);
+  //         this.props.navigation.navigate('Home');
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log('LoginView -> error', error);
+  //     });
+  //   // // Alert.alert('Alert', 'Button pressed ' + viewId);
+  // };
 
   renderLoader = () => {
     return (
@@ -157,7 +221,7 @@ export default class LoginView extends Component {
           style={[styles.buttonContainer, styles.loginButton]}
           // onPress={() => this.onClickListener('login')}
           onPress={() => {
-            this.checkCredentials(), this.setState({email: '', password: ''});
+            this.ReadTxtFile();
           }}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>

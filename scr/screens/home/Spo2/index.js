@@ -19,12 +19,10 @@ import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {useAsyncStorage} from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {createResource} from '../../../config/SimpleApiCall';
 import {spHr} from '../../../config/WebServices';
-
-const {getItem, setItem} = useAsyncStorage('userInfo');
 
 const {height, width} = Dimensions.get('window');
 
@@ -66,7 +64,7 @@ export default class App extends Component {
   sendSPHRTemp = async () => {
     const {currentTemp, setTemp} = this.state;
 
-    let userInfo = await getItem();
+    let userInfo = await AsyncStorage.getItem('userInfo');
     let _ = JSON.parse(userInfo);
 
     let payload = {

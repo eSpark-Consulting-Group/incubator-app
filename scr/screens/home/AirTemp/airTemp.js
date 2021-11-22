@@ -22,12 +22,10 @@ import modalStyle from './modalsStyling';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import Check from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
-import {useAsyncStorage} from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {createResource} from '../../../config/SimpleApiCall';
 import {air_Temp} from '../../../config/WebServices';
-
-const {getItem, setItem} = useAsyncStorage('userInfo');
 
 const {height, width} = Dimensions.get('window');
 let id = 0;
@@ -70,7 +68,7 @@ export default class App extends Component {
   sendAirTemp = async () => {
     const {currentTemp, setTemp} = this.state;
 
-    let userInfo = await getItem();
+    let userInfo = await AsyncStorage.getItem('userInfo');
     let _ = JSON.parse(userInfo);
 
     let payload = {
