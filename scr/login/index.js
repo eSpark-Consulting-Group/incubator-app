@@ -12,6 +12,7 @@ import {
   ToastAndroid,
   PermissionsAndroid,
   Linking,
+  Platform,
 } from 'react-native';
 import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -32,7 +33,9 @@ export default class LoginView extends Component {
 
   componentDidMount() {
     // this.ReadTxtFile();
-    this._permissionCheck();
+    this.checkForExists();
+    console.log('Kya', Platform.Version);
+    if (Platform.Version > 29) this._permissionCheck();
   }
 
   _checkPermissions = async () => {
@@ -62,6 +65,27 @@ export default class LoginView extends Component {
     }
   };
 
+  checkForExists = async () => {
+    let appFolder = 'Patenty';
+    let path = RNFS.ExternalStorageDirectoryPath + '/' + appFolder;
+
+    const res = await RNFS.exists(path);
+    if (res) {
+      console.log('Existed');
+    } else {
+      RNFS.mkdir(path)
+        .then(res => {
+          console.log('Done');
+        })
+        .catch(e => {
+          const string = e.toString();
+          if (string.includes('Directory could not be created'))
+            ToastAndroid.show('Permission Error', ToastAndroid.SHORT);
+          console.log('Kia ha Error', e);
+        });
+    }
+  };
+
   _permissionDone = async () => {
     try {
       await AsyncStorage.setItem('permission', '1');
@@ -80,22 +104,29 @@ export default class LoginView extends Component {
   // };
 
   _check = async () => {
-    Alert.alert('Allow Files Access Permission to Continue', '', [
-      {
-        text: 'Go to Settings',
-        onPress: () => {
-          openSettings();
-          this._permissionDone();
+    Alert.alert(
+      'ALLOW Permissions',
+      'Allow all Files Permissions to continue',
+      [
+        {
+          text: 'Go to Settings',
+          onPress: () => {
+            openSettings();
+            this._permissionDone();
+          },
+          style: 'default',
         },
-        style: 'default',
-      },
-      {
-        text: 'No',
-        onPress: () =>
-          ToastAndroid.show('Allow Files Access Required', ToastAndroid.SHORT),
-        style: 'cancel',
-      },
-    ]);
+        {
+          text: 'No',
+          onPress: () =>
+            ToastAndroid.show(
+              'Allow Files Access Required in Android 11 and above',
+              ToastAndroid.SHORT,
+            ),
+          style: 'cancel',
+        },
+      ],
+    );
   };
 
   ReadTxtFile = async () => {
@@ -108,8 +139,12 @@ export default class LoginView extends Component {
       );
       console.log(this.state.txtFileData, 'Read Text File mil gae');
     } catch (e) {
-      console.warn(e);
-      this._check();
+      let string = e.toString();
+      console.warn(string);
+      if (string.includes('No such file or directory'))
+        ToastAndroid.show('Not Found Error', ToastAndroid.SHORT);
+      if (string.includes('Permission denied'))
+        if (Platform.Version > 29) this._check();
     }
   };
 
