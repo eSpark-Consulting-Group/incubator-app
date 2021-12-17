@@ -13,14 +13,17 @@ import {
   PermissionsAndroid,
   Linking,
   Platform,
+  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
-import RNFS, {stat} from 'react-native-fs';
+import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const {width, height} = Dimensions.get('window');
 export default class LoginView extends Component {
   state = {
     email: '',
@@ -148,6 +151,9 @@ export default class LoginView extends Component {
     }
   };
 
+  //? email: test@test.com
+  //? pass: 12345
+
   checkCredentials = contents => {
     this.setState((state = this.state) => {
       state.spinner = true;
@@ -164,7 +170,7 @@ export default class LoginView extends Component {
           state.spinner = false;
           (state.email = ''), (state.password = '');
         });
-        return this.props.navigation.navigate('Home');
+        return this.props.navigation.navigate('Home', {guest: false});
       } else {
         console.log('email', email);
         console.log('pass', password);
@@ -180,6 +186,21 @@ export default class LoginView extends Component {
       });
       alert('Something when wrong', e);
     }
+  };
+
+  _guestLogIn = () => {
+    Alert.alert('Guest LogIn', 'You will be logged in as Guest', [
+      {
+        style: 'default',
+        onPress: () => this.props.navigation.navigate('Home', {guest: true}),
+        text: 'Log In',
+      },
+      {
+        style: 'cancel',
+        onPress: () => console.log('Cancel Pressed on Guest Log in'),
+        text: 'Cancel',
+      },
+    ]);
   };
 
   // onClickListener = viewId => {
@@ -260,7 +281,48 @@ export default class LoginView extends Component {
           }}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>
-
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              backgroundColor: '#80808094',
+              height: 1,
+              width: 75,
+            }}
+          />
+          <View style={{marginHorizontal: 10}}>
+            <Text style={{color: '#212121b0'}}>OR</Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: '#80808094',
+              height: 1,
+              width: 75,
+            }}
+          />
+        </View>
+        <View style={{marginTop: 20}}>
+          <TouchableOpacity underlayColor={'#fff'} onPress={this._guestLogIn}>
+            <View
+              style={{
+                borderWidth: height * 0.0035,
+                borderColor: '#e44f3bd5',
+                borderRadius: height * 0.015,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: height * 0.08,
+                width: width * 0.12,
+                backgroundColor: 'transparent',
+              }}>
+              <Text style={{color: '#e44f3bd5', fontSize: height * 0.024}}>
+                Log In as Guest
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
         {isLoading && this.renderLoader()}
       </View>
     );

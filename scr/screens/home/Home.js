@@ -112,10 +112,10 @@ export default class App extends Component {
       hrLower: 70,
       switchAir: true,
       switchSkin: true,
-      switchSpo2: true,
-      switchWeight: true,
-      switchHumidity: true,
-      switchOxygen: true,
+      switchSpo2: false,
+      switchWeight: false,
+      switchHumidity: false,
+      switchOxygen: false,
       oxy: 0,
       skinTemp: 0,
       airTemp: 0,
@@ -136,6 +136,7 @@ export default class App extends Component {
       gender: '',
       isKg: false,
       msgBoxShow: false,
+      isGuest: this?.props?.navigation?.state?.params?.guest,
     }),
       (this.handleWeight = this.handleWeight.bind(this));
     this.handleTemp = this.handleTemp.bind(this);
@@ -151,6 +152,7 @@ export default class App extends Component {
     this.alarmFanFn();
     this.alarmSenFn();
     this.alarmSysFn();
+    console.log('OOOXCXCXC', this?.props?.navigation?.state?.params?.guest);
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
 
@@ -684,6 +686,7 @@ export default class App extends Component {
             </View>
           </Modal>
           <LeftSlider
+            isGuest={this.state.isGuest}
             selectWeight={this.handleWeight}
             selectTemp={this.handleTemp}
             airHigTemp={this.handleAirHigher}
@@ -700,6 +703,12 @@ export default class App extends Component {
             switchWeight={this.handleSwitchWeight}
             switchHumidity={this.handleSwitchHumidity}
             switchOxygen={this.handleSwitchOxygen}
+            airFlag={this.state.switchAir}
+            skinFlag={this.state.switchSkin}
+            spo2Flag={this.state.switchSpo2}
+            humidityFlag={this.state.switchHumidity}
+            weightFlag={this.state.switchWeight}
+            oxygenFlag={this.state.switchOxygen}
             locker={this.state.lock}
             oxy={this.state.oxy}
             skinTemp={this.state.skinTemp}

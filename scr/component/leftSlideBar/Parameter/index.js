@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
+  ToastAndroid,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
@@ -41,12 +42,12 @@ export default class App extends Component {
       turnOnparameter: false,
       selectedParameter: [],
       valueParameter: [],
-      airTemp: true,
-      skinTemp: true,
-      spo2hr: true,
-      babyWeight: true,
-      humidity: true,
-      oxygen: true,
+      airTemp: this.props.airFlag,
+      skinTemp: this.props.skinFlag,
+      spo2hr: this.props.spo2Flag,
+      babyWeight: this.props.weightFlag,
+      humidity: this.props.humidityFlag,
+      oxygen: this.props.oxygenFlag,
       loading: false,
     };
   }
@@ -72,8 +73,12 @@ export default class App extends Component {
       );
     }, 800);
   };
-  toggleModal = () => {
-    this.setState({isModalVisible: !this.state.isModalVisible});
+  toggleModal = isGuest => {
+    if (isGuest) {
+      ToastAndroid.show('Guest does not have Access', ToastAndroid.SHORT);
+    } else {
+      this.setState({isModalVisible: !this.state.isModalVisible});
+    }
   };
   _Signin = () => {
     if (this.state.password == this.props.passwordValue) {

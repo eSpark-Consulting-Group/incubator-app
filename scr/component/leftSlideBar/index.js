@@ -378,14 +378,18 @@ export default class App extends Component {
       );
     } else {
       this.setState({password: ''});
-      return ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
+      // return ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
     }
   };
 
-  checkForData = () => {
-    this.readHistoryData();
-    console.log('pressed');
-    this.setState({checker: true});
+  checkForData = isGuest => {
+    if (isGuest) {
+      ToastAndroid.show('Guest does not have access', ToastAndroid.SHORT);
+    } else {
+      this.readHistoryData();
+      console.log('pressed');
+      this.setState({checker: true});
+    }
   };
 
   renderItem = ({item}) => {
@@ -668,6 +672,13 @@ export default class App extends Component {
                   switchHumidity={this.handleSwitchHumidity}
                   switchOxygen={this.handleSwitchOxygen}
                   passwordValue={this.state.thePass}
+                  airFlag={this.props.airFlag}
+                  skinFlag={this.props.skinFlag}
+                  spo2Flag={this.props.spo2Flag}
+                  humidityFlag={this.props.humidityFlag}
+                  oxygenFlag={this.props.oxygenFlag}
+                  weightFlag={this.props.weightFlag}
+                  isGuest={this.props.isGuest}
                 />
                 <PatientInfo
                   oxy={this.props.oxy}
@@ -698,7 +709,7 @@ export default class App extends Component {
                 </TouchableOpacity> */}
                 <TouchableOpacity
                   style={style.listView}
-                  onPress={this.checkForData}>
+                  onPress={() => this.checkForData(this.props.isGuest)}>
                   <Text style={style.listText}>Data Record</Text>
                   <Data name={'database'} size={width * 0.018} />
                 </TouchableOpacity>
