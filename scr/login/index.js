@@ -15,6 +15,9 @@ import {
   Platform,
   TouchableOpacity,
   Dimensions,
+  KeyboardAvoidingView,
+  ScrollView,
+  Keyboard,
 } from 'react-native';
 import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -32,6 +35,7 @@ export default class LoginView extends Component {
     txtFileData: '',
     spinner: false,
     permissionState: false,
+    focused: false,
   };
 
   componentDidMount() {
@@ -39,6 +43,14 @@ export default class LoginView extends Component {
     this.checkForExists();
     console.log('Kya', Platform.Version);
     if (Platform.Version > 29) this._permissionCheck();
+    Keyboard.addListener('keyboardDidHide', () => {
+      this.setState({focused: false});
+      console.log('XXXXX');
+    });
+  }
+
+  componentWillUnmount() {
+    Keyboard.removeAllListeners('keyboardDidHide');
   }
 
   _checkPermissions = async () => {
@@ -132,14 +144,15 @@ export default class LoginView extends Component {
     );
   };
 
-  ReadTxtFile = async () => {
+  ReadTxtFile = async isGuest => {
     const myPath = RNFS.ExternalStorageDirectoryPath;
     try {
       const path = myPath + '/Patent/Login.txt';
       const contents = await RNFS.readFile(path, 'utf8');
-      this.setState({txtFileData: contents.toString()}, () =>
-        this.checkCredentials(),
-      );
+      this.setState({txtFileData: contents.toString()}, () => {
+        if (isGuest) this.checkGuest();
+        else this.checkCredentials();
+      });
       console.log(this.state.txtFileData, 'Read Text File mil gae');
     } catch (e) {
       let string = e.toString();
@@ -154,9 +167,17 @@ export default class LoginView extends Component {
   //? email: test@test.com
   //? pass: 12345
 
+  checkGuest = () => {
+    this.setState({spinner: true});
+    setTimeout(() => {
+      this.setState({spinner: false});
+      this.props.navigation.navigate('Home', {guest: true});
+    }, 1000);
+  };
+
   checkCredentials = contents => {
-    this.setState((state = this.state) => {
-      state.spinner = true;
+    this.setState({
+      spinner: true,
     });
     try {
       const {email, password} = this.state;
@@ -166,23 +187,27 @@ export default class LoginView extends Component {
       const emailID = emailMatch.slice(7);
       const pass = passMatch.substr(6);
       if (emailID == email && pass == password) {
-        this.setState((state = this.state) => {
-          state.spinner = false;
-          (state.email = ''), (state.password = '');
+        this.setState({
+          spinner: false,
+          email: '',
+          password: '',
         });
         return this.props.navigation.navigate('Home', {guest: false});
       } else {
         console.log('email', email);
         console.log('pass', password);
-        this.setState((state = this.state) => {
-          state.spinner = false;
-          (state.email = ''), (state.password = '');
+        this.setState({
+          spinner: false,
+          email: '',
+          password: '',
         });
         ToastAndroid.show('Wrong Credentials', ToastAndroid.SHORT);
       }
     } catch (e) {
-      this.setState((state = this.state) => {
-        state.spinner = false;
+      this.setState({
+        spinner: false,
+        email: '',
+        password: '',
       });
       alert('Something when wrong', e);
     }
@@ -192,7 +217,7 @@ export default class LoginView extends Component {
     Alert.alert('Guest LogIn', 'You will be logged in as Guest', [
       {
         style: 'default',
-        onPress: () => this.props.navigation.navigate('Home', {guest: true}),
+        onPress: () => this.ReadTxtFile(true),
         text: 'Log In',
       },
       {
@@ -244,15 +269,20 @@ export default class LoginView extends Component {
     const {email, password, isLoading} = this.state;
 
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Spinner visible={this.state.spinner} color="red" />
+        {this.state.focused && <View style={{height: 100}} />}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
             placeholder="Email"
-            keyboardType="email-address"
+            // keyboardType="email-address"
+            autoComplete="off"
             autoCapitalize="none"
             autoCorrect={false}
+            onFocus={() => this.setState({focused: true})}
+            onBlur={() => this.setState({focused: false})}
+            onEndEditing={() => this.setState({focused: false})}
             underlineColorAndroid="transparent"
             onChangeText={email => this.setState({email})}
             value={email}
@@ -267,6 +297,8 @@ export default class LoginView extends Component {
             autoCorrect={false}
             autoCapitalize="none"
             value={password}
+            onFocus={() => this.setState({focused: true})}
+            onBlur={() => this.setState({focused: false})}
             underlineColorAndroid="transparent"
             onChangeText={password => this.setState({password})}
           />
@@ -274,10 +306,11 @@ export default class LoginView extends Component {
 
         <TouchableHighlight
           disabled={isLoading}
+          underlayColor={'#9c9c9c'}
           style={[styles.buttonContainer, styles.loginButton]}
           // onPress={() => this.onClickListener('login')}
           onPress={() => {
-            this.ReadTxtFile();
+            this.ReadTxtFile(false);
           }}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>
@@ -304,7 +337,7 @@ export default class LoginView extends Component {
             }}
           />
         </View>
-        <View style={{marginTop: 20}}>
+        <View style={{marginTop: height * 0.02}}>
           <TouchableOpacity underlayColor={'#fff'} onPress={this._guestLogIn}>
             <View
               style={{
@@ -323,8 +356,8 @@ export default class LoginView extends Component {
             </View>
           </TouchableOpacity>
         </View>
-        {isLoading && this.renderLoader()}
-      </View>
+        {/* {isLoading && this.renderLoader()} */}
+      </ScrollView>
     );
   }
 }
@@ -340,47 +373,47 @@ const styles = StyleSheet.create({
     borderBottomColor: '#F5FCFF',
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    width: 400,
-    height: 50,
-    marginBottom: 20,
+    width: width * 0.4,
+    height: height * 0.1,
+    marginBottom: width * 0.02,
     flexDirection: 'row',
     alignItems: 'center',
   },
   inputs: {
-    height: 45,
-    marginLeft: 16,
+    height: height * 0.1,
+    marginLeft: width * 0.01,
     borderBottomColor: '#FFFFFF',
-    flex: 1,
+    // flex: 1,
   },
   inputIcon: {
-    width: 30,
-    height: 30,
-    marginLeft: 15,
+    width: height * 0.025,
+    height: height * 0.025,
+    marginLeft: height * 0.024,
     justifyContent: 'center',
   },
   buttonContainer: {
-    height: 45,
+    height: height * 0.1,
+    width: width * 0.4,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
-    width: 400,
+    marginBottom: width * 0.02,
   },
   loginButton: {
     backgroundColor: '#e44f3bd5',
   },
   loginText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: height * 0.026,
   },
   containers: {
     position: 'absolute',
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
   },
   horizontal: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: 10,
+    padding: height * 0.02,
   },
 });
