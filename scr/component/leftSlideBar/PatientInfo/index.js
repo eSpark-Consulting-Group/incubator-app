@@ -146,6 +146,86 @@ export default class App extends Component {
     });
   };
 
+  handlePatientSubmit = () => {
+    const {patentId, age, fatherName, weight, drName} = this.state;
+    if (
+      patentId == '' &&
+      age == '' &&
+      fatherName == '' &&
+      weight == '' &&
+      drName == ''
+    ) {
+      this.saveGuest();
+      console.log('SomeOne needs to Add Guest Patient++++++++>>>>>>>>>>');
+    } else {
+      this.saveData();
+    }
+  };
+
+  handleSubmitText() {
+    const {patentId, age, fatherName, weight, drName} = this.state;
+    if (
+      patentId == '' &&
+      age == '' &&
+      fatherName == '' &&
+      weight == '' &&
+      drName == ''
+    ) {
+      return 'Guest';
+    } else {
+      return 'Submit';
+    }
+  }
+
+  saveGuest() {
+    const RandGuest =
+      'Guest ' + (Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
+    Alert.alert('Add Guest Patient?', 'Guest Patient Will be Added', [
+      {
+        text: 'Cancel',
+        onPress: () => {
+          console.log('Cancel Pressed on Add Guest Patient');
+        },
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: () => {
+          if (!this.props.isActive) {
+            this.setState({spinner: true});
+            setTimeout(() => {
+              this.props.condActive(true);
+              this.props.handleAirTempActivate(true);
+              this.props.handleSkinTempActivate(true);
+              this.props.handleOxygenActivate(true);
+              this.props.getPatientID(RandGuest);
+              this.props.getAge('-');
+              this.props.getWeight('-');
+              this.props.getFatherName('-');
+              this.props.getDrName('-');
+              this.props.getSex(this.state.sex);
+              this.props.getWeightUnit(this.state.isKg);
+              this.props.handleIsDischarged(false);
+              ToastAndroid.show(
+                'Added Patient Succesfully',
+                ToastAndroid.SHORT,
+              );
+              this.setState({
+                isModalVisible: !this.state.isModalVisible,
+                spinner: false,
+              });
+            }, 50);
+            setTimeout(() => {
+              this.props.handleRunData(true);
+            }, 15000);
+          } else {
+            ToastAndroid.show('First Discharge Patient', ToastAndroid.SHORT);
+          }
+        },
+      },
+    ]);
+  }
+
   saveData() {
     const {patentId, age, fatherName, weight, drName} = this.state;
     if (
@@ -254,8 +334,10 @@ export default class App extends Component {
                       </Text>
                       <TouchableOpacity
                         style={style.headerbotton}
-                        onPress={this.saveData.bind(this)}>
-                        <Text style={style.bottonText}>Submit</Text>
+                        onPress={this.handlePatientSubmit}>
+                        <Text style={style.bottonText}>
+                          {this.handleSubmitText()}
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>

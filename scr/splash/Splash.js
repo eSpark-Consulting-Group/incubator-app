@@ -131,6 +131,7 @@ export default class Splash extends Component {
           backgroundColor="black"
           barStyle="default"
           hidden={true}
+          translucent
           showHideTransition={'fade'}></StatusBar>
         <ImageBackground
           source={require('../../images/mainScreen.png')}

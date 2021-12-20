@@ -980,8 +980,8 @@ export default class App extends Component {
                                 fontFamily: Fonts.BalooChettan2,
                                 width: width * 0.16,
                                 height: height * 0.07,
-                                fontSize: width * 0.015,
-                                paddingLeft: width * 0.01,
+                                fontSize: height * 0.025,
+                                padding: width * 0.01,
                                 backgroundColor: '#23212016',
                                 color: 'grey',
                               }}

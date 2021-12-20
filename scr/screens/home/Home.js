@@ -525,6 +525,7 @@ export default class App extends Component {
           backgroundColor="black"
           barStyle="default"
           hidden={true}
+          translucent
           showHideTransition={'fade'}></StatusBar>
         <Image
           source={require('../../../images/background1.jpg')}
