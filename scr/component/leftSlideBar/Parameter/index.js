@@ -107,7 +107,9 @@ export default class App extends Component {
     return (
       <View>
         {/* Component */}
-        <TouchableOpacity style={style.mainList} onPress={this.toggleModal}>
+        <TouchableOpacity
+          style={style.mainList}
+          onPress={() => this.toggleModal(this.props.isGuest)}>
           <Text style={style.listText}>Parameters</Text>
           <User name={'user'} size={width * 0.025} />
         </TouchableOpacity>
@@ -138,7 +140,7 @@ export default class App extends Component {
                 <View style={style.boxHeader}>
                   <View style={style.boxHeaderInner}>
                     <TouchableOpacity
-                      onPress={this.toggleModal}
+                      onPress={() => this.toggleModal(this.props.isGuest)}
                       style={{position: 'absolute', left: width * 0.02}}>
                       <Back
                         name={'keyboard-backspace'}

@@ -39,7 +39,6 @@ export default class LoginView extends Component {
   };
 
   componentDidMount() {
-    // this.ReadTxtFile();
     this.checkForExists();
     console.log('Kya', Platform.Version);
     if (Platform.Version > 29) this._permissionCheck();
@@ -74,10 +73,7 @@ export default class LoginView extends Component {
       } else {
         this._check();
       }
-    } catch (e) {
-      // error reading value
-      // console.warn('permission', e);
-    }
+    } catch (e) {}
   };
 
   checkForExists = async () => {
@@ -276,7 +272,7 @@ export default class LoginView extends Component {
           <TextInput
             style={styles.inputs}
             placeholder="Email"
-            // keyboardType="email-address"
+            keyboardType="email-address"
             autoComplete="off"
             autoCapitalize="none"
             autoCorrect={false}

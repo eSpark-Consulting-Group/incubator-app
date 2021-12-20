@@ -218,7 +218,7 @@ export default class App extends Component {
                         onPress={() => this.toggleModal()}>
                         <NewOpen
                           name="open-in-new"
-                          size={width * 0.035}
+                          size={height * 0.06}
                           color="black"
                         />
                       </TouchableOpacity>
@@ -230,7 +230,7 @@ export default class App extends Component {
                         }}>
                         <Alarm
                           name={'alarm-light'}
-                          size={width * 0.055}
+                          size={height * 0.09}
                           color={this.state.airTemp ? '#0ae916' : 'red'}
                         />
                       </View>
@@ -282,7 +282,7 @@ export default class App extends Component {
                       <View style={style.iconOpenRow}>
                         <NewOpen
                           name="open-in-new"
-                          size={width * 0.035}
+                          size={height * 0.06}
                           color="red"
                         />
                       </View>
@@ -294,7 +294,7 @@ export default class App extends Component {
                         }}>
                         <Alarm
                           name={'alarm-light'}
-                          size={width * 0.055}
+                          size={height * 0.09}
                           color={this.state.airTemp ? '#0ae916' : 'red'}
                         />
                       </View>
