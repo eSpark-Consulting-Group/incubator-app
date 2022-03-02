@@ -157,7 +157,7 @@ export default class App extends Component {
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={comStyle.zeroBotton}
+                      style={comStyle.zeroBotton2}
                       onPress={() => this.setState({currentWei: 0})}>
                       <Text style={comStyle.zeroText}>Auto Zero</Text>
                     </TouchableOpacity>
@@ -193,7 +193,7 @@ export default class App extends Component {
                       </View>
                     </View>
                     <View
-                      style={comStyle.zeroBotton}
+                      style={comStyle.zeroBotton2}
                       // onPress={() => this.setState({ currentWei: 0 })}
                     >
                       <Text style={comStyle.zeroText}>Auto Zero</Text>

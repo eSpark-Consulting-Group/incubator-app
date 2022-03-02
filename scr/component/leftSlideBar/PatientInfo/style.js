@@ -8,17 +8,17 @@ const {height, width} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
   mainList: {
-    height: height * 0.07,
-    width: width * 0.3,
+    height: height * 0.062,
+    width: height * 0.6,
     backgroundColor: 'white',
     marginBottom: height * 0.02,
-    elevation: width * 0.002,
-    borderWidth: width * 0.001,
+    elevation: 2,
+    borderWidth: 1,
     borderColor: '#b098b4c5',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: width * 0.01,
+    paddingHorizontal: height * 0.01,
     borderRadius: width * 0.003,
   },
   listView: {
@@ -40,7 +40,7 @@ export default styles = StyleSheet.create({
     borderBottomRightRadius: width * 0.025,
   },
   listText: {
-    fontSize: width * 0.015,
+    fontSize: height * 0.03,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     // fontFamily:'MetalMania-Regular'
@@ -78,8 +78,7 @@ export default styles = StyleSheet.create({
   },
   boxConatainer: {
     width: width * 0.47,
-    height: height * 0.65,
-    // justifyContent: "center",
+    height: height * 0.67,
   },
   boxInner: {
     flex: 1,
@@ -110,8 +109,8 @@ export default styles = StyleSheet.create({
     // marginLeft: width * .09,
   },
   headerbotton: {
-    height: height * 0.083,
-    width: width * 0.05,
+    height: height * 0.085,
+    width: height * 0.085,
     borderRadius: width * 1,
     backgroundColor: 'white',
     elevation: width * 0.005,
@@ -134,6 +133,20 @@ export default styles = StyleSheet.create({
     padding: width * 0.006,
     // justifyContent: "flex-end" ,
     // alignItems: "center"
+  },
+  passInputValue: {
+    width: height * 0.5,
+    height: height * 0.08,
+    backgroundColor: '#23212016',
+    paddingLeft: width * 0.01,
+    borderRadius: width * 0.002,
+  },
+  currentInput: {
+    fontFamily: Fonts.BalooChettan2,
+    fontSize: height * 0.037,
+    color: 'gray',
+    width: width * 0.18,
+    height: height * 0.1,
   },
   boxBodyInner: {
     // flex: 4,

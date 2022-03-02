@@ -111,7 +111,7 @@ export default class App extends Component {
           style={style.mainList}
           onPress={() => this.toggleModal(this.props.isGuest)}>
           <Text style={style.listText}>Parameters</Text>
-          <User name={'user'} size={width * 0.025} />
+          <User name={'user'} size={height * 0.04} />
         </TouchableOpacity>
         {/* Modal */}
         <Modal
@@ -126,7 +126,7 @@ export default class App extends Component {
             // backgroundColor: 'white',
             maxHeight: modalHeight,
             // maxWidth: width * 0.5,
-            top: height * -0.082,
+            top: height * -0.09,
             // left: width * 0.2,
           }}>
           <View style={style.modalInner}>
@@ -189,7 +189,7 @@ export default class App extends Component {
                     <View style={style.boxBody}>
                       <View style={style.boxBodyInner}>
                         <View style={style.switchView}>
-                          <Text style={style.switchText}>Air Temperature </Text>
+                          <Text style={style.switchText}>Air Temperature</Text>
                           <SwitchToggle
                             switchOn={this.state.airTemp}
                             onPress={() =>
@@ -239,7 +239,7 @@ export default class App extends Component {
                           }}
                         />
                         <View style={style.switchView}>
-                          <Text style={style.switchText}>SPO2/HR </Text>
+                          <Text style={style.switchText}>SPO2/HR</Text>
                           <SwitchToggle
                             switchOn={this.state.spo2hr}
                             onPress={() =>
@@ -263,7 +263,7 @@ export default class App extends Component {
                           }}
                         />
                         <View style={style.switchView}>
-                          <Text style={style.switchText}>Baby Weight </Text>
+                          <Text style={style.switchText}>Baby Weight</Text>
                           <SwitchToggle
                             switchOn={this.state.babyWeight}
                             onPress={() =>
@@ -289,7 +289,7 @@ export default class App extends Component {
                           }}
                         />
                         <View style={style.switchView}>
-                          <Text style={style.switchText}>Humidity </Text>
+                          <Text style={style.switchText}>Humidity</Text>
                           <SwitchToggle
                             switchOn={this.state.humidity}
                             onPress={() =>
@@ -313,7 +313,7 @@ export default class App extends Component {
                           }}
                         />
                         <View style={style.switchView}>
-                          <Text style={style.switchText}>Oxygen </Text>
+                          <Text style={style.switchText}>Oxygen</Text>
                           <SwitchToggle
                             switchOn={this.state.oxygen}
                             onPress={() =>

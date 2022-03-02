@@ -8,10 +8,9 @@ const {height, width} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
   TemperatureView: {
-    width: width * 0.32,
+    width: height * 0.55,
     height: height * 0.33,
-    margin: width * 0.005,
-    alignSelf: 'center',
+    margin: height * 0.005,
   },
   Temperature: {
     flex: 1,
@@ -23,14 +22,15 @@ export default styles = StyleSheet.create({
     borderColor: '#5c5c5c70',
   },
   currentTempText: {
-    fontSize: width * 0.026,
+    fontSize: height * 0.04,
     // fontWeight: "bold",
     color: '#FF420E',
     fontFamily: Fonts.BalooChettan2,
   },
   tempInputCur: {
+    flex: 1,
     // position: 'absolute',
-    fontSize: width * 0.05,
+    fontSize: height * 0.0725,
     fontFamily: Fonts.BalooChettan2,
     color: '#484149c5',
   },
@@ -50,14 +50,14 @@ export default styles = StyleSheet.create({
     right: width * 0.011,
   },
   setTemp: {
-    fontSize: width * 0.023,
+    fontSize: height * 0.04,
     fontFamily: Fonts.BalooChettan2,
     color: '#FF420E',
     top: height * 0.006,
-    marginVertical: width * 0.005,
+    marginVertical: height * 0.005,
   },
   tempInputSet: {
-    fontSize: width * 0.035,
+    fontSize: height * 0.0525,
     color: '#484149c5',
     fontFamily: Fonts.BalooChettan2,
   },
@@ -84,13 +84,14 @@ export default styles = StyleSheet.create({
     // backgroundColor:'red'
   },
   likeInputOxygen: {
-    width: width * 0.23,
+    width: height * 0.4,
     height: height * 0.1,
-    borderWidth: 1,
-    // flexDirection: "row-reverse",
     alignItems: 'center',
-    borderRadius: height * 0.005,
     justifyContent: 'center',
+    borderRadius: height * 0.005,
+    backgroundColor: 'white',
+    elevation: 2,
+    borderWidth: 0.5,
   },
   boxUperStyle: {
     flexDirection: 'row',
@@ -102,9 +103,11 @@ export default styles = StyleSheet.create({
     // marginBottom: height * .02,
   },
   likeInputMin: {
-    width: width * 0.2,
+    width: height * 0.35,
     height: height * 0.07,
-    borderWidth: 1,
+    elevation: width * 0.003,
+    backgroundColor: 'white',
+    borderWidth: 0.5,
     // flexDirection:"row-reverse",
     alignItems: 'center',
     justifyContent: 'center',

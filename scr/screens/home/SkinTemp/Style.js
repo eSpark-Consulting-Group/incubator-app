@@ -8,7 +8,7 @@ const {height, width} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
   TemperatureView: {
-    width: width * 0.32,
+    width: height * 0.55,
     height: height * 0.33,
     margin: height * 0.005,
   },
@@ -28,8 +28,9 @@ export default styles = StyleSheet.create({
     fontFamily: Fonts.BalooChettan2,
   },
   tempInputCur: {
+    flex: 1,
     // position: 'absolute',
-    fontSize: height * 0.08,
+    fontSize: height * 0.0725,
     fontFamily: Fonts.BalooChettan2,
     color: '#484149c5',
   },
@@ -51,7 +52,7 @@ export default styles = StyleSheet.create({
     marginVertical: height * 0.005,
   },
   tempInputSet: {
-    fontSize: height * 0.06,
+    fontSize: height * 0.0525,
     color: '#484149c5',
     fontFamily: Fonts.BalooChettan2,
   },
@@ -72,14 +73,13 @@ export default styles = StyleSheet.create({
     // backgroundColor:'red'
   },
   likeInputOxygen: {
-    width: width * 0.23,
+    width: height * 0.4,
     height: height * 0.1,
-    // flexDirection: "row-reverse",
     alignItems: 'center',
-    borderRadius: height * 0.005,
     justifyContent: 'center',
-    elevation: width * 0.003,
+    borderRadius: height * 0.005,
     backgroundColor: 'white',
+    elevation: 2,
     borderWidth: 0.5,
   },
   boxUperStyle: {
@@ -93,7 +93,7 @@ export default styles = StyleSheet.create({
     // marginBottom: height * .02,
   },
   likeInputMin: {
-    width: width * 0.2,
+    width: height * 0.35,
     height: height * 0.07,
     elevation: width * 0.003,
     backgroundColor: 'white',

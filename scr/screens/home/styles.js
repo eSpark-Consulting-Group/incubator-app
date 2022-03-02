@@ -59,7 +59,7 @@ export default styles = StyleSheet.create({
   },
 
   airHeading: {
-    fontSize: width * 0.03,
+    fontSize: height * 0.045,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     alignSelf: 'center',
@@ -72,7 +72,7 @@ export default styles = StyleSheet.create({
     // marginTop:width * .009,
   },
   tempHeading: {
-    fontSize: width * 0.03,
+    fontSize: height * 0.045,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     alignSelf: 'center',
@@ -85,7 +85,7 @@ export default styles = StyleSheet.create({
     // marginTop:width * .009,
   },
   humHeading: {
-    fontSize: width * 0.03,
+    fontSize: height * 0.045,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     alignSelf: 'center',
@@ -99,7 +99,7 @@ export default styles = StyleSheet.create({
     // marginTop:width * .009,
   },
   weigHeading: {
-    fontSize: width * 0.03,
+    fontSize: height * 0.045,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     alignSelf: 'center',
@@ -113,7 +113,7 @@ export default styles = StyleSheet.create({
     // marginTop:width * .009,
   },
   Spo2Heading: {
-    fontSize: width * 0.03,
+    fontSize: height * 0.045,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     alignSelf: 'center',
@@ -127,7 +127,7 @@ export default styles = StyleSheet.create({
     // marginTop:width * .009,
   },
   oxygenHeading: {
-    fontSize: width * 0.03,
+    fontSize: height * 0.045,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     alignSelf: 'center',

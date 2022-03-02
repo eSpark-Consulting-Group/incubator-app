@@ -291,7 +291,7 @@ export default class App extends Component {
         {/* Component */}
         <TouchableOpacity style={style.mainList} onPress={this.toggleModal}>
           <Text style={style.listText}>Patient Information</Text>
-          <Alarm name={'alarm-light'} size={width * 0.02} />
+          <Alarm name={'alarm-light'} size={height * 0.04} />
         </TouchableOpacity>
         {/* Modal */}
         <Spinner
@@ -353,21 +353,13 @@ export default class App extends Component {
                         }}>
                         Patient ID:
                       </Text>
-                      <TextInput
-                        placeholder="Type Here"
-                        onChangeText={val => this.setState({patentId: val})}
-                        style={{
-                          fontFamily: Fonts.BalooChettan2,
-                          borderColor: 'gray',
-                          width: width * 0.25,
-                          height: height * 0.08,
-                          color: 'gray',
-                          backgroundColor: '#23212016',
-                          fontSize: width * 0.015,
-                          paddingLeft: width * 0.01,
-                          // borderRadius: width * .002,
-                        }}
-                      />
+                      <View style={style.passInputValue}>
+                        <TextInput
+                          placeholder="Type Here"
+                          onChangeText={val => this.setState({patentId: val})}
+                          style={style.currentInput}
+                        />
+                      </View>
                     </View>
                     <View style={[style.boxBodyInner]}>
                       <Text
@@ -378,22 +370,18 @@ export default class App extends Component {
                         Weight:
                       </Text>
                       <View style={{flexDirection: 'row'}}>
-                        <TextInput
-                          placeholder="Type Here"
-                          keyboardType="number-pad"
-                          onChangeText={val => this.setState({weight: val})}
-                          style={{
-                            fontFamily: Fonts.BalooChettan2,
-                            borderColor: 'gray',
-                            width: width * 0.15,
-                            height: height * 0.08,
-                            color: 'gray',
-                            backgroundColor: '#23212016',
-                            fontSize: width * 0.015,
-                            paddingLeft: width * 0.01,
-                            borderRadius: width * 0.002,
-                          }}
-                        />
+                        <View
+                          style={[
+                            style.passInputValue,
+                            {width: height * 0.328},
+                          ]}>
+                          <TextInput
+                            placeholder="Type Here"
+                            keyboardType="number-pad"
+                            onChangeText={val => this.setState({weight: val})}
+                            style={style.currentInput}
+                          />
+                        </View>
                         <View
                           style={{
                             flexDirection: 'row',
@@ -447,22 +435,18 @@ export default class App extends Component {
                         Age:
                       </Text>
                       <View style={{flexDirection: 'row'}}>
-                        <TextInput
-                          placeholder="Type Here"
-                          keyboardType="number-pad"
-                          onChangeText={val => this.setState({age: val})}
-                          style={{
-                            fontFamily: Fonts.BalooChettan2,
-                            borderColor: 'gray',
-                            width: width * 0.15,
-                            height: height * 0.08,
-                            color: 'gray',
-                            backgroundColor: '#23212016',
-                            fontSize: width * 0.015,
-                            paddingLeft: width * 0.01,
-                            borderRadius: width * 0.002,
-                          }}
-                        />
+                        <View
+                          style={[
+                            style.passInputValue,
+                            {width: height * 0.328},
+                          ]}>
+                          <TextInput
+                            placeholder="Type Here"
+                            keyboardType="number-pad"
+                            onChangeText={val => this.setState({age: val})}
+                            style={style.currentInput}
+                          />
+                        </View>
                         <View
                           style={{
                             flexDirection: 'row',
@@ -579,22 +563,13 @@ export default class App extends Component {
                         }}>
                         Parent Name:
                       </Text>
-                      <TextInput
-                        placeholder="Father or Mother Name..."
-                        onChangeText={val => this.setState({fatherName: val})}
-                        style={{
-                          fontFamily: Fonts.BalooChettan2,
-                          borderColor: 'gray',
-                          width: width * 0.25,
-                          height: height * 0.08,
-                          color: 'gray',
-                          backgroundColor: '#23212016',
-                          fontSize: width * 0.015,
-                          paddingLeft: width * 0.01,
-                          borderRadius: width * 0.002,
-                          marginLeft: width * 0.035,
-                        }}
-                      />
+                      <View style={style.passInputValue}>
+                        <TextInput
+                          placeholder="Parent Name..."
+                          onChangeText={val => this.setState({fatherName: val})}
+                          style={style.currentInput}
+                        />
+                      </View>
                     </View>
                     <View style={style.boxBodyInner}>
                       <Text
@@ -605,23 +580,15 @@ export default class App extends Component {
                         }}>
                         Doctor Name:
                       </Text>
-                      <TextInput
-                        placeholder="Type Here"
-                        onChangeText={val =>
-                          this.setState({drName: this.state.dr + val})
-                        }
-                        style={{
-                          fontFamily: Fonts.BalooChettan2,
-                          borderColor: 'gray',
-                          width: width * 0.25,
-                          color: 'gray',
-                          height: height * 0.08,
-                          backgroundColor: '#23212016',
-                          fontSize: width * 0.015,
-                          paddingLeft: width * 0.01,
-                          borderRadius: width * 0.002,
-                        }}
-                      />
+                      <View style={style.passInputValue}>
+                        <TextInput
+                          placeholder="Type Here"
+                          onChangeText={val =>
+                            this.setState({drName: this.state.dr + val})
+                          }
+                          style={style.currentInput}
+                        />
+                      </View>
                     </View>
                   </View>
                   {/* </ScrollView> */}

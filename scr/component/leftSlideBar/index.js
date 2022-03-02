@@ -711,7 +711,11 @@ export default class App extends Component {
                   style={style.listView}
                   onPress={() => this.checkForData(this.props.isGuest)}>
                   <Text style={style.listText}>Data Record</Text>
-                  <Data name={'database'} size={width * 0.018} />
+                  <Data
+                    name={'database'}
+                    size={height * 0.038}
+                    style={{right: 2}}
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={style.listView}
@@ -833,8 +837,11 @@ export default class App extends Component {
                           }}>
                           <View
                             style={{
-                              flexDirection: 'row',
-                              margin: width * 0.02,
+                              width: width * 0.25,
+                              height: height * 0.08,
+                              backgroundColor: '#23212016',
+                              paddingLeft: width * 0.01,
+                              borderRadius: width * 0.002,
                             }}>
                             <TextInput
                               value={this.state.password}
@@ -846,13 +853,10 @@ export default class App extends Component {
                               autoCapitalize="none"
                               style={{
                                 fontFamily: Fonts.BalooChettan2,
-                                borderColor: 'gray',
-                                width: width * 0.25,
-                                height: height * 0.08,
+                                fontSize: width * 0.02,
                                 color: 'gray',
-                                backgroundColor: '#23212016',
-                                fontSize: width * 0.015,
-                                paddingLeft: width * 0.01,
+                                width: width * 0.18,
+                                height: height * 0.1,
                               }}
                             />
                           </View>
@@ -919,7 +923,7 @@ export default class App extends Component {
                   <View
                     style={{
                       width: width * 0.32,
-                      height: height * 0.45,
+                      height: height * 0.55,
                     }}>
                     <View
                       style={{

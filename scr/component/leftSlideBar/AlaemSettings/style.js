@@ -8,17 +8,17 @@ const {height, width} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
   mainList: {
-    height: width * 0.032,
-    width: width * 0.3,
+    height: height * 0.062,
+    width: height * 0.6,
     backgroundColor: 'white',
     marginBottom: height * 0.02,
-    elevation: width * 0.002,
-    borderWidth: width * 0.001,
+    elevation: 2 * 0.002,
+    borderWidth: 1.5,
     borderColor: '#b098b4c5',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: width * 0.01,
+    paddingHorizontal: height * 0.01,
     borderRadius: width * 0.003,
   },
   listView: {
@@ -40,7 +40,7 @@ export default styles = StyleSheet.create({
     borderBottomRightRadius: width * 0.025,
   },
   listText: {
-    fontSize: width * 0.015,
+    fontSize: height * 0.03,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
     // fontFamily:'MetalMania-Regular'
@@ -114,8 +114,8 @@ export default styles = StyleSheet.create({
     // marginLeft: width * .09,
   },
   headerbotton: {
-    height: height * 0.083,
-    width: width * 0.05,
+    height: height * 0.1,
+    width: height * 0.1,
     borderRadius: width * 1,
     backgroundColor: 'white',
     elevation: width * 0.005,
