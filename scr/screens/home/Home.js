@@ -8,7 +8,7 @@ import {
   StatusBar,
   Dimensions,
   TouchableOpacity,
-  Modal,
+  // Modal,
   BackHandler,
 } from 'react-native';
 import style from './styles';
@@ -29,6 +29,7 @@ import LeftSlider from '../../component/leftSlideBar/index';
 import PatientInfo from '../../component/leftSlideBar/PatientInfo/index';
 import Close from 'react-native-vector-icons/Fontisto';
 import Sound from 'react-native-sound';
+import Modal from 'react-native-modal';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -635,55 +636,87 @@ export default class App extends Component {
               right: width * 0.1,
             }}></View>
           <Modal
-            visible={this.state.msgBoxShow}
-            // visible={true}
-            transparent={true}
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
             statusBarTranslucent
-            animationType="fade">
+            isVisible={this.state.msgBoxShow}
+            // isVisible={true}
+            onBackdropPress={() => this.setState({msgBoxShow: false})}
+            // visible={this.state.msgBoxShow}
+            // visible={true}
+            // transparent={true}
+            // presentationStyle="fullScreen"
+            // statusBarTranslucent
+            // style={{backgroundColor: 'black'}}
+            // animationType="fade"
+          >
             <View
-              style={{
-                width: width * 0.4,
-                height: height * 0.4,
-                borderWidth: height * 0.005,
-                borderColor: 'red',
-                backgroundColor: '#ffffff',
-                alignSelf: 'center',
-              }}>
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
               <View
                 style={{
-                  padding: height * 0.02,
-                  justifyContent: 'flex-end',
-                  flexDirection: 'row',
+                  width: width * 0.4,
+                  height: height * 0.4,
+                  borderWidth: height * 0.005,
+                  borderColor: 'red',
+                  backgroundColor: '#ffffff',
+                  alignSelf: 'center',
+                  borderRadius: width * 0.025,
                 }}>
                 <View
                   style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginHorizontal: height * 0.05,
+                    padding: height * 0.02,
+                    justifyContent: 'flex-end',
+                    flexDirection: 'row',
                   }}>
-                  <Text style={{color: 'red', fontSize: height * 0.05}}>
-                    Alarm Alert
-                  </Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginHorizontal: height * 0.05,
+                    }}>
+                    <Text style={{color: 'red', fontSize: height * 0.05}}>
+                      Alarm Alert
+                    </Text>
+                  </View>
+                  <Close
+                    name="close-a"
+                    size={height * 0.035}
+                    color="red"
+                    onPress={() =>
+                      this.setState({msgBoxShow: !this.state.msgBoxShow})
+                    }
+                  />
                 </View>
-                <Close
-                  name="close-a"
-                  size={height * 0.035}
-                  color="red"
-                  onPress={() =>
-                    this.setState({msgBoxShow: !this.state.msgBoxShow})
-                  }
-                />
+                <View
+                  style={{
+                    flex: 7,
+                    padding: height * 0.02,
+                    alignItems: 'flex-start',
+                  }}>
+                  {this.renderAirTempAlert()}
+                  {this.renderSkinTempAlert()}
+                </View>
               </View>
-              <View
+              <TouchableOpacity
                 style={{
-                  flex: 7,
-                  padding: height * 0.02,
-                  alignItems: 'flex-start',
+                  position: 'absolute',
+                  height: height * 0.1,
+                  width: height * 0.15,
+                  backgroundColor: 'red',
+                  right: 0,
+                  bottom: 0,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 5,
+                }}
+                onPress={() => {
+                  console.log('Snoozed');
                 }}>
-                {this.renderAirTempAlert()}
-                {this.renderSkinTempAlert()}
-              </View>
+                <View>
+                  <Text style={style.snoozeText}>Snooze 2 mins</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </Modal>
           <LeftSlider
@@ -730,6 +763,7 @@ export default class App extends Component {
             getSex={this.handleSex}
             getWeightUnit={this.handleWeightUnit}
             navigation={this.props.navigation}
+            alarmFlag={this.state.msgBoxShow}
           />
         </View>
         <View style={style.inerContainer1}>
@@ -746,6 +780,7 @@ export default class App extends Component {
                 activate={this.state.airTempActivate}
                 deactivate={this.state.airTempDeactivate}
                 run={this.state.run}
+                alarmFlag={this.state.msgBoxShow}
               />
             </View>
           )}
@@ -763,6 +798,7 @@ export default class App extends Component {
                 activate={this.state.skinTempActivate}
                 deactivate={this.state.skinTempDeactivate}
                 run2={this.state.run2}
+                alarmFlag={this.state.msgBoxShow}
               />
             </View>
           )}
@@ -777,6 +813,7 @@ export default class App extends Component {
                 spo2Lower={this.state.spo2Lower}
                 hrUpper={this.state.hrUper}
                 hrLower={this.state.hrLower}
+                alarmFlag={this.state.msgBoxShow}
               />
             </View>
           )}
@@ -785,7 +822,11 @@ export default class App extends Component {
           {!this.state.switchWeight ? null : (
             <View>
               <Text style={style.weigHeading}>BabyWeight</Text>
-              <Weight value={this.state.weightSign} locker={this.state.lock} />
+              <Weight
+                value={this.state.weightSign}
+                locker={this.state.lock}
+                alarmFlag={this.state.msgBoxShow}
+              />
             </View>
           )}
 
@@ -793,7 +834,10 @@ export default class App extends Component {
           {!this.state.switchHumidity ? null : (
             <View>
               <Text style={style.Spo2Heading}>Humidity</Text>
-              <Humidity locker={this.state.lock} />
+              <Humidity
+                locker={this.state.lock}
+                alarmFlag={this.state.msgBoxShow}
+              />
             </View>
           )}
 
@@ -807,6 +851,7 @@ export default class App extends Component {
                 activate={this.state.oxygenActivate}
                 deactivate={this.state.oxygenDeactivate}
                 run3={this.state.run3}
+                alarmFlag={this.state.msgBoxShow}
               />
             </View>
           )}

@@ -10,6 +10,8 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  TextInput,
+  ScrollView,
 } from 'react-native';
 import style from './weightStyle';
 import comStyle from './weightCompStyle';
@@ -19,7 +21,7 @@ import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import Status from 'react-native-vector-icons/MaterialIcons';
 import Send from 'react-native-vector-icons/FontAwesome';
-import {TextInput, ScrollView} from 'react-native-gesture-handler';
+// import {TextInput, ScrollView} from 'react-native-gesture-handler';
 import SwitchToggle from 'react-native-switch-toggle';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Fonts} from '../../../utils/fonts';
@@ -209,56 +211,60 @@ export default class App extends Component {
           animationIn="bounceIn"
           animationOut="bounceOut"
           statusBarTranslucent
-          isVisible={this.state.toggle}
-          style={style.insertWeightModal}>
-          <View style={style.insertWeightContainer}>
-            <View style={style.insertWeightInner}>
-              <View style={style.insertWeightHeader}>
-                <View style={style.inserWeightHeaderInner}>
-                  <TouchableOpacity
-                    onPress={this.openToggel}
-                    style={style.inserBackBotton}>
-                    <Back
-                      name={'keyboard-backspace'}
-                      size={width * 0.03}
-                      color="white"
-                    />
-                  </TouchableOpacity>
-                  <Text style={style.inserHeaderHeading}>Baby Weight</Text>
-                </View>
-              </View>
-              <View style={style.inserBodyConatiner}>
-                <View style={style.inserBodyInner}>
-                  <Text style={style.inserTypeHeading}>Type Weight</Text>
-                  <View style={style.inserTextinputView}>
-                    <TextInput
-                      placeholder="Type Here"
-                      keyboardType="number-pad"
-                      maxLength={3}
-                      style={style.inserTextinput}
-                      onChangeText={e => this.setState({currentWei: e})}
-                    />
+          isVisible={this.props.alarmFlag ? false : this.state.toggle}
+          // style={style.insertWeightModal}
+        >
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={style.insertWeightContainer}>
+              <View style={style.insertWeightInner}>
+                <View style={style.insertWeightHeader}>
+                  <View style={style.inserWeightHeaderInner}>
+                    <TouchableOpacity
+                      onPress={this.openToggel}
+                      style={style.inserBackBotton}>
+                      <Back
+                        name={'keyboard-backspace'}
+                        size={width * 0.03}
+                        color="white"
+                      />
+                    </TouchableOpacity>
+                    <Text style={style.inserHeaderHeading}>Baby Weight</Text>
                   </View>
-                  {!this.props.value ? (
-                    <Text style={style.inserConditionUnit}>kg</Text>
-                  ) : (
-                    <Text style={style.inserConditionUnit}>£</Text>
-                  )}
                 </View>
-              </View>
-              <View style={style.inserFooterContainer}>
-                <View style={style.inserFooterInner}>
-                  <TouchableOpacity
-                    style={style.inserSubmitBottonView}
-                    onPress={this.submitCondition}>
-                    <Text style={style.inserSubmitText}>Submit</Text>
-                    <Check
-                      name={'checkcircle'}
-                      size={width * 0.012}
-                      color="white"
-                      style={style.check}
-                    />
-                  </TouchableOpacity>
+                <View style={style.inserBodyConatiner}>
+                  <View style={style.inserBodyInner}>
+                    <Text style={style.inserTypeHeading}>Type Weight</Text>
+                    <View style={style.inserTextinputView}>
+                      <TextInput
+                        placeholder="Type Here"
+                        keyboardType="number-pad"
+                        maxLength={3}
+                        style={style.inserTextinput}
+                        onChangeText={e => this.setState({currentWei: e})}
+                      />
+                    </View>
+                    {!this.props.value ? (
+                      <Text style={style.inserConditionUnit}>kg</Text>
+                    ) : (
+                      <Text style={style.inserConditionUnit}>£</Text>
+                    )}
+                  </View>
+                </View>
+                <View style={style.inserFooterContainer}>
+                  <View style={style.inserFooterInner}>
+                    <TouchableOpacity
+                      style={style.inserSubmitBottonView}
+                      onPress={this.submitCondition}>
+                      <Text style={style.inserSubmitText}>Submit</Text>
+                      <Check
+                        name={'checkcircle'}
+                        size={width * 0.012}
+                        color="white"
+                        style={style.check}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
@@ -269,7 +275,7 @@ export default class App extends Component {
           animationOut="slideOutDown"
           statusBarTranslucent
           onBackdropPress={() => this.setState({isModalVisible: false})}
-          isVisible={this.state.isModalVisible}
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
             <View style={style.haiderContainer}>

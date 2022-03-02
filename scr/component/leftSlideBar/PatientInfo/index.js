@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Alert,
   ToastAndroid,
+  TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
 import style from './style';
@@ -31,7 +32,7 @@ import XLSX from 'xlsx';
 
 // import SysSettings from 'react-native-vector-icons/Octicons';
 import {Fonts} from '../../../utils/fonts';
-import {TextInput, ScrollView} from 'react-native-gesture-handler';
+// import {TextInput, ScrollView} from 'react-native-gesture-handler';
 
 var clc = require('cli-color');
 
@@ -42,6 +43,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bottoms: false,
       isModalVisible: false,
       LockorUnlo: false,
       toggleWeight: false,
@@ -87,7 +89,14 @@ export default class App extends Component {
   //   checked: 'first',
   // };
   toggleModal = () => {
-    this.setState({isModalVisible: !this.state.isModalVisible});
+    this.setState({
+      isModalVisible: !this.state.isModalVisible,
+      patentId: '',
+      weight: '',
+      age: '',
+      fatherName: '',
+      drName: '',
+    });
   };
 
   // collectData = () => {
@@ -304,7 +313,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.state.isModalVisible}
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
           // isVisible={true}
           // style={style.modalContainer}
         >
@@ -314,7 +323,7 @@ export default class App extends Component {
               alignItems: 'center',
               justifyContent: 'center',
             }}
-            keyboardVerticalOffset={-100}
+            keyboardVerticalOffset={this.state.bottoms ? -60 : -100}
             behavior="position">
             <View style={style.modalInner}>
               <View style={style.boxConatainer}>
@@ -358,6 +367,14 @@ export default class App extends Component {
                           placeholder="Type Here"
                           onChangeText={val => this.setState({patentId: val})}
                           style={style.currentInput}
+                          onFocus={() => {
+                            this.setState({bottoms: false});
+                            console.log('chala');
+                          }}
+                          onBlur={() => {
+                            this.setState({bottoms: true});
+                            console.log('chala');
+                          }}
                         />
                       </View>
                     </View>
@@ -380,6 +397,10 @@ export default class App extends Component {
                             keyboardType="number-pad"
                             onChangeText={val => this.setState({weight: val})}
                             style={style.currentInput}
+                            onFocus={() => {
+                              this.setState({bottoms: false});
+                              console.log('chala');
+                            }}
                           />
                         </View>
                         <View
@@ -445,6 +466,10 @@ export default class App extends Component {
                             keyboardType="number-pad"
                             onChangeText={val => this.setState({age: val})}
                             style={style.currentInput}
+                            onFocus={() => {
+                              this.setState({bottoms: false});
+                              console.log('chala');
+                            }}
                           />
                         </View>
                         <View
@@ -568,6 +593,10 @@ export default class App extends Component {
                           placeholder="Parent Name..."
                           onChangeText={val => this.setState({fatherName: val})}
                           style={style.currentInput}
+                          onFocus={() => {
+                            this.setState({bottoms: true});
+                            console.log('chala');
+                          }}
                         />
                       </View>
                     </View>

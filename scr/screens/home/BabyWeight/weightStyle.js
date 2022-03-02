@@ -126,8 +126,8 @@ export default styles = StyleSheet.create({
   insertWeightInner: {
     flex: 1,
     backgroundColor: 'white',
-    borderBottomLeftRadius: width * 0.005,
-    borderTopRightRadius: width * 0.005,
+    borderBottomLeftRadius: width * 0.025,
+    borderTopRightRadius: width * 0.025,
     borderTopLeftRadius: width * 0.025,
     borderBottomRightRadius: width * 0.025,
     elevation: width * 0.01,
@@ -139,7 +139,7 @@ export default styles = StyleSheet.create({
   },
   inserWeightHeaderInner: {
     flex: 1,
-    borderTopRightRadius: width * 0.005,
+    borderTopRightRadius: width * 0.025,
     borderTopLeftRadius: width * 0.025,
     justifyContent: 'center',
     paddingLeft: width * 0.02,
@@ -188,7 +188,7 @@ export default styles = StyleSheet.create({
   },
   inserTextinput: {
     fontFamily: Fonts.BalooChettan2,
-    fontSize: width * 0.02,
+    fontSize: height * 0.03,
     color: '#e44f3bd5',
     textAlign: 'center',
   },

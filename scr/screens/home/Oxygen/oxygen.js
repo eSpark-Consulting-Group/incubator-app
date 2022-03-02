@@ -194,7 +194,7 @@ export default class App extends Component {
           onBackdropPress={() => this.toggleModal()}
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
-          isVisible={this.state.isModalVisible}
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
             <View style={style.haiderContainer}>

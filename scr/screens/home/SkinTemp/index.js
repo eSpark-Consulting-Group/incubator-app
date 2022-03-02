@@ -319,79 +319,83 @@ export default class App extends Component {
           animationIn="bounceIn"
           animationOut="bounceOut"
           statusBarTranslucent
-          isVisible={this.state.toggle}
-          style={modalStyle.insertWeightModal}>
-          <View style={modalStyle.insertWeightContainer}>
-            <View style={modalStyle.insertWeightInner}>
-              <View style={modalStyle.insertWeightHeader}>
-                <View style={modalStyle.inserWeightHeaderInner}>
-                  <TouchableOpacity
-                    onPress={this.openToggel}
-                    style={modalStyle.inserBackBotton}>
-                    <Back
-                      name={'keyboard-backspace'}
-                      size={width * 0.03}
-                      color="white"
-                    />
-                  </TouchableOpacity>
-                  <Text style={modalStyle.inserHeaderHeading}>
-                    Skin Temperature
-                  </Text>
-                </View>
-              </View>
-              <View style={modalStyle.inserBodyConatiner}>
-                <View style={modalStyle.inserBodyInner}>
-                  <Text style={modalStyle.inserTypeHeading}>
-                    Current Temperature
-                  </Text>
-                  <View style={modalStyle.inserTextinputView}>
-                    <TextInput
-                      placeholder="Type Here"
-                      keyboardType="number-pad"
-                      maxLength={3}
-                      style={modalStyle.inserTextinput}
-                      onChangeText={e => this.setState({currentTemp: e})}
-                    />
+          isVisible={this.props.alarmFlag ? false : this.state.toggle}
+          // style={modalStyle.insertWeightModal}
+        >
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={modalStyle.insertWeightContainer}>
+              <View style={modalStyle.insertWeightInner}>
+                <View style={modalStyle.insertWeightHeader}>
+                  <View style={modalStyle.inserWeightHeaderInner}>
+                    <TouchableOpacity
+                      onPress={this.openToggel}
+                      style={modalStyle.inserBackBotton}>
+                      <Back
+                        name={'keyboard-backspace'}
+                        size={width * 0.03}
+                        color="white"
+                      />
+                    </TouchableOpacity>
+                    <Text style={modalStyle.inserHeaderHeading}>
+                      Skin Temperature
+                    </Text>
                   </View>
-                  {!this.props.value ? (
-                    <Text style={style.centiLower}>{'\u2103'}</Text>
-                  ) : (
-                    <Text style={style.centiLower}>{'\u2109'}</Text>
-                  )}
                 </View>
-                <View style={modalStyle.inserBodyInner}>
-                  <Text style={modalStyle.inserTypeHeading}>
-                    Set Temperature
-                  </Text>
-                  <View style={modalStyle.inserTextinputView}>
-                    <TextInput
-                      placeholder="Type Here"
-                      keyboardType="number-pad"
-                      maxLength={3}
-                      style={modalStyle.inserTextinput}
-                      onChangeText={e => this.setState({setTemp: e})}
-                    />
+                <View style={modalStyle.inserBodyConatiner}>
+                  <View style={modalStyle.inserBodyInner}>
+                    <Text style={modalStyle.inserTypeHeading}>
+                      Current Temperature
+                    </Text>
+                    <View style={modalStyle.inserTextinputView}>
+                      <TextInput
+                        placeholder="Type Here"
+                        keyboardType="number-pad"
+                        maxLength={3}
+                        style={modalStyle.inserTextinput}
+                        onChangeText={e => this.setState({currentTemp: e})}
+                      />
+                    </View>
+                    {!this.props.value ? (
+                      <Text style={style.centiLower}>{'\u2103'}</Text>
+                    ) : (
+                      <Text style={style.centiLower}>{'\u2109'}</Text>
+                    )}
                   </View>
-                  {!this.props.value ? (
-                    <Text style={style.centiLower}>{'\u2103'}</Text>
-                  ) : (
-                    <Text style={style.centiLower}>{'\u2109'}</Text>
-                  )}
+                  <View style={modalStyle.inserBodyInner}>
+                    <Text style={modalStyle.inserTypeHeading}>
+                      Set Temperature
+                    </Text>
+                    <View style={modalStyle.inserTextinputView}>
+                      <TextInput
+                        placeholder="Type Here"
+                        keyboardType="number-pad"
+                        maxLength={3}
+                        style={modalStyle.inserTextinput}
+                        onChangeText={e => this.setState({setTemp: e})}
+                      />
+                    </View>
+                    {!this.props.value ? (
+                      <Text style={style.centiLower}>{'\u2103'}</Text>
+                    ) : (
+                      <Text style={style.centiLower}>{'\u2109'}</Text>
+                    )}
+                  </View>
                 </View>
-              </View>
-              <View style={modalStyle.inserFooterContainer}>
-                <View style={modalStyle.inserFooterInner}>
-                  <TouchableOpacity
-                    style={modalStyle.inserSubmitBottonView}
-                    onPress={this.submitCondition}>
-                    <Text style={modalStyle.inserSubmitText}>Submit</Text>
-                    <Check
-                      name={'checkcircle'}
-                      size={width * 0.012}
-                      color="white"
-                      style={modalStyle.check}
-                    />
-                  </TouchableOpacity>
+                <View style={modalStyle.inserFooterContainer}>
+                  <View style={modalStyle.inserFooterInner}>
+                    <TouchableOpacity
+                      style={modalStyle.inserSubmitBottonView}
+                      onPress={this.submitCondition}>
+                      <Text style={modalStyle.inserSubmitText}>Submit</Text>
+                      <Check
+                        name={'checkcircle'}
+                        size={width * 0.012}
+                        color="white"
+                        style={modalStyle.check}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
@@ -401,7 +405,7 @@ export default class App extends Component {
           animationIn="slideInUp"
           animationOut="slideOutDown"
           statusBarTranslucent
-          isVisible={this.state.isModalVisible}
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
           onBackdropPress={() => this.setState({isModalVisible: false})}
           style={modalStyle.modalMainContainer}>
           <View style={{flex: 1}}>

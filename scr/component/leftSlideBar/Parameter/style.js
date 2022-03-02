@@ -74,17 +74,19 @@ export default styles = StyleSheet.create({
 
   modalContainer: {
     elevation: width * 0.005,
-    borderBottomLeftRadius: width * 0.025,
-    borderBottomRightRadius: width * 0.025,
+    // borderBottomLeftRadius: width * 0.025,
+    borderRadius: width * 0.025,
     backgroundColor: 'white',
     maxHeight: height * 0.59,
     maxWidth: width * 0.5,
-    top: height * -0.082,
+    // top: height * -0.082,
     left: width * 0.2,
   },
   modalInner: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: width * 0.002,
   },
   passInputValue: {
     width: width * 0.25,
@@ -100,8 +102,8 @@ export default styles = StyleSheet.create({
   boxInner: {
     flex: 1,
     backgroundColor: 'white',
-    borderBottomLeftRadius: width * 0.025,
-    borderBottomRightRadius: width * 0.025,
+    borderRadius: width * 0.025,
+    // borderBottomRightRadius: width * 0.025,
     elevation: 2,
   },
   boxHeader: {
@@ -110,6 +112,8 @@ export default styles = StyleSheet.create({
   },
   boxHeaderInner: {
     flex: 1,
+    borderTopRightRadius: width * 0.025,
+    borderTopLeftRadius: width * 0.025,
     justifyContent: 'center',
     // paddingHorizontal: width * .02,
     alignItems: 'center',

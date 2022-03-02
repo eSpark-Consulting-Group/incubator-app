@@ -593,7 +593,7 @@ export default class App extends Component {
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
           onBackdropPress={() => this.toggleModal()}
-          isVisible={this.state.isModalVisible}
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
             <View style={style.modalHeaderContainer}>
@@ -640,6 +640,7 @@ export default class App extends Component {
                   hrLower={this.handleHRLower}
                   hrUper={this.handleHrUpper}
                   spo2Lower={this.handleSpo2Lower}
+                  alarmFlag={this.props.alarmFlag}
                 />
                 <TouchableOpacity style={style.listView}>
                   <Text style={style.listText}>System Setting</Text>
@@ -658,7 +659,7 @@ export default class App extends Component {
                       value={this.state.brightness}
                       onValueChange={brightness => {
                         this.setState({brightness});
-                        SystemSetting.setBrightness(brightness);
+                        SystemSetting.setAppBrightness(brightness);
                       }}
                     />
                   </View>
@@ -679,6 +680,7 @@ export default class App extends Component {
                   oxygenFlag={this.props.oxygenFlag}
                   weightFlag={this.props.weightFlag}
                   isGuest={this.props.isGuest}
+                  alarmFlag={this.props.alarmFlag}
                 />
                 <PatientInfo
                   oxy={this.props.oxy}
@@ -698,6 +700,7 @@ export default class App extends Component {
                   isActive={this.state.isActive}
                   handleIsDischarged={this.handleIsDischarged}
                   handleRunData={this.handleRunData}
+                  alarmFlag={this.props.alarmFlag}
                 />
                 {/* <TouchableOpacity style={style.listView}>
                                     <Text style={style.listText}>Patient Information</Text>
@@ -749,7 +752,7 @@ export default class App extends Component {
               animationIn="slideInRight"
               animationOut="slideOutRight"
               statusBarTranslucent
-              isVisible={this.state.checker}
+              isVisible={this.props.alarmFlag ? false : this.state.checker}
               // isVisible={true}
               // style={{
               //   elevation: width * 0.005,
@@ -907,30 +910,45 @@ export default class App extends Component {
               animationIn="slideInDown"
               animationOut="slideOutUp"
               statusBarTranslucent
-              isVisible={this.state.showDataModal}
+              isVisible={
+                this.props.alarmFlag ? false : this.state.showDataModal
+              }
               // isVisible={true}
             >
               <KeyboardAvoidingView
                 style={{
                   height: height,
                   alignItems: 'center',
-                }}>
+                  justifyContent: 'center',
+                }}
+                keyboardVerticalOffset={-120}
+                behavior="position">
                 <View
                   style={{
                     flex: 1,
                     alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
                   <View
                     style={{
                       width: width * 0.32,
                       height: height * 0.55,
                     }}>
+                    {/* <View
+                      style={{
+                        width: width * 0.32,
+                        height: StatusBar.currentHeight,
+                        backgroundColor: 'pink',
+                        borderBottomWidth: 1,
+                        borderColor: 'red',
+                      }}
+                    /> */}
                     <View
                       style={{
                         flex: 1,
                         backgroundColor: 'white',
-                        borderBottomRightRadius: width * 0.025,
-                        borderBottomLeftRadius: width * 0.025,
+                        borderRadius: width * 0.025,
+                        // borderBottomLeftRadius: width * 0.025,
                         elevation: width * 0.015,
                       }}>
                       <View
@@ -1051,7 +1069,9 @@ export default class App extends Component {
               animationIn="slideInDown"
               animationOut="slideOutUp"
               statusBarTranslucent
-              isVisible={this.state.showListModal}
+              isVisible={
+                this.props.alarmFlag ? false : this.state.showListModal
+              }
               // isVisible={true}
             >
               <View style={{height: height}}>
@@ -1059,23 +1079,23 @@ export default class App extends Component {
                   style={{
                     flex: 1,
                     alignItems: 'center',
-                    // justifyContent: 'center',
-                    borderBottomRightRadius: width * 0.025,
-                    borderBottomLeftRadius: width * 0.025,
+                    justifyContent: 'center',
+                    borderRadius: width * 0.025,
+                    // borderBottomLeftRadius: width * 0.025,
                   }}>
                   <View
                     style={{
                       width: width * 0.75,
                       height: height * 0.75,
-                      borderBottomRightRadius: width * 0.025,
-                      borderBottomLeftRadius: width * 0.025,
+                      borderRadius: width * 0.025,
+                      // borderBottomLeftRadius: width * 0.025,
                     }}>
                     <View
                       style={{
                         flex: 1,
                         backgroundColor: 'white',
-                        borderBottomRightRadius: width * 0.025,
-                        borderBottomLeftRadius: width * 0.025,
+                        borderRadius: width * 0.025,
+                        // borderBottomLeftRadius: width * 0.025,
                         elevation: width * 0.015,
                       }}>
                       <View
@@ -1197,7 +1217,7 @@ export default class App extends Component {
               // onBackdropPress={() => this.toggleModalLock()}
               // onSwipeComplete={() => this.toggleModalLock()}
               // swipeDirection="right"
-              isVisible={this.state.LockorUnlo}
+              isVisible={this.props.alarmFlag ? false : this.state.LockorUnlo}
               // isVisible={true}
               // style={{
               //   elevation: width * 0.005,

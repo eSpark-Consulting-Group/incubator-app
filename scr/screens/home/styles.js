@@ -147,4 +147,9 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  snoozeText: {
+    color: 'white',
+    fontSize: height * 0.022,
+    fontFamily: Fonts.BalooChettanBold,
+  },
 });

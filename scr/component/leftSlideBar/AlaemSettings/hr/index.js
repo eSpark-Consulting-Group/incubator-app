@@ -85,7 +85,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.state.airTemp}
+          isVisible={this.props.alarmFlag ? false : this.state.airTemp}
           // style={style.modal}
         >
           <KeyboardAvoidingView

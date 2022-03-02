@@ -6,8 +6,10 @@ import {
   View,
   Image,
   StatusBar,
+  TextInput,
   Dimensions,
   TouchableOpacity,
+  KeyboardAvoidingView,
   Alert,
   ToastAndroid,
 } from 'react-native';
@@ -20,7 +22,7 @@ import User from 'react-native-vector-icons/EvilIcons';
 import SelectMultiple from 'react-native-select-multiple';
 import {Fonts} from '../../../utils/fonts';
 
-import {TextInput} from 'react-native-gesture-handler';
+// import {TextInput} from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
 const {height, width} = Dimensions.get('window');
 const Parameter = [
@@ -98,8 +100,8 @@ export default class App extends Component {
       : (heading1 = 'Parameter');
     let modalHeight;
     !this.state.turnOnparameter
-      ? (modalHeight = height * 0.5)
-      : (modalHeight = height * 0.68);
+      ? (modalHeight = height)
+      : (modalHeight = height);
     let modalInnerHeight;
     !this.state.turnOnparameter
       ? (modalInnerHeight = height * 0.47)
@@ -118,7 +120,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.state.isModalVisible}
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
           style={{
             // elevation: width * 0.005,
             // borderBottomLeftRadius: width * 0.025,
@@ -126,224 +128,242 @@ export default class App extends Component {
             // backgroundColor: 'white',
             maxHeight: modalHeight,
             // maxWidth: width * 0.5,
-            top: height * -0.09,
+            // top: height * -0.09,
             // left: width * 0.2,
           }}>
-          <View style={style.modalInner}>
-            <View
-              style={{
-                width: width * 0.47,
-                height: modalInnerHeight,
-              }}>
-              <View style={style.boxInner}>
-                {/* Box Header */}
-                <View style={style.boxHeader}>
-                  <View style={style.boxHeaderInner}>
-                    <TouchableOpacity
-                      onPress={() => this.toggleModal(this.props.isGuest)}
-                      style={{position: 'absolute', left: width * 0.02}}>
-                      <Back
-                        name={'keyboard-backspace'}
-                        size={width * 0.04}
-                        color="white"
+          <KeyboardAvoidingView
+            style={{
+              height: height,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            keyboardVerticalOffset={-100}
+            behavior="position">
+            <View style={style.modalInner}>
+              <View
+                style={{
+                  width: width * 0.47,
+                  height: modalInnerHeight,
+                }}>
+                <View style={style.boxInner}>
+                  {/* Box Header */}
+                  <View style={style.boxHeader}>
+                    <View style={style.boxHeaderInner}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          heading1 == 'Parameter'
+                            ? (this.setState({turnOnparameter: false}),
+                              this.toggleModal(this.props.isGuest))
+                            : this.toggleModal(this.props.isGuest)
+                        }
+                        style={{position: 'absolute', left: width * 0.02}}>
+                        <Back
+                          name={'keyboard-backspace'}
+                          size={width * 0.04}
+                          color="#fff"
+                        />
+                      </TouchableOpacity>
+                      <Text style={style.headerHeading}>{heading1}</Text>
+                    </View>
+                  </View>
+                  {/* Box Body */}
+                  {!this.state.turnOnparameter ? (
+                    <View>
+                      <View style={style.boxBodyAlert}>
+                        <View style={style.boxBodyInner}>
+                          <Text style={style.currentHeading}>Password</Text>
+                          <View style={style.passInputValue}>
+                            <TextInput
+                              value={this.state.password}
+                              placeholder="Your Password"
+                              secureTextEntry={true}
+                              style={style.currentInput}
+                              onChangeText={password =>
+                                this.setState({password})
+                              }
+                            />
+                          </View>
+                        </View>
+                      </View>
+                      <View style={style.boxFooter}>
+                        <View style={style.boxFooterInner}>
+                          <TouchableOpacity
+                            style={style.headerbotton}
+                            onPress={this._Signin}>
+                            <Text style={style.bottonText}>Login</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  ) : (
+                    <View>
+                      <Spinner
+                        visible={this.state.loading}
+                        textContent={'Loading...'}
+                        textStyle={{color: 'red'}}
+                        color="red"
                       />
-                    </TouchableOpacity>
-                    <Text style={style.headerHeading}>{heading1}</Text>
-                  </View>
+                      <View style={style.boxBody}>
+                        <View style={style.boxBodyInner}>
+                          <View style={style.switchView}>
+                            <Text style={style.switchText}>
+                              Air Temperature
+                            </Text>
+                            <SwitchToggle
+                              switchOn={this.state.airTemp}
+                              onPress={() =>
+                                this.setState({airTemp: !this.state.airTemp})
+                              }
+                              useNativeDriver={false}
+                              backgroundColorOn={'#555555'}
+                              circleColorOn={'#f68d80fd'}
+                              backgroundColorOff={'#555555'}
+                              circleColorOff={'white'}
+                              containerStyle={style.toggleContainer}
+                              circleStyle={style.toggleCircle}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              borderWidth: 1,
+                              borderColor: '#6b6a6a59',
+                              width: width * 0.47,
+                              marginVertical: height * 0.01,
+                            }}
+                          />
+                          <View style={style.switchView}>
+                            <Text style={style.switchText}>
+                              Skin Temperature{' '}
+                            </Text>
+                            <SwitchToggle
+                              switchOn={this.state.skinTemp}
+                              onPress={() =>
+                                this.setState({skinTemp: !this.state.skinTemp})
+                              }
+                              useNativeDriver={false}
+                              backgroundColorOn={'#555555'}
+                              circleColorOn={'#f68d80fd'}
+                              backgroundColorOff={'#555555'}
+                              circleColorOff={'white'}
+                              containerStyle={style.toggleContainer}
+                              circleStyle={style.toggleCircle}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              borderWidth: 1,
+                              borderColor: '#6b6a6a59',
+                              width: width * 0.47,
+                              marginVertical: height * 0.01,
+                            }}
+                          />
+                          <View style={style.switchView}>
+                            <Text style={style.switchText}>SPO2/HR</Text>
+                            <SwitchToggle
+                              switchOn={this.state.spo2hr}
+                              onPress={() =>
+                                this.setState({spo2hr: !this.state.spo2hr})
+                              }
+                              useNativeDriver={false}
+                              backgroundColorOn={'#555555'}
+                              circleColorOn={'#f68d80fd'}
+                              backgroundColorOff={'#555555'}
+                              circleColorOff={'white'}
+                              containerStyle={style.toggleContainer}
+                              circleStyle={style.toggleCircle}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              borderWidth: 1,
+                              borderColor: '#6b6a6a59',
+                              width: width * 0.47,
+                              marginVertical: height * 0.01,
+                            }}
+                          />
+                          <View style={style.switchView}>
+                            <Text style={style.switchText}>Baby Weight</Text>
+                            <SwitchToggle
+                              switchOn={this.state.babyWeight}
+                              onPress={() =>
+                                this.setState({
+                                  babyWeight: !this.state.babyWeight,
+                                })
+                              }
+                              useNativeDriver={false}
+                              backgroundColorOn={'#555555'}
+                              circleColorOn={'#f68d80fd'}
+                              backgroundColorOff={'#555555'}
+                              circleColorOff={'white'}
+                              containerStyle={style.toggleContainer}
+                              circleStyle={style.toggleCircle}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              borderWidth: 1,
+                              borderColor: '#6b6a6a59',
+                              width: width * 0.47,
+                              marginVertical: height * 0.01,
+                            }}
+                          />
+                          <View style={style.switchView}>
+                            <Text style={style.switchText}>Humidity</Text>
+                            <SwitchToggle
+                              switchOn={this.state.humidity}
+                              onPress={() =>
+                                this.setState({humidity: !this.state.humidity})
+                              }
+                              useNativeDriver={false}
+                              backgroundColorOn={'#555555'}
+                              circleColorOn={'#f68d80fd'}
+                              backgroundColorOff={'#555555'}
+                              circleColorOff={'white'}
+                              containerStyle={style.toggleContainer}
+                              circleStyle={style.toggleCircle}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              borderWidth: 1,
+                              borderColor: '#6b6a6a59',
+                              width: width * 0.47,
+                              marginVertical: height * 0.01,
+                            }}
+                          />
+                          <View style={style.switchView}>
+                            <Text style={style.switchText}>Oxygen</Text>
+                            <SwitchToggle
+                              switchOn={this.state.oxygen}
+                              onPress={() =>
+                                this.setState({oxygen: !this.state.oxygen})
+                              }
+                              useNativeDriver={false}
+                              backgroundColorOn={'#555555'}
+                              circleColorOn={'#f68d80fd'}
+                              backgroundColorOff={'#555555'}
+                              circleColorOff={'white'}
+                              containerStyle={style.toggleContainer}
+                              circleStyle={style.toggleCircle}
+                            />
+                          </View>
+                        </View>
+                      </View>
+                      <View style={style.boxFooter}>
+                        <View style={style.boxFooterInner}>
+                          <TouchableOpacity
+                            style={style.headerbotton}
+                            onPress={this._logOut}>
+                            <Text style={style.bottonText}>Log Out</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  )}
                 </View>
-                {/* Box Body */}
-                {!this.state.turnOnparameter ? (
-                  <View>
-                    <View style={style.boxBodyAlert}>
-                      <View style={style.boxBodyInner}>
-                        <Text style={style.currentHeading}>Password</Text>
-                        <View style={style.passInputValue}>
-                          <TextInput
-                            value={this.state.password}
-                            placeholder="Your Password"
-                            secureTextEntry={true}
-                            style={style.currentInput}
-                            onChangeText={password => this.setState({password})}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                    <View style={style.boxFooter}>
-                      <View style={style.boxFooterInner}>
-                        <TouchableOpacity
-                          style={style.headerbotton}
-                          onPress={this._Signin}>
-                          <Text style={style.bottonText}>Login</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                ) : (
-                  <View>
-                    <Spinner
-                      visible={this.state.loading}
-                      textContent={'Loading...'}
-                      textStyle={{color: 'red'}}
-                      color="red"
-                    />
-                    <View style={style.boxBody}>
-                      <View style={style.boxBodyInner}>
-                        <View style={style.switchView}>
-                          <Text style={style.switchText}>Air Temperature</Text>
-                          <SwitchToggle
-                            switchOn={this.state.airTemp}
-                            onPress={() =>
-                              this.setState({airTemp: !this.state.airTemp})
-                            }
-                            useNativeDriver={false}
-                            backgroundColorOn={'#555555'}
-                            circleColorOn={'#f68d80fd'}
-                            backgroundColorOff={'#555555'}
-                            circleColorOff={'white'}
-                            containerStyle={style.toggleContainer}
-                            circleStyle={style.toggleCircle}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: '#6b6a6a59',
-                            width: width * 0.47,
-                            marginVertical: height * 0.01,
-                          }}
-                        />
-                        <View style={style.switchView}>
-                          <Text style={style.switchText}>
-                            Skin Temperature{' '}
-                          </Text>
-                          <SwitchToggle
-                            switchOn={this.state.skinTemp}
-                            onPress={() =>
-                              this.setState({skinTemp: !this.state.skinTemp})
-                            }
-                            useNativeDriver={false}
-                            backgroundColorOn={'#555555'}
-                            circleColorOn={'#f68d80fd'}
-                            backgroundColorOff={'#555555'}
-                            circleColorOff={'white'}
-                            containerStyle={style.toggleContainer}
-                            circleStyle={style.toggleCircle}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: '#6b6a6a59',
-                            width: width * 0.47,
-                            marginVertical: height * 0.01,
-                          }}
-                        />
-                        <View style={style.switchView}>
-                          <Text style={style.switchText}>SPO2/HR</Text>
-                          <SwitchToggle
-                            switchOn={this.state.spo2hr}
-                            onPress={() =>
-                              this.setState({spo2hr: !this.state.spo2hr})
-                            }
-                            useNativeDriver={false}
-                            backgroundColorOn={'#555555'}
-                            circleColorOn={'#f68d80fd'}
-                            backgroundColorOff={'#555555'}
-                            circleColorOff={'white'}
-                            containerStyle={style.toggleContainer}
-                            circleStyle={style.toggleCircle}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: '#6b6a6a59',
-                            width: width * 0.47,
-                            marginVertical: height * 0.01,
-                          }}
-                        />
-                        <View style={style.switchView}>
-                          <Text style={style.switchText}>Baby Weight</Text>
-                          <SwitchToggle
-                            switchOn={this.state.babyWeight}
-                            onPress={() =>
-                              this.setState({
-                                babyWeight: !this.state.babyWeight,
-                              })
-                            }
-                            useNativeDriver={false}
-                            backgroundColorOn={'#555555'}
-                            circleColorOn={'#f68d80fd'}
-                            backgroundColorOff={'#555555'}
-                            circleColorOff={'white'}
-                            containerStyle={style.toggleContainer}
-                            circleStyle={style.toggleCircle}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: '#6b6a6a59',
-                            width: width * 0.47,
-                            marginVertical: height * 0.01,
-                          }}
-                        />
-                        <View style={style.switchView}>
-                          <Text style={style.switchText}>Humidity</Text>
-                          <SwitchToggle
-                            switchOn={this.state.humidity}
-                            onPress={() =>
-                              this.setState({humidity: !this.state.humidity})
-                            }
-                            useNativeDriver={false}
-                            backgroundColorOn={'#555555'}
-                            circleColorOn={'#f68d80fd'}
-                            backgroundColorOff={'#555555'}
-                            circleColorOff={'white'}
-                            containerStyle={style.toggleContainer}
-                            circleStyle={style.toggleCircle}
-                          />
-                        </View>
-                        <View
-                          style={{
-                            borderWidth: 1,
-                            borderColor: '#6b6a6a59',
-                            width: width * 0.47,
-                            marginVertical: height * 0.01,
-                          }}
-                        />
-                        <View style={style.switchView}>
-                          <Text style={style.switchText}>Oxygen</Text>
-                          <SwitchToggle
-                            switchOn={this.state.oxygen}
-                            onPress={() =>
-                              this.setState({oxygen: !this.state.oxygen})
-                            }
-                            useNativeDriver={false}
-                            backgroundColorOn={'#555555'}
-                            circleColorOn={'#f68d80fd'}
-                            backgroundColorOff={'#555555'}
-                            circleColorOff={'white'}
-                            containerStyle={style.toggleContainer}
-                            circleStyle={style.toggleCircle}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                    <View style={style.boxFooter}>
-                      <View style={style.boxFooterInner}>
-                        <TouchableOpacity
-                          style={style.headerbotton}
-                          onPress={this._logOut}>
-                          <Text style={style.bottonText}>Log Out</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                )}
               </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </Modal>
       </View>
     );

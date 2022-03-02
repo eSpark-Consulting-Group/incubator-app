@@ -125,7 +125,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.state.isModalVisible}
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
           // isVisible={true}
           // style={style.modalContainer}
         >
@@ -162,21 +162,25 @@ export default class App extends Component {
                       setTemp={this.handleAirlower}
                       newAirHigh={this.handleAirHigh}
                       newAirLow={this.handleAirLow}
+                      alarmFlag={this.props.alarmFlag}
                     />
                     {/* Skin Temperature */}
                     <SkinTemp
                       highSkinTemp={this.handleSkinHigh}
                       lowerSkinTemp={this.handleSkinLow}
+                      alarmFlag={this.props.alarmFlag}
                     />
                     {/* Spo2 */}
                     <Spo2
                       spo2Uper={this.handleSpo2Uper}
                       spo2Lower={this.handleSpo2Lower}
+                      alarmFlag={this.props.alarmFlag}
                     />
                     {/* Hr */}
                     <Hr
                       hrUper={this.handleHrUper}
                       hrLower={this.handleHrLower}
+                      alarmFlag={this.props.alarmFlag}
                     />
                   </View>
                 </View>
