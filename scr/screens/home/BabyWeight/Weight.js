@@ -124,6 +124,18 @@ export default class App extends Component {
   toggleModal = () => {
     this.setState({isModalVisible: !this.state.isModalVisible});
   };
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          toggle: false,
+          isModalVisible: false,
+        });
+      }
+    }
+  }
+
   render() {
     const showData = this.state.dateList;
     return (
@@ -145,7 +157,7 @@ export default class App extends Component {
                     {!this.props.value ? (
                       <Text style={comStyle.kgUper}>kg</Text>
                     ) : (
-                      <Text style={comStyle.pondUper}>lb</Text>
+                      <Text style={comStyle.kgUper}>lb</Text>
                     )}
                     <TouchableOpacity
                       style={comStyle.iconOpenRow}
@@ -211,7 +223,7 @@ export default class App extends Component {
           animationIn="bounceIn"
           animationOut="bounceOut"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.toggle}
+          isVisible={this.state.toggle}
           // style={style.insertWeightModal}
         >
           <View
@@ -275,7 +287,7 @@ export default class App extends Component {
           animationOut="slideOutDown"
           statusBarTranslucent
           onBackdropPress={() => this.setState({isModalVisible: false})}
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
+          isVisible={this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
             <View style={style.haiderContainer}>

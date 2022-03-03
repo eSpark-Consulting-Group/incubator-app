@@ -370,10 +370,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputs: {
-    height: height * 0.1,
+    includeFontPadding: false,
+    padding: 0,
+    margin: 0,
+    // height: height * 0.1,
     marginLeft: width * 0.01,
     borderBottomColor: '#FFFFFF',
     // flex: 1,
+    width: width * 0.38,
   },
   inputIcon: {
     width: height * 0.025,

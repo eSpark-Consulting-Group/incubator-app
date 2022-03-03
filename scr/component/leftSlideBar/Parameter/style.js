@@ -170,8 +170,11 @@ export default styles = StyleSheet.create({
     fontFamily: Fonts.BalooChettan2,
     fontSize: width * 0.02,
     color: 'gray',
-    width: width * 0.18,
-    height: height * 0.1,
+    width: width * 0.25,
+    // height: height * 0.1,
+    includeFontPadding: false,
+    padding: 0,
+    margin: 0,
   },
   currentHeading: {
     fontFamily: Fonts.Handlee,

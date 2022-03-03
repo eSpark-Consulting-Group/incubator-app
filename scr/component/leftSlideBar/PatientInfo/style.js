@@ -122,7 +122,7 @@ export default styles = StyleSheet.create({
   },
   bottonText: {
     fontFamily: Fonts.Handlee,
-    fontSize: width * 0.015,
+    fontSize: height * 0.028,
     color: 'gray',
     // marginLeft: width * .09,
   },
@@ -145,8 +145,11 @@ export default styles = StyleSheet.create({
     fontFamily: Fonts.BalooChettan2,
     fontSize: height * 0.037,
     color: 'gray',
-    width: width * 0.18,
-    height: height * 0.1,
+    width: width * 0.15,
+    // height: height * 0.1,
+    includeFontPadding: false,
+    padding: 0,
+    margin: 0,
   },
   fieldText: {
     fontFamily: Fonts.Handlee,

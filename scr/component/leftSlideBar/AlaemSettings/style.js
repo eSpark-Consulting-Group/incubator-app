@@ -124,7 +124,7 @@ export default styles = StyleSheet.create({
   },
   bottonText: {
     fontFamily: Fonts.Handlee,
-    fontSize: width * 0.015,
+    fontSize: height * 0.028,
     color: 'gray',
     // marginLeft: width * .09,
   },

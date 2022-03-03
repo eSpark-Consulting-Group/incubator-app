@@ -93,6 +93,16 @@ export default class App extends Component {
     }
   };
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          isModalVisible: false,
+        });
+      }
+    }
+  }
+
   render() {
     let heading1;
     !this.state.turnOnparameter
@@ -120,16 +130,9 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
+          isVisible={this.state.isModalVisible}
           style={{
-            // elevation: width * 0.005,
-            // borderBottomLeftRadius: width * 0.025,
-            // borderBottomRightRadius: width * 0.025,
-            // backgroundColor: 'white',
             maxHeight: modalHeight,
-            // maxWidth: width * 0.5,
-            // top: height * -0.09,
-            // left: width * 0.2,
           }}>
           <KeyboardAvoidingView
             style={{

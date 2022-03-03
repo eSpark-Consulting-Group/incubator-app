@@ -292,6 +292,16 @@ export default class App extends Component {
       ]);
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          isModalVisible: false,
+        });
+      }
+    }
+  }
+
   render() {
     const {checked, sex} = this.state;
 
@@ -313,7 +323,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}>
+          isVisible={this.state.isModalVisible}>
           <KeyboardAvoidingView
             style={{
               height: height,
@@ -354,9 +364,10 @@ export default class App extends Component {
                       <Text style={style.fieldText}>Patient ID:</Text>
                       <View style={style.passInputValue}>
                         <TextInput
+                          scrollEnabled={false}
                           placeholder="Type Here"
                           onChangeText={val => this.setState({patentId: val})}
-                          style={style.currentInput}
+                          style={[style.currentInput, {width: width * 0.23}]}
                           onFocus={() => {
                             this.setState({bottoms: false});
                             console.log('chala');
@@ -506,7 +517,7 @@ export default class App extends Component {
                         <TextInput
                           placeholder="Parent Name..."
                           onChangeText={val => this.setState({fatherName: val})}
-                          style={style.currentInput}
+                          style={[style.currentInput, {width: width * 0.23}]}
                           onFocus={() => {
                             this.setState({bottoms: true});
                             console.log('chala');
@@ -522,7 +533,7 @@ export default class App extends Component {
                           onChangeText={val =>
                             this.setState({drName: this.state.dr + val})
                           }
-                          style={style.currentInput}
+                          style={[style.currentInput, {width: width * 0.23}]}
                         />
                       </View>
                     </View>

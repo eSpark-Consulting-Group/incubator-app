@@ -112,6 +112,20 @@ export default class App extends Component {
     console.log(clc.xterm(85)('Left Slider Component bnd hoa'));
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          isModalVisible: false,
+          checker: false,
+          showDataModal: false,
+          showListModal: false,
+          LockorUnlo: false,
+        });
+      }
+    }
+  }
+
   toggleModal = () => {
     this.setState({isModalVisible: !this.state.isModalVisible});
   };
@@ -593,7 +607,7 @@ export default class App extends Component {
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
           onBackdropPress={() => this.toggleModal()}
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
+          isVisible={this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
             <View style={style.modalHeaderContainer}>
@@ -752,7 +766,7 @@ export default class App extends Component {
               animationIn="slideInRight"
               animationOut="slideOutRight"
               statusBarTranslucent
-              isVisible={this.props.alarmFlag ? false : this.state.checker}
+              isVisible={this.state.checker}
               // isVisible={true}
               // style={{
               //   elevation: width * 0.005,
@@ -858,8 +872,11 @@ export default class App extends Component {
                                 fontFamily: Fonts.BalooChettan2,
                                 fontSize: width * 0.02,
                                 color: 'gray',
-                                width: width * 0.18,
-                                height: height * 0.1,
+                                width: width * 0.23,
+                                // height: height * 0.1,
+                                includeFontPadding: false,
+                                padding: 0,
+                                margin: 0,
                               }}
                             />
                           </View>
@@ -910,9 +927,7 @@ export default class App extends Component {
               animationIn="slideInDown"
               animationOut="slideOutUp"
               statusBarTranslucent
-              isVisible={
-                this.props.alarmFlag ? false : this.state.showDataModal
-              }
+              isVisible={this.state.showDataModal}
               // isVisible={true}
             >
               <KeyboardAvoidingView
@@ -1000,12 +1015,14 @@ export default class App extends Component {
                             <TextInput
                               style={{
                                 fontFamily: Fonts.BalooChettan2,
-                                width: width * 0.16,
-                                height: height * 0.07,
+                                width: width * 0.23,
+                                // height: height * 0.07,
                                 fontSize: height * 0.025,
-                                padding: width * 0.01,
                                 backgroundColor: '#23212016',
                                 color: 'grey',
+                                includeFontPadding: false,
+                                padding: 0,
+                                margin: 0,
                               }}
                               onChangeText={text =>
                                 this.searchFilterFunction(text)
@@ -1069,9 +1086,7 @@ export default class App extends Component {
               animationIn="slideInDown"
               animationOut="slideOutUp"
               statusBarTranslucent
-              isVisible={
-                this.props.alarmFlag ? false : this.state.showListModal
-              }
+              isVisible={this.state.showListModal}
               // isVisible={true}
             >
               <View style={{height: height}}>
@@ -1217,7 +1232,7 @@ export default class App extends Component {
               // onBackdropPress={() => this.toggleModalLock()}
               // onSwipeComplete={() => this.toggleModalLock()}
               // swipeDirection="right"
-              isVisible={this.props.alarmFlag ? false : this.state.LockorUnlo}
+              isVisible={this.state.LockorUnlo}
               // isVisible={true}
               // style={{
               //   elevation: width * 0.005,

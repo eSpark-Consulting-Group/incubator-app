@@ -110,6 +110,16 @@ export default class App extends Component {
     this.setState({lowerAirValue: child});
   };
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          isModalVisible: false,
+        });
+      }
+    }
+  }
+
   render() {
     // console.log(this.state.skinCurrentTemp)
     // console.log(this.state.skinSetTemp)
@@ -125,7 +135,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
+          isVisible={this.state.isModalVisible}
           // isVisible={true}
           // style={style.modalContainer}
         >

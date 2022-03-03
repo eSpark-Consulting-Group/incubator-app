@@ -84,6 +84,16 @@ export default class App extends Component {
     this.props.setTemp(this.state.airLowerTemp);
   };
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          airTemp: false,
+        });
+      }
+    }
+  }
+
   render() {
     console.log(clc.xterm(132)('high alarm airTemp', this.state.airHightTemp));
     console.log(clc.xterm(132)('low alarm airTemp', this.state.airLowerTemp));
@@ -97,7 +107,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.airTemp}
+          isVisible={this.state.airTemp}
           // style={style.modal}
         >
           <KeyboardAvoidingView

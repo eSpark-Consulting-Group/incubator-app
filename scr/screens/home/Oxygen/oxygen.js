@@ -115,6 +115,17 @@ export default class App extends Component {
   toggleModal = () => {
     this.setState({isModalVisible: !this.state.isModalVisible});
   };
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          isModalVisible: false,
+        });
+      }
+    }
+  }
+
   render() {
     if (this.props.activate && this.props.run3) {
       setTimeout(() => {
@@ -194,7 +205,7 @@ export default class App extends Component {
           onBackdropPress={() => this.toggleModal()}
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
+          isVisible={this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
             <View style={style.haiderContainer}>

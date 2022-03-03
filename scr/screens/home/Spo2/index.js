@@ -148,6 +148,16 @@ export default class App extends Component {
     this.setState({isModalVisible: !this.state.isModalVisible});
   };
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          isModalVisible: false,
+        });
+      }
+    }
+  }
+
   render() {
     return (
       <View>
@@ -217,7 +227,7 @@ export default class App extends Component {
           onBackdropPress={() => this.toggleModal()}
           onSwipeComplete={() => this.toggleModal()}
           swipeDirection="right"
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
+          isVisible={this.state.isModalVisible}
           style={style.modalMainContainer}>
           <View style={{flex: 1}}>
             <View style={style.haiderContainer}>

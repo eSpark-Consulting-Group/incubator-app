@@ -47,7 +47,7 @@ export default styles = StyleSheet.create({
   },
   iconOpenRow: {
     bottom: height * 0.065,
-    right: width * 0.011,
+    right: 10,
   },
   setTemp: {
     fontSize: height * 0.04,

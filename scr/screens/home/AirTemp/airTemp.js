@@ -173,6 +173,17 @@ export default class App extends Component {
     this.setState({isModalVisible: !this.state.isModalVisible});
   };
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps.alarmFlag) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          toggle: false,
+          isModalVisible: false,
+        });
+      }
+    }
+  }
+
   render() {
     if (this.props.activate && this.props.run) {
       setTimeout(() => {
@@ -218,7 +229,7 @@ export default class App extends Component {
                         onPress={() => this.toggleModal()}>
                         <NewOpen
                           name="open-in-new"
-                          size={height * 0.06}
+                          size={height * 0.068}
                           color="black"
                         />
                       </TouchableOpacity>
@@ -328,7 +339,7 @@ export default class App extends Component {
           animationIn="bounceIn"
           animationOut="bounceOut"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.toggle}
+          isVisible={this.state.toggle}
           // style={modalStyle.insertWeightModal}
         >
           <View
@@ -417,7 +428,7 @@ export default class App extends Component {
           animationIn="slideInUp"
           animationOut="slideOutDown"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
+          isVisible={this.state.isModalVisible}
           onBackdropPress={() => this.setState({isModalVisible: false})}
           style={modalStyle.modalMainContainer}>
           <View style={{flex: 1}}>

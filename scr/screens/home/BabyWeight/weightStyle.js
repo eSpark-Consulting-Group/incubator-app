@@ -187,11 +187,14 @@ export default styles = StyleSheet.create({
     borderColor: '#e44f3bd5',
   },
   inserTextinput: {
-    height: height * 0.08,
+    // height: height * 0.08,
     fontFamily: Fonts.BalooChettan2,
     fontSize: height * 0.028,
     color: '#e44f3bd5',
     textAlign: 'center',
+    includeFontPadding: false,
+    padding: 0,
+    margin: 0,
   },
   inserConditionUnit: {
     fontSize: width * 0.025,

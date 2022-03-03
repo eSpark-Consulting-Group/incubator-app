@@ -47,7 +47,7 @@ export default styles = StyleSheet.create({
   },
   iconOpenRow: {
     bottom: height * 0.065,
-    right: width * 0.011,
+    right: 10,
   },
   setTemp: {
     fontSize: height * 0.04,
@@ -178,7 +178,7 @@ export default styles = StyleSheet.create({
     marginTop: width * 0.01,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
   },
   headingStyle: {
     fontSize: height * 0.03,
