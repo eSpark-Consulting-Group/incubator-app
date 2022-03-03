@@ -313,10 +313,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}
-          // isVisible={true}
-          // style={style.modalContainer}
-        >
+          isVisible={this.props.alarmFlag ? false : this.state.isModalVisible}>
           <KeyboardAvoidingView
             style={{
               height: height,
@@ -354,14 +351,7 @@ export default class App extends Component {
                   {/* <ScrollView> */}
                   <View style={style.boxBody}>
                     <View style={style.boxBodyInner}>
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          // fontSize: width * .04,
-                          color: 'red',
-                        }}>
-                        Patient ID:
-                      </Text>
+                      <Text style={style.fieldText}>Patient ID:</Text>
                       <View style={style.passInputValue}>
                         <TextInput
                           placeholder="Type Here"
@@ -379,13 +369,7 @@ export default class App extends Component {
                       </View>
                     </View>
                     <View style={[style.boxBodyInner]}>
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          color: 'red',
-                        }}>
-                        Weight:
-                      </Text>
+                      <Text style={style.fieldText}>Weight:</Text>
                       <View style={{flexDirection: 'row'}}>
                         <View
                           style={[
@@ -447,14 +431,7 @@ export default class App extends Component {
                         style.boxBodyInner,
                         {justifyContent: 'space-between'},
                       ]}>
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          // fontSize: width * .04,
-                          color: 'red',
-                        }}>
-                        Age:
-                      </Text>
+                      <Text style={style.fieldText}>Age:</Text>
                       <View style={{flexDirection: 'row'}}>
                         <View
                           style={[
@@ -491,19 +468,13 @@ export default class App extends Component {
                       </View>
                     </View>
                     <View style={style.boxBodyInner}>
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          color: 'red',
-                        }}>
-                        Sex:
-                      </Text>
+                      <Text style={style.fieldText}>Sex:</Text>
                       <View
                         style={{
                           flexDirection: 'row',
                           alignSelf: 'flex-start',
                           alignItems: 'center',
-                          width: width * 0.25,
+                          width: height * 0.5,
                         }}>
                         <RadioButton
                           value="first"
@@ -513,11 +484,7 @@ export default class App extends Component {
                           }}
                         />
                         <Text
-                          style={{
-                            fontFamily: Fonts.Handlee,
-                            // fontSize: width * .04,
-                            color: 'red',
-                          }}>
+                          style={[style.fieldText, {fontSize: height * 0.03}]}>
                           Male
                         </Text>
                         <RadioButton
@@ -528,66 +495,13 @@ export default class App extends Component {
                           }}
                         />
                         <Text
-                          style={{
-                            fontFamily: Fonts.Handlee,
-                            // fontSize: width * .04,
-                            color: 'red',
-                          }}>
+                          style={[style.fieldText, {fontSize: height * 0.03}]}>
                           Female
                         </Text>
                       </View>
                     </View>
-                    {/* <View
-                      style={{
-                        padding: width * 0.002,
-                        paddingLeft: width * 0.028,
-                        paddingRight: width * 0.04,
-                        flexDirection: 'row',
-                        // backgroundColor:'red',
-                        borderTopRightRadius: width * 0.005,
-                        borderTopLeftRadius: width * 0.025,
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}> */}
                     <View style={style.boxBodyInner}>
-                      {/* <RadioButton
-                        value="first"
-                        status={checked === 'first' ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                          this.setState({checked: 'first'});
-                        }}
-                      />
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          // fontSize: width * .04,
-                          color: 'red',
-                        }}>
-                        S/o
-                      </Text>
-                      <RadioButton
-                        value="second"
-                        status={checked === 'second' ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                          this.setState({checked: 'second'});
-                        }}
-                      />
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          // fontSize: width * .04,
-                          color: 'red',
-                        }}>
-                        D/o:
-                      </Text> */}
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          // fontSize: width * .04,
-                          color: 'red',
-                        }}>
-                        Parent Name:
-                      </Text>
+                      <Text style={style.fieldText}>Parent Name:</Text>
                       <View style={style.passInputValue}>
                         <TextInput
                           placeholder="Parent Name..."
@@ -601,14 +515,7 @@ export default class App extends Component {
                       </View>
                     </View>
                     <View style={style.boxBodyInner}>
-                      <Text
-                        style={{
-                          fontFamily: Fonts.Handlee,
-                          // fontSize: width * .04,
-                          color: 'red',
-                        }}>
-                        Doctor Name:
-                      </Text>
+                      <Text style={style.fieldText}>Doctor Name:</Text>
                       <View style={style.passInputValue}>
                         <TextInput
                           placeholder="Type Here"
@@ -620,7 +527,6 @@ export default class App extends Component {
                       </View>
                     </View>
                   </View>
-                  {/* </ScrollView> */}
                 </View>
               </View>
             </View>

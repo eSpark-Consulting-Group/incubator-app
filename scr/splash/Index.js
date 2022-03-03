@@ -22,8 +22,8 @@ class Main extends Component {
 
   render() {
     const {currentScreen} = this.state;
-    // let mainScreen = currentScreen === 'Splash' ? <Splash /> : <Login /> //! splash screen removed
-    let mainScreen = <Login />;
+    let mainScreen = currentScreen === 'Splash' ? <Splash /> : <Login />; //! splash screen removed
+    // let mainScreen = <Login />;
     return mainScreen;
   }
 }

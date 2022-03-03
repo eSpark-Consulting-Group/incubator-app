@@ -133,7 +133,12 @@ export default class Splash extends Component {
           hidden={true}
           translucent
           showHideTransition={'fade'}></StatusBar>
-        <ImageBackground
+        <ActivityIndicator
+          size={width * 0.06}
+          color="red"
+          // style={styles.activityIndi}
+        />
+        {/* <ImageBackground
           source={require('../../images/mainScreen.png')}
           style={style.image}>
           <View style={style.container}>
@@ -161,12 +166,12 @@ export default class Splash extends Component {
             ) : (
               <ActivityIndicator
                 size={width * 0.06}
-                color="white"
+                color="red"
                 style={styles.activityIndi}
               />
             )}
           </View>
-        </ImageBackground>
+        </ImageBackground> */}
       </View>
     );
   }

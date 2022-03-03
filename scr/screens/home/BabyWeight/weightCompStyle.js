@@ -8,7 +8,7 @@ const {height, width} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
   TemperatureView: {
-    width: height * 0.55,
+    width: height * 0.5,
     height: height * 0.33,
     margin: height * 0.005,
   },
@@ -100,7 +100,7 @@ export default styles = StyleSheet.create({
     width: width * 0.29,
   },
   likeInputOxygen: {
-    width: height * 0.38,
+    width: height * 0.33,
     height: height * 0.22,
     elevation: 2,
     backgroundColor: 'white',

@@ -178,8 +178,8 @@ export default styles = StyleSheet.create({
     marginRight: width * 0.005,
   },
   inserTextinputView: {
-    width: width * 0.1,
-    height: height * 0.075,
+    width: height * 0.15,
+    height: height * 0.08,
     borderWidth: 1,
     borderRadius: width * 0.003,
     justifyContent: 'center',
@@ -187,8 +187,9 @@ export default styles = StyleSheet.create({
     borderColor: '#e44f3bd5',
   },
   inserTextinput: {
+    height: height * 0.08,
     fontFamily: Fonts.BalooChettan2,
-    fontSize: height * 0.03,
+    fontSize: height * 0.028,
     color: '#e44f3bd5',
     textAlign: 'center',
   },

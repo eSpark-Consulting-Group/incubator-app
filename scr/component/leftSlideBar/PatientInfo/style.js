@@ -77,7 +77,7 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
   },
   boxConatainer: {
-    width: width * 0.47,
+    width: height * 0.9,
     height: height * 0.67,
   },
   boxInner: {
@@ -87,7 +87,7 @@ export default styles = StyleSheet.create({
     elevation: width * 0.015,
   },
   boxHeader: {
-    width: width * 0.47,
+    width: height * 0.9,
     height: height * 0.1,
   },
   boxHeaderInner: {
@@ -128,9 +128,9 @@ export default styles = StyleSheet.create({
   },
   boxBody: {
     flexDirection: 'column',
-    width: width * 0.47,
+    width: height * 0.9,
     height: height * 0.2,
-    padding: width * 0.006,
+    padding: height * 0.012,
     // justifyContent: "flex-end" ,
     // alignItems: "center"
   },
@@ -147,6 +147,11 @@ export default styles = StyleSheet.create({
     color: 'gray',
     width: width * 0.18,
     height: height * 0.1,
+  },
+  fieldText: {
+    fontFamily: Fonts.Handlee,
+    fontSize: height * 0.035,
+    color: 'red',
   },
   boxBodyInner: {
     // flex: 4,

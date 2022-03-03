@@ -223,7 +223,8 @@ export default class App extends Component {
                         }}>
                         <Alarm
                           name={'alarm-light'}
-                          size={width * 0.055}
+                          size={height * 0.085}
+                          style={{top: height * 0.04}}
                           color={this.state.skinTemp ? '#0ae916' : 'red'}
                         />
                       </View>
@@ -287,7 +288,8 @@ export default class App extends Component {
                         }}>
                         <Alarm
                           name={'alarm-light'}
-                          size={width * 0.055}
+                          size={height * 0.085}
+                          style={{top: height * 0.04}}
                           color={this.state.skinTemp ? '#0ae916' : 'red'}
                         />
                       </View>

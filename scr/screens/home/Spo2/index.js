@@ -165,7 +165,8 @@ export default class App extends Component {
                     <Text style={style.centiUper}>%</Text>
                     <Alarm
                       name={'alarm-light'}
-                      size={width * 0.05}
+                      size={height * 0.08}
+                      style={{top: 5}}
                       color={this.state.powCondi ? '#0ae916' : 'red'}
                     />
                     {this.props.locker ? (

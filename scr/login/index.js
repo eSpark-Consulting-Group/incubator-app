@@ -18,6 +18,8 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Keyboard,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -27,6 +29,12 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 export default class LoginView extends Component {
   state = {
     email: '',
@@ -224,35 +232,6 @@ export default class LoginView extends Component {
     ]);
   };
 
-  // onClickListener = viewId => {
-  //   const {email, password} = this.state;
-  //   let data = {
-  //     email,
-  //     password,
-  //   };
-
-  //   this.setState({isLoading: true});
-  //   axios
-  //     .post(`http://192.168.0.105:8080/users/login`, data, {
-  //       headers: {
-  //         // Authorization: accessToken,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     })
-  //     .then(response => {
-  //       this.setState({isLoading: false});
-
-  //       if (response.data.login_user.length) {
-  //         this._storeData(response.data);
-  //         this.props.navigation.navigate('Home');
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log('LoginView -> error', error);
-  //     });
-  //   // // Alert.alert('Alert', 'Button pressed ' + viewId);
-  // };
-
   renderLoader = () => {
     return (
       <View style={[styles.containers, styles.horizontal]}>
@@ -276,9 +255,18 @@ export default class LoginView extends Component {
             autoComplete="off"
             autoCapitalize="none"
             autoCorrect={false}
-            onFocus={() => this.setState({focused: true})}
-            onBlur={() => this.setState({focused: false})}
-            onEndEditing={() => this.setState({focused: false})}
+            onFocus={() => {
+              this.setState({focused: true});
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+            }}
+            onBlur={() => {
+              this.setState({focused: false});
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+            }}
+            onEndEditing={() => {
+              this.setState({focused: false});
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+            }}
             underlineColorAndroid="transparent"
             onChangeText={email => this.setState({email})}
             value={email}
@@ -293,8 +281,14 @@ export default class LoginView extends Component {
             autoCorrect={false}
             autoCapitalize="none"
             value={password}
-            onFocus={() => this.setState({focused: true})}
-            onBlur={() => this.setState({focused: false})}
+            onFocus={() => {
+              this.setState({focused: true});
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+            }}
+            onBlur={() => {
+              this.setState({focused: false});
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+            }}
             underlineColorAndroid="transparent"
             onChangeText={password => this.setState({password})}
           />

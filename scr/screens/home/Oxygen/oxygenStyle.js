@@ -8,7 +8,7 @@ const {height, width} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
   TemperatureView: {
-    width: height * 0.55,
+    width: height * 0.5,
     height: height * 0.33,
     margin: height * 0.005,
   },
@@ -53,7 +53,7 @@ export default styles = StyleSheet.create({
     fontSize: height * 0.04,
     fontFamily: Fonts.BalooChettan2,
     color: '#FF420E',
-    top: height * 0.006,
+    top: 3,
     marginVertical: height * 0.005,
   },
   tempInputSet: {
@@ -84,7 +84,7 @@ export default styles = StyleSheet.create({
     // backgroundColor:'red'
   },
   likeInputOxygen: {
-    width: height * 0.4,
+    width: height * 0.35,
     height: height * 0.1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -103,7 +103,7 @@ export default styles = StyleSheet.create({
     // marginBottom: height * .02,
   },
   likeInputMin: {
-    width: height * 0.35,
+    width: height * 0.3,
     height: height * 0.07,
     elevation: width * 0.003,
     backgroundColor: 'white',
