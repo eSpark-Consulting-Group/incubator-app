@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   // Modal,
   BackHandler,
+  Alert,
 } from 'react-native';
 import style from './styles';
 import Modal2 from 'react-native-modal';
@@ -91,6 +92,7 @@ export default class App extends Component {
       alarmSensor: 15,
       alarmFan: 16,
       alarmAir: 20,
+      snooze: false,
       // alarmAirOver:0,
       alarmSystem: 14,
       time: null,
@@ -347,14 +349,14 @@ export default class App extends Component {
       // siren.isPlaying
       //   ? console.log(clc.xterm(10)('Air Temp Siren is already on'))
       //   :
-      siren.play();
+      if (!this.state.snooze) siren.play();
       airHigh = true;
       this.setState({msgBoxShow: true});
     } else if (this.state.airTemp < this.state.lowAirValue) {
       // siren.isPlaying
       //   ? console.log(clc.xterm(10)('Air Temp Siren is already on'))
       //   :
-      siren.play();
+      if (!this.state.snooze) siren.play();
       airLow = true;
       this.setState({msgBoxShow: true});
     } else {
@@ -377,7 +379,7 @@ export default class App extends Component {
       //   ? console.log(clc.xterm(189)('Skin Temp Siren is already on'))
       //   :
       console.log(clc.xterm(193)('skin high aya'));
-      siren2.play();
+      if (!this.state.snooze) siren2.play();
       skinHigh = true;
       this.setState({msgBoxShow: true});
     } else if (this.state.skinTemp < this.state.skinLowTemp) {
@@ -385,7 +387,7 @@ export default class App extends Component {
       //   ? console.log(clc.xterm(189)('Skin Temp Siren is already on'))
       //   :
       console.log(clc.xterm(193)('skin low aya'));
-      siren2.play();
+      if (!this.state.snooze) siren2.play();
       skinLow = true;
       this.setState({msgBoxShow: true});
     } else {
@@ -504,6 +506,36 @@ export default class App extends Component {
       this.setState({run3: false});
       console.log('gaya deactivate');
     }
+  };
+
+  snoozeAlarm = () => {
+    siren.stop();
+    siren2.stop();
+    this.setState({msgBoxShow: !this.state.msgBoxShow, snooze: true});
+    console.log(clc.bgGreenBright('Snooze Over++++'));
+    setTimeout(() => {
+      this.setState({snooze: false});
+      console.log(clc.bgRedBright('Snooze Over++++'));
+    }, 120000);
+  };
+
+  stopAlarm = () => {
+    Alert.alert('Close Alarm ?', 'Are you sure to close Alarm', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+        onPress: () => console.log('cancel Pressed on '),
+      },
+      {
+        text: 'Yes',
+        style: 'default',
+        onPress: () => {
+          siren.stop();
+          siren2.stop();
+          this.setState({msgBoxShow: false});
+        },
+      },
+    ]);
   };
 
   render() {
@@ -639,9 +671,9 @@ export default class App extends Component {
             animationIn="slideInUp"
             animationOut="slideOutDown"
             statusBarTranslucent
-            isVisible={this.state.msgBoxShow}
+            isVisible={!this.state.snooze ? this.state.msgBoxShow : false}
             // isVisible={true}
-            onBackdropPress={() => this.setState({msgBoxShow: false})}
+            // onBackdropPress={() => this.setState({msgBoxShow: false})}
             // visible={this.state.msgBoxShow}
             // visible={true}
             // transparent={true}
@@ -667,10 +699,12 @@ export default class App extends Component {
                     padding: height * 0.02,
                     justifyContent: 'flex-end',
                     flexDirection: 'row',
+                    // backgroundColor: 'yellow',
                   }}>
+                  <View style={{flex: 1.2}} />
                   <View
                     style={{
-                      flex: 1,
+                      flex: 10,
                       justifyContent: 'center',
                       alignItems: 'center',
                       marginHorizontal: height * 0.05,
@@ -679,23 +713,43 @@ export default class App extends Component {
                       Alarm Alert
                     </Text>
                   </View>
-                  <Close
-                    name="close-a"
-                    size={height * 0.035}
-                    color="red"
-                    onPress={() =>
-                      this.setState({msgBoxShow: !this.state.msgBoxShow})
-                    }
-                  />
+                  <View style={{flex: 1}}>
+                    <Close
+                      name="close-a"
+                      size={height * 0.035}
+                      color="red"
+                      onPress={() => this.stopAlarm()}
+                    />
+                  </View>
                 </View>
-                <View
-                  style={{
-                    flex: 7,
-                    padding: height * 0.02,
-                    alignItems: 'flex-start',
-                  }}>
-                  {this.renderAirTempAlert()}
-                  {this.renderSkinTempAlert()}
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <View
+                    style={{
+                      flex: 6,
+                      padding: height * 0.02,
+                      alignItems: 'flex-start',
+                      borderRadius: height * 0.035,
+                    }}>
+                    {this.renderAirTempAlert()}
+                    {this.renderSkinTempAlert()}
+                  </View>
+                  <View
+                    style={{
+                      flex: 2.5,
+                      borderRadius: height * 0.035,
+                      top: 10,
+                      // alignSelf: 'center',
+                    }}>
+                    <Image
+                      source={require('../../../images/alarm.gif')}
+                      resizeMode="cover"
+                      style={{
+                        // flex: 1,
+                        height: height * 0.18,
+                        width: height * 0.15,
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
               <TouchableOpacity
@@ -711,7 +765,7 @@ export default class App extends Component {
                   borderRadius: 5,
                 }}
                 onPress={() => {
-                  console.log('Snoozed');
+                  this.snoozeAlarm();
                 }}>
                 <View>
                   <Text style={style.snoozeText}>Snooze 2 mins</Text>

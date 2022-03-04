@@ -244,9 +244,11 @@ export default class LoginView extends Component {
     const {email, password, isLoading} = this.state;
 
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
+        {/* {this.state.focused && ( */}
+        <View style={{height: 50, backgroundColor: 'pink'}} />
+        {/* )} */}
         <Spinner visible={this.state.spinner} color="red" />
-        {this.state.focused && <View style={{height: 100}} />}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
@@ -346,8 +348,9 @@ export default class LoginView extends Component {
             </View>
           </TouchableOpacity>
         </View>
+
         {/* {isLoading && this.renderLoader()} */}
-      </ScrollView>
+      </View>
     );
   }
 }

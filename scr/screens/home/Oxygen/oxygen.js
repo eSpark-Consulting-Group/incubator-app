@@ -109,7 +109,7 @@ export default class App extends Component {
       this.setState({oxygenLevel: rand.toFixed()});
       this.props.handleOxy(this.state.oxygenLevel);
       this.populateArray();
-    }, 15000);
+    }, 30000);
   }
 
   toggleModal = () => {

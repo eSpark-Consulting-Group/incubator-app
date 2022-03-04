@@ -324,39 +324,47 @@ export default class App extends Component {
     }
   };
 
-  handleDischargePatient = () => {
+  handleDischargePatient = val => {
     if (this.state.isActive) {
-      Alert.alert('Are you Sure?', 'Discharge the patient', [
-        {
-          text: 'Cancel',
-          onPress: () => {
-            console.log('Cancel on Discharge Patient');
+      Alert.alert(
+        !val ? 'Logging Out?' : 'Are you Sure?',
+        'Discharge the patient',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {
+              console.log('Cancel on Discharge Patient');
+            },
+            style: 'cancel',
           },
-          style: 'cancel',
-        },
-        {
-          text: 'Yes',
-          onPress: () => {
-            this.setState({spinner: true});
-            console.log('Done');
-            this.setState({isActive: false});
-            this.props.siren.stop();
-            this.props.siren2.stop();
-            this.setHistoryData();
+          {
+            text: 'Yes',
+            onPress: () => {
+              this.setState({spinner: true});
+              console.log('Done');
+              this.setState({isActive: false});
+              this.props.siren.stop();
+              this.props.siren2.stop();
+              this.setHistoryData();
 
-            clearInterval(this.theInterval);
-            this.props.handleAirTempDeactivate(true);
-            this.props.handleSkinTempDeactivate(true);
-            this.props.handleOxygenDeactivate(true);
-            this.setState({isDischarged: true});
+              clearInterval(this.theInterval);
+              this.props.handleAirTempDeactivate(true);
+              this.props.handleSkinTempDeactivate(true);
+              this.props.handleOxygenDeactivate(true);
+              this.setState({isDischarged: true});
 
-            ToastAndroid.show('Discharged', ToastAndroid.SHORT);
-            setTimeout(() => {
-              this.setState({spinner: false});
-            }, 100);
+              ToastAndroid.show('Discharged', ToastAndroid.SHORT);
+              setTimeout(() => {
+                if (!val) {
+                  this.setState({isModalVisible: false});
+                  this.props.navigation.replace('Login');
+                }
+                this.setState({spinner: false});
+              }, 100);
+            },
           },
-        },
-      ]);
+        ],
+      );
     } else {
       ToastAndroid.show('No Patient to Discharge', ToastAndroid.SHORT);
     }
@@ -572,8 +580,7 @@ export default class App extends Component {
   };
 
   logOut = () => {
-    this.setState({isModalVisible: false});
-    this.props.navigation.replace('Login');
+    this.handleDischargePatient(false);
   };
 
   render() {
@@ -628,7 +635,7 @@ export default class App extends Component {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
-                  onPress={() => this.logOut()}>
+                  onPress={() => this.handleDischargePatient(false)}>
                   <Text
                     style={{
                       fontFamily: Fonts.Handlee,
@@ -744,7 +751,7 @@ export default class App extends Component {
                 <View style={{height: height * 0.02}} />
                 <TouchableOpacity
                   onPress={() => {
-                    this.handleDischargePatient();
+                    this.handleDischargePatient(true);
                   }}
                   style={[
                     style.listView,

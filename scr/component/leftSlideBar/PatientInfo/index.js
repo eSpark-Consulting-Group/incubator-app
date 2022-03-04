@@ -226,7 +226,7 @@ export default class App extends Component {
             }, 50);
             setTimeout(() => {
               this.props.handleRunData(true);
-            }, 15000);
+            }, 30000);
           } else {
             ToastAndroid.show('First Discharge Patient', ToastAndroid.SHORT);
           }
@@ -283,7 +283,7 @@ export default class App extends Component {
               }, 50);
               setTimeout(() => {
                 this.props.handleRunData(true);
-              }, 15000);
+              }, 30000);
             } else {
               ToastAndroid.show('First Discharge Patient', ToastAndroid.SHORT);
             }

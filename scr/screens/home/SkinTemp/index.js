@@ -77,7 +77,7 @@ export default class App extends Component {
       this.setState({currentTemp: rand.toFixed()});
       this.props.handleSkinTemp(this.state.currentTemp);
       this.populateArray();
-    }, 15000);
+    }, 30000);
   }
 
   sendSkinTemp = async () => {

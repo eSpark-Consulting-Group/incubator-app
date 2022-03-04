@@ -166,7 +166,7 @@ export default class App extends Component {
       this.setState({currentTemp: rand.toFixed()});
       this.props.handleAirTemp(this.state.currentTemp);
       this.populateArray();
-    }, 15000);
+    }, 30000);
   }
 
   toggleModal = () => {
