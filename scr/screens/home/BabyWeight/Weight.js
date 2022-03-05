@@ -165,7 +165,7 @@ export default class App extends Component {
                       <View>
                         <NewOpen
                           name="open-in-new"
-                          size={width * 0.035}
+                          size={height * 0.06}
                           color="black"
                         />
                       </View>
@@ -201,7 +201,7 @@ export default class App extends Component {
                       <View>
                         <NewOpen
                           name="open-in-new"
-                          size={width * 0.035}
+                          size={height * 0.06}
                           color="red"
                         />
                       </View>

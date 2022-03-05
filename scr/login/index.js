@@ -371,6 +371,7 @@ const styles = StyleSheet.create({
     marginBottom: width * 0.02,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   inputs: {
     includeFontPadding: false,

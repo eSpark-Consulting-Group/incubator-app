@@ -140,6 +140,7 @@ export default styles = StyleSheet.create({
     backgroundColor: '#23212016',
     paddingLeft: width * 0.01,
     borderRadius: width * 0.002,
+    justifyContent: 'center',
   },
   currentInput: {
     fontFamily: Fonts.BalooChettan2,

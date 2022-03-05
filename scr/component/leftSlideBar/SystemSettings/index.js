@@ -52,12 +52,15 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showErrorName: false,
+      name: '',
+      code: '',
       showErrorView: false,
       isModalVisible: false,
       LockorUnlo: false,
       toggleWeight: false,
       password: '',
-      turnOnparameter: false,
+      turnOnparameter: true,
       selectedParameter: [],
       valueParameter: [],
       airTemp: this.props.airFlag,
@@ -116,18 +119,33 @@ export default class App extends Component {
   renderErrorCodes = ({item, index}) => {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <View
-          style={{
-            backgroundColor: '#23212016',
-            borderRadius: width * 0.035,
-            padding: 10,
-            paddingHorizontal: 15,
-            margin: 10,
+        <TouchableOpacity
+          onPress={() => {
+            this.showErrorName(item, index);
           }}>
-          <Text style={style.switchText}>{item.code}</Text>
-        </View>
+          <View
+            style={{
+              backgroundColor: '#23212016',
+              borderRadius: width * 0.035,
+              padding: 10,
+              paddingHorizontal: 15,
+              margin: 10,
+            }}>
+            <Text style={style.switchText}>{item.code}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
+  };
+
+  showErrorName = (item, index) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    this.setState({
+      showErrorName: true,
+      showErrorView: false,
+      code: item.code,
+      name: item.name,
+    });
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -168,8 +186,8 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.state.isModalVisible}
-          // isVisible={true}
+          // isVisible={this.state.isModalVisible}
+          isVisible={true}
           style={{
             maxHeight: modalHeight,
           }}>
@@ -191,21 +209,54 @@ export default class App extends Component {
                   {/* Box Header */}
                   <View style={style.boxHeader}>
                     <View style={style.boxHeaderInner}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          heading1 == 'Parameter'
-                            ? (this.setState({turnOnparameter: false}),
-                              this.toggleModal(this.props.isGuest))
-                            : this.toggleModal(this.props.isGuest)
-                        }
-                        style={{position: 'absolute', left: width * 0.02}}>
-                        <Back
-                          name={'keyboard-backspace'}
-                          size={width * 0.04}
-                          color="#fff"
-                        />
-                      </TouchableOpacity>
+                      {heading1 == 'System Settings' && (
+                        <TouchableOpacity
+                          onPress={() =>
+                            heading1 == 'System Settings'
+                              ? this.state.showErrorView
+                                ? (this.setState({
+                                    showErrorView: false,
+                                  }),
+                                  LayoutAnimation.configureNext(
+                                    LayoutAnimation.Presets.easeInEaseOut,
+                                  ))
+                                : this.state.showErrorName
+                                ? (this.setState({
+                                    showErrorName: false,
+                                    showErrorView: true,
+                                  }),
+                                  LayoutAnimation.configureNext(
+                                    LayoutAnimation.Presets.easeInEaseOut,
+                                  ))
+                                : (this.setState({turnOnparameter: false}),
+                                  this.toggleModal(this.props.isGuest))
+                              : this.toggleModal(this.props.isGuest)
+                          }
+                          style={{position: 'absolute', left: width * 0.02}}>
+                          <Back
+                            name={'keyboard-backspace'}
+                            size={width * 0.04}
+                            color="#fff"
+                          />
+                        </TouchableOpacity>
+                      )}
                       <Text style={style.headerHeading}>{heading1}</Text>
+                      {heading1 == 'System Settings' && (
+                        <TouchableOpacity
+                          onPress={() =>
+                            heading1 == 'System Settings'
+                              ? (this.setState({turnOnparameter: false}),
+                                this.toggleModal(this.props.isGuest))
+                              : this.toggleModal(this.props.isGuest)
+                          }
+                          style={{position: 'absolute', right: width * 0.02}}>
+                          <Back
+                            name={'close'}
+                            size={width * 0.04}
+                            color="#fff"
+                          />
+                        </TouchableOpacity>
+                      )}
                     </View>
                   </View>
                   {/* Box Body */}
@@ -247,75 +298,115 @@ export default class App extends Component {
                       />
                       <View style={style.boxBody}>
                         <View style={style.boxBodyInner}>
-                          {!this.state.showErrorView && (
-                            <>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  LayoutAnimation.configureNext(
-                                    LayoutAnimation.Presets.easeInEaseOut,
-                                  );
-                                  this.setState({showErrorView: true});
+                          {!this.state.showErrorView &&
+                            !this.state.showErrorName && (
+                              <>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    LayoutAnimation.configureNext(
+                                      LayoutAnimation.Presets.easeInEaseOut,
+                                    );
+                                    this.setState({showErrorView: true});
+                                  }}>
+                                  <View style={style.switchView}>
+                                    <Text style={style.switchText}>
+                                      Error Codes
+                                    </Text>
+                                    <Error
+                                      name={'error'}
+                                      size={width * 0.04}
+                                      color="#f68d80fd"
+                                    />
+                                  </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  onPress={() => console.log('Pressed')}>
+                                  <View style={style.switchView}>
+                                    <Text style={style.switchText}>
+                                      Sensor Data
+                                    </Text>
+                                    <Cali
+                                      name={'radar'}
+                                      size={width * 0.04}
+                                      color="#f68d80fd"
+                                    />
+                                  </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  onPress={() => console.log('Pressed')}>
+                                  <View style={style.switchView}>
+                                    <Text style={style.switchText}>
+                                      Calibration Mode
+                                    </Text>
+                                    <Cali
+                                      name={'speedometer-medium'}
+                                      size={width * 0.04}
+                                      color="#f68d80fd"
+                                    />
+                                  </View>
+                                </TouchableOpacity>
+                              </>
+                            )}
+                          {this.state.showErrorView &&
+                            !this.state.showErrorName && (
+                              <View
+                                style={{
+                                  width: '100%',
+                                  height: '100%',
                                 }}>
-                                <View style={style.switchView}>
-                                  <Text style={style.switchText}>
+                                <View
+                                  style={{width: '100%', alignItems: 'center'}}>
+                                  <Text style={style.subheader}>
                                     Error Codes
                                   </Text>
-                                  <Error
-                                    name={'error'}
-                                    size={width * 0.04}
-                                    color="#f68d80fd"
-                                  />
                                 </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity
-                                onPress={() => console.log('Pressed')}>
-                                <View style={style.switchView}>
-                                  <Text style={style.switchText}>
-                                    Sensor Data
-                                  </Text>
-                                  <Cali
-                                    name={'radar'}
-                                    size={width * 0.04}
-                                    color="#f68d80fd"
-                                  />
-                                </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity
-                                onPress={() => console.log('Pressed')}>
-                                <View style={style.switchView}>
-                                  <Text style={style.switchText}>
-                                    Calibration Mode
-                                  </Text>
-                                  <Cali
-                                    name={'speedometer-medium'}
-                                    size={width * 0.04}
-                                    color="#f68d80fd"
-                                  />
-                                </View>
-                              </TouchableOpacity>
-                            </>
-                          )}
-                          {this.state.showErrorView && (
-                            <View
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                              }}>
-                              <View
-                                style={{width: '100%', alignItems: 'center'}}>
-                                <Text style={style.subheader}>Error Codes</Text>
+                                <FlatList
+                                  data={errorCodes}
+                                  style={{flex: 1}}
+                                  renderItem={this.renderErrorCodes}
+                                  numColumns={3}
+                                />
                               </View>
-                              <FlatList
-                                data={errorCodes}
-                                style={{flex: 1}}
-                                renderItem={this.renderErrorCodes}
-                                numColumns={3}
-                              />
-                            </View>
-                          )}
+                            )}
+                          {!this.state.showErrorView &&
+                            this.state.showErrorName && (
+                              <>
+                                <View
+                                  style={{width: '100%', alignItems: 'center'}}>
+                                  <Text style={style.subheader}>
+                                    Technical Error
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-around',
+                                      width: width * 0.45,
+                                      backgroundColor: '#23212016',
+                                      borderRadius: width * 0.035,
+                                      padding: 10,
+                                      paddingHorizontal: 15,
+                                      margin: 10,
+                                    }}>
+                                    <Text style={style.switchText}>
+                                      {this.state.code}
+                                    </Text>
+                                    <Text style={style.switchText}>
+                                      {this.state.name}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </>
+                            )}
                         </View>
                       </View>
-                      <View style={style.boxFooter}>
+                      {/* <View style={style.boxFooter}>
                         <View style={style.boxFooterInner}>
                           <TouchableOpacity
                             style={style.headerbotton}
@@ -329,7 +420,7 @@ export default class App extends Component {
                             </Text>
                           </TouchableOpacity>
                         </View>
-                      </View>
+                      </View> */}
                     </View>
                   )}
                 </View>

@@ -43,6 +43,7 @@ import PatientInfo from './PatientInfo/index';
 import {Fonts} from '../../utils/fonts';
 import {ScrollView} from 'react-native-gesture-handler';
 import styles from '../../screens/home/styles';
+import systemSetting from 'react-native-system-setting';
 
 const {height, width} = Dimensions.get('window');
 
@@ -699,7 +700,7 @@ export default class App extends Component {
                       maximumTrackTintColor="#000000"
                       thumbTintColor="red"
                       step={0.01}
-                      value={this.state.brightness}
+                      value={0.75}
                       onValueChange={brightness => {
                         this.setState({brightness});
                         SystemSetting.setAppBrightness(brightness);

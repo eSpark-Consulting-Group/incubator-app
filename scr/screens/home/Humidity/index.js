@@ -88,7 +88,7 @@ export default class App extends Component {
                       <TouchableOpacity style={style.iconOpenRow}>
                         <NewOpen
                           name="open-in-new"
-                          size={width * 0.035}
+                          size={height * 0.06}
                           color="black"
                         />
                       </TouchableOpacity>
@@ -96,7 +96,7 @@ export default class App extends Component {
                       <View style={style.iconOpenRow}>
                         <NewOpen
                           name="open-in-new"
-                          size={width * 0.035}
+                          size={height * 0.06}
                           color="red"
                         />
                       </View>

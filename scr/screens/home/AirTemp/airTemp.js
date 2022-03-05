@@ -229,7 +229,7 @@ export default class App extends Component {
                         onPress={() => this.toggleModal()}>
                         <NewOpen
                           name="open-in-new"
-                          size={height * 0.068}
+                          size={height * 0.06}
                           color="black"
                         />
                       </TouchableOpacity>
