@@ -43,7 +43,7 @@ let skinLow = false;
 let airHigh = false;
 let airLow = false;
 
-var siren = new Sound(require('../../assets/audio/siren.mp3'), e => {
+var siren = new Sound(require('../../assets/audio/alarm3.wav'), e => {
   if (e) {
     console.log('Failed load Sound', e);
     return;
@@ -349,14 +349,20 @@ export default class App extends Component {
       // siren.isPlaying
       //   ? console.log(clc.xterm(10)('Air Temp Siren is already on'))
       //   :
-      if (!this.state.snooze) siren.play();
+      if (!this.state.snooze)
+        siren.stop(() => {
+          siren.play();
+        });
       airHigh = true;
       this.setState({msgBoxShow: true});
     } else if (this.state.airTemp < this.state.lowAirValue) {
       // siren.isPlaying
       //   ? console.log(clc.xterm(10)('Air Temp Siren is already on'))
       //   :
-      if (!this.state.snooze) siren.play();
+      if (!this.state.snooze)
+        siren.stop(() => {
+          siren.play();
+        });
       airLow = true;
       this.setState({msgBoxShow: true});
     } else {
@@ -370,7 +376,7 @@ export default class App extends Component {
   };
 
   skinTempAlarm = () => {
-    siren2.setNumberOfLoops(-1);
+    siren.setNumberOfLoops(-1);
     console.log('kia hai skin temp', this.state.skinTemp);
     console.log('kia hai skin temp alarm high', this.state.skinHigherTemp);
     console.log('kia hai skin temp alarm low', this.state.skinLowTemp);
@@ -379,7 +385,10 @@ export default class App extends Component {
       //   ? console.log(clc.xterm(189)('Skin Temp Siren is already on'))
       //   :
       console.log(clc.xterm(193)('skin high aya'));
-      if (!this.state.snooze) siren2.play();
+      if (!this.state.snooze)
+        siren.stop(() => {
+          siren.play();
+        });
       skinHigh = true;
       this.setState({msgBoxShow: true});
     } else if (this.state.skinTemp < this.state.skinLowTemp) {
@@ -387,13 +396,16 @@ export default class App extends Component {
       //   ? console.log(clc.xterm(189)('Skin Temp Siren is already on'))
       //   :
       console.log(clc.xterm(193)('skin low aya'));
-      if (!this.state.snooze) siren2.play();
+      if (!this.state.snooze)
+        siren.stop(() => {
+          siren.play();
+        });
       skinLow = true;
       this.setState({msgBoxShow: true});
     } else {
       skinHigh = false;
       skinLow = false;
-      siren2.stop();
+      siren.stop();
       if (!skinHigh && !skinLow && !airHigh && !airLow)
         this.setState({msgBoxShow: false});
       else null;

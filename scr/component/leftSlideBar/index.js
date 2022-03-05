@@ -36,6 +36,7 @@ import RNFS from 'react-native-fs';
 
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import AlarmSetting from './AlaemSettings/index';
+import SystemSettings from './SystemSettings/index';
 import Parameter from './Parameter/index';
 import PatientInfo from './PatientInfo/index';
 // import SysSettings from 'react-native-vector-icons/Octicons';
@@ -366,7 +367,11 @@ export default class App extends Component {
         ],
       );
     } else {
-      ToastAndroid.show('No Patient to Discharge', ToastAndroid.SHORT);
+      if (!val) {
+        this.setState({isModalVisible: false});
+        this.props.navigation.replace('Login');
+      }
+      if (val) ToastAndroid.show('No Patient to Discharge', ToastAndroid.SHORT);
     }
   };
 
@@ -663,10 +668,27 @@ export default class App extends Component {
                   spo2Lower={this.handleSpo2Lower}
                   alarmFlag={this.props.alarmFlag}
                 />
-                <TouchableOpacity style={style.listView}>
+                {/* <TouchableOpacity style={style.listView}>
                   <Text style={style.listText}>System Setting</Text>
                   <SysSettings name={'settings'} size={width * 0.02} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <SystemSettings
+                  switchAir={this.handleSwitchAir}
+                  switchSkin={this.handleSwitchSkin}
+                  switchSpo2={this.handleSwitchSpo2}
+                  switchWeight={this.handleSwitchWeight}
+                  switchHumidity={this.handleSwitchHumidity}
+                  switchOxygen={this.handleSwitchOxygen}
+                  passwordValue={this.state.thePass}
+                  airFlag={this.props.airFlag}
+                  skinFlag={this.props.skinFlag}
+                  spo2Flag={this.props.spo2Flag}
+                  humidityFlag={this.props.humidityFlag}
+                  oxygenFlag={this.props.oxygenFlag}
+                  weightFlag={this.props.weightFlag}
+                  isGuest={this.props.isGuest}
+                  alarmFlag={this.props.alarmFlag}
+                />
                 <TouchableOpacity style={style.listView}>
                   <Text style={style.listText}>Brightness</Text>
                   <View style={{width: width * 0.18}}>
@@ -866,6 +888,7 @@ export default class App extends Component {
                               backgroundColor: '#23212016',
                               paddingLeft: width * 0.01,
                               borderRadius: width * 0.002,
+                              justifyContent: 'center',
                             }}>
                             <TextInput
                               value={this.state.password}
@@ -880,7 +903,6 @@ export default class App extends Component {
                                 fontSize: width * 0.02,
                                 color: 'gray',
                                 width: width * 0.23,
-                                // height: height * 0.1,
                                 includeFontPadding: false,
                                 padding: 0,
                                 margin: 0,
@@ -1016,19 +1038,20 @@ export default class App extends Component {
                               position: 'absolute',
                               left: width * 0.12,
                               margin: width * 0.02,
+                              color: 'grey',
                               justifyContent: 'center',
                               alignItems: 'center',
                             }}>
                             <TextInput
                               style={{
                                 fontFamily: Fonts.BalooChettan2,
-                                width: width * 0.23,
+                                width: height * 0.28,
                                 // height: height * 0.07,
                                 fontSize: height * 0.025,
                                 backgroundColor: '#23212016',
-                                color: 'grey',
                                 includeFontPadding: false,
                                 padding: 0,
+                                paddingHorizontal: 5,
                                 margin: 0,
                               }}
                               onChangeText={text =>
