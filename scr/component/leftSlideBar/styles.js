@@ -70,7 +70,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: height * 0.015,
+    paddingHorizontal: height * 0.025,
     borderTopLeftRadius: height * 0.02,
   },
   menuBottonView: {

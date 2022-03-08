@@ -37,8 +37,8 @@ if (Platform.OS === 'android') {
 }
 export default class LoginView extends Component {
   state = {
-    email: '',
-    password: '',
+    email: 'test@test.com',
+    password: '12345',
     isLoading: false,
     txtFileData: '',
     spinner: false,

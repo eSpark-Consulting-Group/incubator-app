@@ -86,6 +86,7 @@ export default class App extends Component {
       text: '',
       started: false,
       showListModal: false,
+      initBrightness: 0,
       spinner: false,
       thePass: '',
     };
@@ -115,21 +116,31 @@ export default class App extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps.alarmFlag) {
-      if (this.props.alarmFlag) {
-        this.setState({
-          isModalVisible: false,
-          checker: false,
-          showDataModal: false,
-          showListModal: false,
-          LockorUnlo: false,
-        });
-      }
+    if (nextProps.alarmFlag) {
+      console.log(
+        clc.xterm(215)(
+          'What is alarm Value in LEftSlider BAr in check',
+          JSON.stringify(nextProps),
+        ),
+      );
+      this.setState({
+        isModalVisible: false,
+        checker: false,
+        showDataModal: false,
+        showListModal: false,
+        LockorUnlo: false,
+      });
     }
   }
 
   toggleModal = () => {
-    this.setState({isModalVisible: !this.state.isModalVisible});
+    SystemSetting.getAppBrightness().then(brightness => {
+      console.log('Current brightness is ' + brightness);
+      this.setState({
+        isModalVisible: !this.state.isModalVisible,
+        initBrightness: brightness,
+      });
+    });
   };
   toggleModalLock = () => {
     this.setState({LockorUnlo: !this.state.LockorUnlo});
@@ -235,6 +246,17 @@ export default class App extends Component {
   handleSwitchOxygen(child) {
     this.props.switchOxygen(child);
   }
+
+  handleAirCalibrate = child => {
+    console.log('WAHAASDASD', child);
+    this.props.handleCalibrateAir(child);
+  };
+  handleSkinCalibrate = child => {
+    this.props.handleCalibrateSkin(child);
+  };
+  handleOxyCalibrate = child => {
+    this.props.handleCalibrateOxy(child);
+  };
 
   handleRunData = child => {
     this.setState({started: child});
@@ -689,6 +711,12 @@ export default class App extends Component {
                   weightFlag={this.props.weightFlag}
                   isGuest={this.props.isGuest}
                   alarmFlag={this.props.alarmFlag}
+                  handleAirCalibrate={this.handleAirCalibrate}
+                  handleSkinCalibrate={this.handleSkinCalibrate}
+                  handleOxyCalibrate={this.handleOxyCalibrate}
+                  airTemp={this.props.airTemp}
+                  skinTemp={this.props.skinTemp}
+                  oxy={this.props.oxy}
                 />
                 <TouchableOpacity style={style.listView}>
                   <Text style={style.listText}>Brightness</Text>
@@ -700,7 +728,7 @@ export default class App extends Component {
                       maximumTrackTintColor="#000000"
                       thumbTintColor="red"
                       step={0.01}
-                      value={0.75}
+                      value={this.state.initBrightness}
                       onValueChange={brightness => {
                         this.setState({brightness});
                         SystemSetting.setAppBrightness(brightness);

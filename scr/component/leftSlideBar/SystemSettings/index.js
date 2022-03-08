@@ -25,6 +25,8 @@ import SelectMultiple from 'react-native-select-multiple';
 import {Fonts} from '../../../utils/fonts';
 import Error from 'react-native-vector-icons/MaterialIcons';
 import Cali from 'react-native-vector-icons/MaterialCommunityIcons';
+import NumericInput from 'react-native-numeric-input';
+import clc from 'cli-color';
 
 // import {TextInput} from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -48,6 +50,13 @@ const errorCodes = [
   {code: '4008', name: 'Water Empty'},
   {code: '4009', name: 'Water Overload'},
 ];
+
+const sensorsData = [
+  {name: 'Air', gs: '5 Ohm', bs: '5 Ohm'},
+  {name: 'Skin', gs: '10 Ohm', bs: '10 Ohm'},
+  {name: 'Heater', gs: '15 Ohm', bs: '16 Ohm'},
+  {name: 'Fan', gs: '20 Ohm', bs: '21 Ohm'},
+];
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -56,11 +65,13 @@ export default class App extends Component {
       name: '',
       code: '',
       showErrorView: false,
+      showCaliView: false,
+      showSenseView: false,
       isModalVisible: false,
       LockorUnlo: false,
       toggleWeight: false,
       password: '',
-      turnOnparameter: true,
+      turnOnparameter: true, //? Change it later to false
       selectedParameter: [],
       valueParameter: [],
       airTemp: this.props.airFlag,
@@ -70,7 +81,21 @@ export default class App extends Component {
       humidity: this.props.humidityFlag,
       oxygen: this.props.oxygenFlag,
       loading: false,
+      airVal: 0,
+      skinVal: 0,
+      oxyVal: 0,
+      calibrateAir: 0,
+      calibrateSkin: 0,
+      calibrateOxy: 0,
     };
+    this.airCount = 0;
+    this.airDone = 0;
+
+    this.skinCount = 0;
+    this.skinDone = 0;
+
+    this.oxyCount = 0;
+    this.oxyDone = 0;
   }
   onSelectionsChange = selectedParameter => {
     this.setState({selectedParameter});
@@ -79,14 +104,15 @@ export default class App extends Component {
     this.setState({loading: true});
     setTimeout(() => {
       this.setState(
-        {turnOnparameter: false, isModalVisible: !this.state.isModalVisible},
+        {
+          turnOnparameter: false,
+          isModalVisible: !this.state.isModalVisible,
+          showCaliView: false,
+          showErrorView: false,
+          showErrorName: false,
+          showSenseView: false,
+        },
         () => {
-          this.props.switchAir(this.state.airTemp);
-          this.props.switchSkin(this.state.skinTemp);
-          this.props.switchSpo2(this.state.spo2hr);
-          this.props.switchWeight(this.state.babyWeight);
-          this.props.switchHumidity(this.state.humidity);
-          this.props.switchOxygen(this.state.oxygen);
           this.setState({loading: false});
         },
       );
@@ -98,6 +124,35 @@ export default class App extends Component {
     } else {
       this.setState({isModalVisible: !this.state.isModalVisible});
     }
+  };
+
+  _DoneCalibration = () => {
+    this.setState({loading: true});
+    setTimeout(() => {
+      this.setState(
+        {
+          showCaliView: false,
+          calibrateAir: this.airDone ?? 0,
+          calibrateSkin: this.skinDone ?? 0,
+          calibrateOxy: this.oxyDone ?? 0,
+        },
+        () => {
+          console.log(
+            clc.redBright('kia hai air calibrate', this.state.calibrateAir),
+          );
+          console.log(
+            clc.redBright('kia hai skin calibrate', this.state.calibrateSkin),
+          );
+          console.log(
+            clc.redBright('kia hai oxygen calibrate', this.state.calibrateOxy),
+          );
+          this.props.handleAirCalibrate(this.state.calibrateAir);
+          this.props.handleSkinCalibrate(this.state.calibrateSkin);
+          this.props.handleOxyCalibrate(this.state.calibrateOxy);
+          this.setState({loading: false});
+        },
+      );
+    }, 800);
   };
 
   _Signin = () => {
@@ -118,22 +173,72 @@ export default class App extends Component {
 
   renderErrorCodes = ({item, index}) => {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 15,
+        }}>
         <TouchableOpacity
           onPress={() => {
             this.showErrorName(item, index);
           }}>
-          <View
-            style={{
-              backgroundColor: '#23212016',
-              borderRadius: width * 0.035,
-              padding: 10,
-              paddingHorizontal: 15,
-              margin: 10,
-            }}>
-            <Text style={style.switchText}>{item.code}</Text>
+          <View style={[style.listView, {width: height * 0.1}]}>
+            <Text style={style.listText}>{item.code}</Text>
           </View>
         </TouchableOpacity>
+      </View>
+    );
+  };
+
+  renderSensorsList = ({item, index}) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: width * 0.45,
+          padding: 10,
+          paddingHorizontal: 15,
+          margin: 10,
+          backgroundColor: '#23212016',
+          borderRadius: width * 0.035,
+        }}>
+        <Text
+          style={[
+            style.switchText,
+            {
+              width: width * 0.06,
+              fontSize: width * 0.015,
+              textAlign: 'center',
+            },
+          ]}>
+          {item.name}
+        </Text>
+        <Text
+          style={[
+            style.switchText,
+            {
+              width: width * 0.06,
+              fontSize: width * 0.015,
+              right: 10,
+              textAlign: 'center',
+            },
+          ]}>
+          {item.gs}
+        </Text>
+        <Text
+          style={[
+            style.switchText,
+            {
+              width: width * 0.06,
+              fontSize: width * 0.015,
+              textAlign: 'center',
+            },
+          ]}>
+          {item.bs}
+        </Text>
       </View>
     );
   };
@@ -149,11 +254,30 @@ export default class App extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log('kia hai alarm FlagXXXXX--------->>>', this.props.alarmFlag);
     if (this.props !== nextProps.alarmFlag) {
       if (this.props.alarmFlag) {
         this.setState({
           isModalVisible: false,
         });
+      }
+    }
+    if (this.props !== nextProps.airTemp) {
+      if (this.props.airTemp) {
+        this.airCount = this.props.airTemp;
+        this.setState({airVal: this.props.airTemp});
+      }
+    }
+    if (this.props !== nextProps.skinTemp) {
+      if (this.props.skinTemp) {
+        this.skinCount = this.props.skinTemp;
+        this.setState({skinVal: this.props.skinTemp});
+      }
+    }
+    if (this.props !== nextProps.oxy) {
+      if (this.props.oxy) {
+        this.oxyCount = this.props.oxy;
+        this.setState({oxyVal: this.props.oxy});
       }
     }
   }
@@ -176,8 +300,10 @@ export default class App extends Component {
         {/* Component */}
         <TouchableOpacity
           style={style.mainList}
-          onLongPress={() => this.toggleModal(this.props.isGuest)}
-          delayLongPress={3000}>
+          // onLongPress={() => this.toggleModal(this.props.isGuest)}
+          onPress={() => this.toggleModal(this.props.isGuest)}
+          // delayLongPress={3000}
+        >
           <Text style={style.listText}>System Settings</Text>
           <SysSettings name={'settings'} size={height * 0.04} />
         </TouchableOpacity>
@@ -186,8 +312,8 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          // isVisible={this.state.isModalVisible}
-          isVisible={true}
+          isVisible={this.state.isModalVisible}
+          // isVisible={true}
           style={{
             maxHeight: modalHeight,
           }}>
@@ -211,9 +337,24 @@ export default class App extends Component {
                     <View style={style.boxHeaderInner}>
                       {heading1 == 'System Settings' && (
                         <TouchableOpacity
+                          disabled={
+                            this.state.showErrorName ||
+                            this.state.showErrorView ||
+                            this.state.showCaliView ||
+                            this.state.showSenseView
+                              ? false
+                              : true
+                          }
                           onPress={() =>
                             heading1 == 'System Settings'
-                              ? this.state.showErrorView
+                              ? this.state.showSenseView
+                                ? (this.setState({
+                                    showSenseView: false,
+                                  }),
+                                  LayoutAnimation.configureNext(
+                                    LayoutAnimation.Presets.easeInEaseOut,
+                                  ))
+                                : this.state.showErrorView
                                 ? (this.setState({
                                     showErrorView: false,
                                   }),
@@ -228,10 +369,54 @@ export default class App extends Component {
                                   LayoutAnimation.configureNext(
                                     LayoutAnimation.Presets.easeInEaseOut,
                                   ))
+                                : this.state.showCaliView
+                                ? (this.setState({
+                                    showCaliView: false,
+                                    // airVal: 0,
+                                    // skinVal: 0,
+                                    // oxyVal: 0,
+                                  }),
+                                  LayoutAnimation.configureNext(
+                                    LayoutAnimation.Presets.easeInEaseOut,
+                                  ))
                                 : (this.setState({turnOnparameter: false}),
                                   this.toggleModal(this.props.isGuest))
                               : this.toggleModal(this.props.isGuest)
                           }
+                          style={{position: 'absolute', left: width * 0.02}}>
+                          {this.state.showErrorView && (
+                            <Back
+                              name={'keyboard-backspace'}
+                              size={width * 0.04}
+                              color="#fff"
+                            />
+                          )}
+                          {this.state.showErrorName && (
+                            <Back
+                              name={'keyboard-backspace'}
+                              size={width * 0.04}
+                              color="#fff"
+                            />
+                          )}
+                          {this.state.showCaliView && (
+                            <Back
+                              name={'keyboard-backspace'}
+                              size={width * 0.04}
+                              color="#fff"
+                            />
+                          )}
+                          {this.state.showSenseView && (
+                            <Back
+                              name={'keyboard-backspace'}
+                              size={width * 0.04}
+                              color="#fff"
+                            />
+                          )}
+                        </TouchableOpacity>
+                      )}
+                      {heading1 == 'Alert' && (
+                        <TouchableOpacity
+                          onPress={() => this.toggleModal(this.props.isGuest)}
                           style={{position: 'absolute', left: width * 0.02}}>
                           <Back
                             name={'keyboard-backspace'}
@@ -245,8 +430,7 @@ export default class App extends Component {
                         <TouchableOpacity
                           onPress={() =>
                             heading1 == 'System Settings'
-                              ? (this.setState({turnOnparameter: false}),
-                                this.toggleModal(this.props.isGuest))
+                              ? this._logOut()
                               : this.toggleModal(this.props.isGuest)
                           }
                           style={{position: 'absolute', right: width * 0.02}}>
@@ -299,8 +483,13 @@ export default class App extends Component {
                       <View style={style.boxBody}>
                         <View style={style.boxBodyInner}>
                           {!this.state.showErrorView &&
-                            !this.state.showErrorName && (
-                              <>
+                            !this.state.showErrorName &&
+                            !this.state.showCaliView &&
+                            !this.state.showSenseView && (
+                              <View
+                                style={{
+                                  height: height * 0.3,
+                                }}>
                                 <TouchableOpacity
                                   onPress={() => {
                                     LayoutAnimation.configureNext(
@@ -308,44 +497,59 @@ export default class App extends Component {
                                     );
                                     this.setState({showErrorView: true});
                                   }}>
-                                  <View style={style.switchView}>
-                                    <Text style={style.switchText}>
+                                  <View style={style.listView}>
+                                    <Text style={style.listText}>
                                       Error Codes
                                     </Text>
                                     <Error
                                       name={'error'}
-                                      size={width * 0.04}
-                                      color="#f68d80fd"
+                                      size={width * 0.02}
+                                      color="#000000cf"
                                     />
                                   </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                  onPress={() => console.log('Pressed')}>
-                                  <View style={style.switchView}>
-                                    <Text style={style.switchText}>
+                                  onPress={() => {
+                                    LayoutAnimation.configureNext(
+                                      LayoutAnimation.Presets.easeInEaseOut,
+                                    );
+                                    this.setState({showSenseView: true});
+                                  }}>
+                                  <View style={style.listView}>
+                                    <Text style={style.listText}>
                                       Sensor Data
                                     </Text>
                                     <Cali
                                       name={'radar'}
-                                      size={width * 0.04}
-                                      color="#f68d80fd"
+                                      size={width * 0.02}
+                                      color="#000000cf"
                                     />
                                   </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                  onPress={() => console.log('Pressed')}>
-                                  <View style={style.switchView}>
-                                    <Text style={style.switchText}>
+                                  onPress={() => {
+                                    LayoutAnimation.configureNext(
+                                      LayoutAnimation.Presets.easeInEaseOut,
+                                    );
+                                    this.setState({
+                                      showCaliView: true,
+                                      airVal: this.state.calibrateAir,
+                                      skinVal: this.state.calibrateSkin,
+                                      oxyVal: this.state.calibrateOxy,
+                                    });
+                                  }}>
+                                  <View style={style.listView}>
+                                    <Text style={style.listText}>
                                       Calibration Mode
                                     </Text>
                                     <Cali
                                       name={'speedometer-medium'}
-                                      size={width * 0.04}
-                                      color="#f68d80fd"
+                                      size={width * 0.02}
+                                      color="#000000cf"
                                     />
                                   </View>
                                 </TouchableOpacity>
-                              </>
+                              </View>
                             )}
                           {this.state.showErrorView &&
                             !this.state.showErrorName && (
@@ -360,12 +564,22 @@ export default class App extends Component {
                                     Error Codes
                                   </Text>
                                 </View>
-                                <FlatList
-                                  data={errorCodes}
-                                  style={{flex: 1}}
-                                  renderItem={this.renderErrorCodes}
-                                  numColumns={3}
-                                />
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                    }}>
+                                    <FlatList
+                                      data={errorCodes}
+                                      renderItem={this.renderErrorCodes}
+                                      numColumns={3}
+                                    />
+                                  </View>
+                                </View>
                               </View>
                             )}
                           {!this.state.showErrorView &&
@@ -404,23 +618,141 @@ export default class App extends Component {
                                 </View>
                               </>
                             )}
+                          {this.state.showSenseView && (
+                            <>
+                              <View
+                                style={{width: '100%', alignItems: 'center'}}>
+                                <Text style={style.subheader}>Sensor Data</Text>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    width: width * 0.45,
+                                    // backgroundColor: '#23212016',
+                                    // borderRadius: width * 0.035,
+                                    padding: 10,
+                                    paddingHorizontal: 15,
+                                    margin: 10,
+                                  }}>
+                                  <Text style={style.switchText}>Name</Text>
+                                  <Text style={style.switchText}>
+                                    Good State
+                                  </Text>
+                                  <Text style={style.switchText}>
+                                    Bad State
+                                  </Text>
+                                </View>
+                                <FlatList
+                                  data={sensorsData}
+                                  renderItem={this.renderSensorsList}
+                                />
+                              </View>
+                            </>
+                          )}
+                          {this.state.showCaliView && (
+                            <>
+                              <View
+                                style={{width: '100%', alignItems: 'center'}}>
+                                <Text style={style.subheader}>
+                                  Calibration Mode
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  justifyContent: 'space-around',
+                                  alignItems: 'center',
+                                }}>
+                                <View style={{alignItems: 'center'}}>
+                                  <Text
+                                    style={[
+                                      style.currentHeading,
+                                      {fontSize: width * 0.02},
+                                    ]}>
+                                    Air Temperature
+                                  </Text>
+                                  <NumericInput
+                                    onChange={airVal => {
+                                      this.setState({airVal}, () => {
+                                        let oneMore = airVal - this.airCount;
+                                        console.log('~ airCountxxx', oneMore);
+                                        this.airDone = oneMore;
+                                        console.log('~ ~~~~~~~', this.airDone);
+                                      });
+                                    }}
+                                    totalWidth={height * 0.35}
+                                    totalHeight={height * 0.05}
+                                    initValue={parseInt(this.state.airVal)}
+                                    rounded
+                                  />
+                                </View>
+                                <View style={{alignItems: 'center'}}>
+                                  <Text
+                                    style={[
+                                      style.currentHeading,
+                                      {fontSize: width * 0.02},
+                                    ]}>
+                                    Skin Temperature
+                                  </Text>
+                                  <NumericInput
+                                    onChange={skinVal => {
+                                      this.setState({skinVal}, () => {
+                                        let oneMore = skinVal - this.skinCount;
+                                        console.log('~ skinCountxxx', oneMore);
+                                        this.skinDone = oneMore;
+                                        console.log('~ ~~~~~~~', this.skinDone);
+                                      });
+                                    }}
+                                    totalWidth={height * 0.35}
+                                    totalHeight={height * 0.05}
+                                    initValue={parseInt(this.state.skinVal)}
+                                    rounded
+                                  />
+                                </View>
+                                <View style={{alignItems: 'center'}}>
+                                  <Text
+                                    style={[
+                                      style.currentHeading,
+                                      {fontSize: width * 0.02},
+                                    ]}>
+                                    Oxygen
+                                  </Text>
+                                  <NumericInput
+                                    onChange={oxyVal => {
+                                      this.setState({oxyVal}, () => {
+                                        let oneMore = oxyVal - this.oxyCount;
+                                        console.log('~ oxyCountxxx', oneMore);
+                                        this.oxyDone = oneMore;
+                                        console.log('~ ~~~~~~~', this.oxyDone);
+                                      });
+                                    }}
+                                    totalWidth={height * 0.35}
+                                    totalHeight={height * 0.05}
+                                    initValue={parseInt(this.state.oxyVal)}
+                                    rounded
+                                  />
+                                </View>
+                              </View>
+                              <View style={style.boxFooter}>
+                                <View style={style.boxFooterInner}>
+                                  <TouchableOpacity
+                                    onPress={this._DoneCalibration}
+                                    style={style.headerbotton}>
+                                    <Text style={style.bottonText}>Done</Text>
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            </>
+                          )}
                         </View>
                       </View>
-                      {/* <View style={style.boxFooter}>
-                        <View style={style.boxFooterInner}>
-                          <TouchableOpacity
-                            style={style.headerbotton}
-                            onPress={
-                              this.state.showErrorView
-                                ? this._goBack
-                                : this._logOut
-                            }>
-                            <Text style={style.bottonText}>
-                              {this.state.showErrorView ? 'Go Back' : 'Log Out'}
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View> */}
                     </View>
                   )}
                 </View>

@@ -178,7 +178,23 @@ export default class App extends Component {
     }
   }
 
+  renderValue = () => {
+    const {calibrateVal} = this.props;
+    const {currentTemp} = this.state;
+
+    console.log('current TEMP', currentTemp);
+    console.log(
+      '🚀 ~ file: airTemp.js ~ line 189 ~ App ~ calibrateVal',
+      calibrateVal,
+    );
+    let result = parseInt(currentTemp) + parseInt(calibrateVal);
+    console.log('🚀 ~ file: airTemp.js ~ line 197 ~ App ~ result', result);
+
+    return parseInt(result);
+  };
+
   render() {
+    const {currentTemp} = this.state;
     if (this.props.activate && this.props.run2) {
       setTimeout(() => {
         this.randomVal();
@@ -209,7 +225,7 @@ export default class App extends Component {
                         style={style.likeInputOxygen}
                         onPress={() => this.openToggel()}>
                         <Text style={style.tempInputCur}>
-                          {this.state.currentTemp}
+                          {this.renderValue()}
                           {/* val  //todo: here is the */}
                         </Text>
                       </TouchableOpacity>
@@ -277,7 +293,7 @@ export default class App extends Component {
                     <View style={style.boxUperStyle}>
                       <View style={style.likeInputOxygen}>
                         <Text style={style.tempInputCur}>
-                          {this.state.currentTemp}
+                          {this.renderValue()}
                         </Text>
                       </View>
                       {!this.props.value ? (

@@ -140,6 +140,9 @@ export default class App extends Component {
       isKg: false,
       msgBoxShow: false,
       isGuest: this?.props?.navigation?.state?.params?.guest,
+      calibratedAir: 0,
+      calibratedSkin: 0,
+      calibratedOxy: 0,
     }),
       (this.handleWeight = this.handleWeight.bind(this));
     this.handleTemp = this.handleTemp.bind(this);
@@ -203,86 +206,103 @@ export default class App extends Component {
       this.setState({sysCondi: true});
     }
   };
+
   handleWeight(child) {
     this.setState({
       weightSign: child,
     });
   }
+
   handleAirHigher(child) {
     this.setState({
       higherAirValue: child,
     });
   }
+
   handleAirLow(child) {
     this.setState({
       lowAirValue: child,
     });
   }
+
   handleSkinLower(child) {
     this.setState({
       skinLowTemp: child,
     });
   }
+
   handleSkinHigher(child) {
     this.setState({
       skinHigherTemp: child,
     });
   }
+
   handleSpo2Uper = child => {
     this.setState({
       spo2Uper: child,
     });
   };
+
   handleSpo2Lower = child => {
     this.setState({
       spo2Lower: child,
     });
   };
+
   handleHrUper = child => {
     this.setState({
       hrUper: child,
     });
   };
+
   handleHrLower = child => {
     this.setState({
       hrLower: child,
     });
   };
+
   handleTemp(child) {
     this.setState({
       tempSign: child,
     });
   }
+
   handleParameter = child => {
     this.setState({
       parameter: child,
     });
   };
+
   handleSwitchAir = child => {
     this.setState({
       switchAir: child,
     });
   };
+
   handleSwitchSkin = child => {
     this.setState({
       switchSkin: child,
     });
   };
+
   handleSwitchSpo2 = child => {
     this.setState({
       switchSpo2: child,
     });
   };
+
   handleSwitchWeight = child => {
     this.setState({
       switchWeight: child,
     });
   };
+
   handleSwitchHumidity = child => {
     this.setState({
       switchHumidity: child,
     });
   };
+
   handleSwitchOxygen = child => {
     this.setState({
       switchOxygen: child,
@@ -321,9 +341,11 @@ export default class App extends Component {
   stopTimer() {
     clearTimeout(this.timer);
   }
+
   _lockOn = () => {
     this.setState({lock: !this.state.lock}), alert('System Unlocked');
   };
+
   _lockOff = () => {
     this.setState({lock: !this.state.lock}), alert('System Locked');
   };
@@ -518,6 +540,18 @@ export default class App extends Component {
       this.setState({run3: false});
       console.log('gaya deactivate');
     }
+  };
+
+  handleCalibrateAir = child => {
+    this.setState({calibratedAir: child});
+  };
+
+  handleCalibrateSkin = child => {
+    this.setState({calibratedSkin: child});
+  };
+
+  handleCalibrateOxy = child => {
+    this.setState({calibratedOxy: child});
   };
 
   snoozeAlarm = () => {
@@ -829,7 +863,10 @@ export default class App extends Component {
             getSex={this.handleSex}
             getWeightUnit={this.handleWeightUnit}
             navigation={this.props.navigation}
-            alarmFlag={this.state.msgBoxShow}
+            alarmFlag={this.state.snooze ? false : this.state.msgBoxShow}
+            handleCalibrateAir={this.handleCalibrateAir}
+            handleCalibrateSkin={this.handleCalibrateSkin}
+            handleCalibrateOxy={this.handleCalibrateOxy}
           />
         </View>
         <View style={style.inerContainer1}>
@@ -846,7 +883,8 @@ export default class App extends Component {
                 activate={this.state.airTempActivate}
                 deactivate={this.state.airTempDeactivate}
                 run={this.state.run}
-                alarmFlag={this.state.msgBoxShow}
+                alarmFlag={this.state.snooze ? false : this.state.msgBoxShow}
+                calibrateVal={this.state.calibratedAir}
               />
             </View>
           )}
@@ -864,7 +902,8 @@ export default class App extends Component {
                 activate={this.state.skinTempActivate}
                 deactivate={this.state.skinTempDeactivate}
                 run2={this.state.run2}
-                alarmFlag={this.state.msgBoxShow}
+                alarmFlag={this.state.snooze ? false : this.state.msgBoxShow}
+                calibrateVal={this.state.calibratedSkin}
               />
             </View>
           )}
@@ -879,7 +918,7 @@ export default class App extends Component {
                 spo2Lower={this.state.spo2Lower}
                 hrUpper={this.state.hrUper}
                 hrLower={this.state.hrLower}
-                alarmFlag={this.state.msgBoxShow}
+                alarmFlag={this.state.snooze ? false : this.state.msgBoxShow}
               />
             </View>
           )}
@@ -891,7 +930,7 @@ export default class App extends Component {
               <Weight
                 value={this.state.weightSign}
                 locker={this.state.lock}
-                alarmFlag={this.state.msgBoxShow}
+                alarmFlag={this.state.snooze ? false : this.state.msgBoxShow}
               />
             </View>
           )}
@@ -902,7 +941,7 @@ export default class App extends Component {
               <Text style={style.Spo2Heading}>Humidity</Text>
               <Humidity
                 locker={this.state.lock}
-                alarmFlag={this.state.msgBoxShow}
+                alarmFlag={this.state.snooze ? false : this.state.msgBoxShow}
               />
             </View>
           )}
@@ -917,7 +956,8 @@ export default class App extends Component {
                 activate={this.state.oxygenActivate}
                 deactivate={this.state.oxygenDeactivate}
                 run3={this.state.run3}
-                alarmFlag={this.state.msgBoxShow}
+                alarmFlag={this.state.snooze ? false : this.state.msgBoxShow}
+                calibrateVal={this.state.calibratedOxy}
               />
             </View>
           )}

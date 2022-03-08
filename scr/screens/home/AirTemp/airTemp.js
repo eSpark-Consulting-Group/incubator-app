@@ -23,7 +23,7 @@ import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import Check from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import clc from 'cli-color';
 import {createResource} from '../../../config/SimpleApiCall';
 import {air_Temp} from '../../../config/WebServices';
 
@@ -148,24 +148,25 @@ export default class App extends Component {
     }
   };
 
-  populateArray = () => {
+  populateArray = value => {
     this.state.temperatureHistory.push({
       hour: this.hour,
       mins: this.mins,
       id: id++,
-      currentTemperature: this.state.currentTemp + '\u2103',
-      setTemperature: this.state.currentTemp - 1 + '\u2103',
+      currentTemperature: value + '\u2103',
+      setTemperature: value - 1 + '\u2103',
     });
   };
 
   randomVal() {
     this.airTemp = setInterval(() => {
+      console.log(clc.xterm(141)('~ Kia mila ~ this.result', this.result));
       this.hour = new Date().getHours();
       this.mins = new Date().getMinutes();
       const rand = Math.random() * 40;
       this.setState({currentTemp: rand.toFixed()});
-      this.props.handleAirTemp(this.state.currentTemp);
-      this.populateArray();
+      this.props.handleAirTemp(this.result);
+      this.populateArray(this.result);
     }, 30000);
   }
 
@@ -183,6 +184,21 @@ export default class App extends Component {
       }
     }
   }
+
+  renderValue = () => {
+    const {calibrateVal} = this.props;
+    const {currentTemp} = this.state;
+
+    console.log('current TEMP', currentTemp);
+    console.log(
+      '🚀 ~ file: airTemp.js ~ line 189 ~ App ~ calibrateVal',
+      calibrateVal,
+    );
+    let result = parseInt(currentTemp) + parseInt(calibrateVal);
+    console.log('🚀 ~ file: airTemp.js ~ line 197 ~ App ~ result', result);
+    this.result = result;
+    return parseInt(result);
+  };
 
   render() {
     if (this.props.activate && this.props.run) {
@@ -215,7 +231,7 @@ export default class App extends Component {
                         style={style.likeInputOxygen}
                         onPress={() => this.openToggel()}>
                         <Text style={style.tempInputCur}>
-                          {this.state.currentTemp}
+                          {this.renderValue()}
                           {/* val //todo: here is the*/}
                         </Text>
                       </TouchableOpacity>
@@ -282,9 +298,7 @@ export default class App extends Component {
                     </Text>
                     <View style={style.boxUperStyle}>
                       <View style={style.likeInputOxygen}>
-                        <Text style={style.tempInputCur}>
-                          {this.state.currentTemp}
-                        </Text>
+                        <Text style={style.tempInputCur}>{renderValue()}</Text>
                       </View>
                       {!this.props.value ? (
                         <Text style={style.centiUper}>{'\u2103'}</Text>

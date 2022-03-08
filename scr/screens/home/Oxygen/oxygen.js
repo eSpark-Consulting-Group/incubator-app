@@ -126,7 +126,24 @@ export default class App extends Component {
     }
   }
 
+  renderValue = () => {
+    const {calibrateVal} = this.props;
+    const {oxygenLevel} = this.state;
+
+    console.log('current TEMP', oxygenLevel);
+    console.log(
+      '🚀 ~ file: airTemp.js ~ line 189 ~ App ~ calibrateVal',
+      calibrateVal,
+    );
+    let result = parseInt(oxygenLevel) + parseInt(calibrateVal);
+    console.log('🚀 ~ file: airTemp.js ~ line 197 ~ App ~ result', result);
+
+    return parseInt(result);
+  };
+
   render() {
+    const {oxygenLevel} = this.state;
+
     if (this.props.activate && this.props.run3) {
       setTimeout(() => {
         this.randomVal();
@@ -155,7 +172,7 @@ export default class App extends Component {
                     <View style={style.likeInputOxygen}>
                       <Text style={style.tempInputCur}>
                         {/* //todo: here is the value of oxygen */}
-                        {this.state.oxygenLevel}
+                        {this.renderValue()}
                       </Text>
                     </View>
 

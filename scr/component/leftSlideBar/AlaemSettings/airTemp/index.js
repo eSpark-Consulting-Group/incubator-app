@@ -139,14 +139,6 @@ export default class App extends Component {
                       <Text style={style.currentHeading}>
                         Higher Temperature
                       </Text>
-                      {/* <TextInput
-                                                placeholder='Type Here'
-                                                keyboardType="number-pad"
-                                                maxLength={5}
-                                                style={style.currentInput}
-                                                onChangeText={airCurrentTemp => this.setState({airCurrentTemp})}
-                                                
-                                            /> */}
                       <NumericInput
                         onChange={airHightTemp => this.setState({airHightTemp})}
                         totalWidth={width * 0.15}
