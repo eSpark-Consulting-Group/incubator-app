@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Image,
-  StatusBar,
   TextInput,
   Dimensions,
   TouchableOpacity,
@@ -17,28 +13,16 @@ import {
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
-import SwitchToggle from 'react-native-switch-toggle';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
-import User from 'react-native-vector-icons/EvilIcons';
 import SysSettings from 'react-native-vector-icons/Octicons';
-import SelectMultiple from 'react-native-select-multiple';
-import {Fonts} from '../../../utils/fonts';
 import Error from 'react-native-vector-icons/MaterialIcons';
 import Cali from 'react-native-vector-icons/MaterialCommunityIcons';
 import NumericInput from 'react-native-numeric-input';
 import clc from 'cli-color';
 
-// import {TextInput} from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
 const {height, width} = Dimensions.get('window');
-const Parameter = [
-  {label: 'Air Temperature', value: '1'},
-  {label: 'Skin Temperature', value: '2'},
-  {label: 'Spo2/Hr', value: '3'},
-  {label: 'Baby Weight', value: '4'},
-  {label: 'Humidy', value: '5'},
-  {label: 'Oxygen Level', value: '6'},
-];
+
 const errorCodes = [
   {code: '4001', name: 'Rotation Sensor'},
   {code: '4002', name: 'Air Flow Sensor'},
@@ -178,16 +162,41 @@ export default class App extends Component {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          padding: 15,
         }}>
-        <TouchableOpacity
-          onPress={() => {
-            this.showErrorName(item, index);
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            width: width * 0.45,
+            backgroundColor: '#23212016',
+            borderRadius: width * 0.035,
+            padding: 10,
+            paddingHorizontal: 15,
+            margin: 10,
           }}>
-          <View style={[style.listView, {width: height * 0.1}]}>
-            <Text style={style.listText}>{item.code}</Text>
-          </View>
-        </TouchableOpacity>
+          <Text
+            style={[
+              style.switchText,
+              {
+                width: height * 0.25,
+                textAlign: 'center',
+                textAlignVertical: 'center',
+              },
+            ]}>
+            {item.code}
+          </Text>
+          <Text
+            style={[
+              style.switchText,
+              {
+                width: height * 0.25,
+                textAlign: 'center',
+                textAlignVertical: 'center',
+              },
+            ]}>
+            {item.name}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -241,16 +250,6 @@ export default class App extends Component {
         </Text>
       </View>
     );
-  };
-
-  showErrorName = (item, index) => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    this.setState({
-      showErrorName: true,
-      showErrorView: false,
-      code: item.code,
-      name: item.name,
-    });
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -338,7 +337,6 @@ export default class App extends Component {
                       {heading1 == 'System Settings' && (
                         <TouchableOpacity
                           disabled={
-                            this.state.showErrorName ||
                             this.state.showErrorView ||
                             this.state.showCaliView ||
                             this.state.showSenseView
@@ -361,14 +359,6 @@ export default class App extends Component {
                                   LayoutAnimation.configureNext(
                                     LayoutAnimation.Presets.easeInEaseOut,
                                   ))
-                                : this.state.showErrorName
-                                ? (this.setState({
-                                    showErrorName: false,
-                                    showErrorView: true,
-                                  }),
-                                  LayoutAnimation.configureNext(
-                                    LayoutAnimation.Presets.easeInEaseOut,
-                                  ))
                                 : this.state.showCaliView
                                 ? (this.setState({
                                     showCaliView: false,
@@ -385,13 +375,6 @@ export default class App extends Component {
                           }
                           style={{position: 'absolute', left: width * 0.02}}>
                           {this.state.showErrorView && (
-                            <Back
-                              name={'keyboard-backspace'}
-                              size={width * 0.04}
-                              color="#fff"
-                            />
-                          )}
-                          {this.state.showErrorName && (
                             <Back
                               name={'keyboard-backspace'}
                               size={width * 0.04}
@@ -483,7 +466,6 @@ export default class App extends Component {
                       <View style={style.boxBody}>
                         <View style={style.boxBodyInner}>
                           {!this.state.showErrorView &&
-                            !this.state.showErrorName &&
                             !this.state.showCaliView &&
                             !this.state.showSenseView && (
                               <View
@@ -551,73 +533,37 @@ export default class App extends Component {
                                 </TouchableOpacity>
                               </View>
                             )}
-                          {this.state.showErrorView &&
-                            !this.state.showErrorName && (
+                          {this.state.showErrorView && (
+                            <View
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                              }}>
+                              <View
+                                style={{width: '100%', alignItems: 'center'}}>
+                                <Text style={style.subheader}>Error Codes</Text>
+                              </View>
                               <View
                                 style={{
-                                  width: '100%',
-                                  height: '100%',
+                                  flex: 1,
+                                  justifyContent: 'center',
                                 }}>
                                 <View
-                                  style={{width: '100%', alignItems: 'center'}}>
-                                  <Text style={style.subheader}>
-                                    Error Codes
-                                  </Text>
-                                </View>
-                                <View
                                   style={{
                                     flex: 1,
-                                    justifyContent: 'center',
                                   }}>
-                                  <View
-                                    style={{
-                                      flex: 1,
-                                    }}>
-                                    <FlatList
-                                      data={errorCodes}
-                                      renderItem={this.renderErrorCodes}
-                                      numColumns={3}
-                                    />
+                                  <View style={style.listcontainer}>
+                                    <Text style={style.switchText}>Code</Text>
+                                    <Text style={style.switchText}>Name</Text>
                                   </View>
+                                  <FlatList
+                                    data={errorCodes}
+                                    renderItem={this.renderErrorCodes}
+                                  />
                                 </View>
                               </View>
-                            )}
-                          {!this.state.showErrorView &&
-                            this.state.showErrorName && (
-                              <>
-                                <View
-                                  style={{width: '100%', alignItems: 'center'}}>
-                                  <Text style={style.subheader}>
-                                    Technical Error
-                                  </Text>
-                                </View>
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                  }}>
-                                  <View
-                                    style={{
-                                      flexDirection: 'row',
-                                      justifyContent: 'space-around',
-                                      width: width * 0.45,
-                                      backgroundColor: '#23212016',
-                                      borderRadius: width * 0.035,
-                                      padding: 10,
-                                      paddingHorizontal: 15,
-                                      margin: 10,
-                                    }}>
-                                    <Text style={style.switchText}>
-                                      {this.state.code}
-                                    </Text>
-                                    <Text style={style.switchText}>
-                                      {this.state.name}
-                                    </Text>
-                                  </View>
-                                </View>
-                              </>
-                            )}
+                            </View>
+                          )}
                           {this.state.showSenseView && (
                             <>
                               <View
@@ -630,17 +576,7 @@ export default class App extends Component {
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                 }}>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    width: width * 0.45,
-                                    // backgroundColor: '#23212016',
-                                    // borderRadius: width * 0.035,
-                                    padding: 10,
-                                    paddingHorizontal: 15,
-                                    margin: 10,
-                                  }}>
+                                <View style={style.listcontainer}>
                                   <Text style={style.switchText}>Name</Text>
                                   <Text style={style.switchText}>
                                     Good State

@@ -1,27 +1,20 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Image,
   Alert,
   Dimensions,
   TouchableOpacity,
   TextInput,
-  ScrollView,
   FlatList,
 } from 'react-native';
 import style from './style';
-import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
-import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import modalStyle from './modalsStyling';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import Check from 'react-native-vector-icons/AntDesign';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import clc from 'cli-color';
 import {createResource} from '../../../config/SimpleApiCall';
@@ -53,8 +46,6 @@ export default class App extends Component {
     const high = this.props.airHigherTemp;
     const lower = this.props.airLowerTemp;
 
-    // this.sendAirTemp();
-
     if (
       this.state.currentAirTemperature > high ||
       this.state.currentAirTemperature < lower
@@ -82,7 +73,6 @@ export default class App extends Component {
         Alert.alert('Success', 'Successfully Added Air Temprature!');
       })
       .catch(error => {
-        // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
           console.log(error.response.data);
@@ -124,8 +114,6 @@ export default class App extends Component {
     });
   };
   submitCondition = () => {
-    const historyData = this.state.currentTemp;
-    const historyData2 = this.state.setTemp;
     let unit;
     !this.props.value ? (unit = '\u2103') : (unit = '\u2109');
     if (this.state.currentTemp == null || this.state.setTemp == null) {
@@ -353,9 +341,7 @@ export default class App extends Component {
           animationIn="bounceIn"
           animationOut="bounceOut"
           statusBarTranslucent
-          isVisible={this.state.toggle}
-          // style={modalStyle.insertWeightModal}
-        >
+          isVisible={this.state.toggle}>
           <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <View style={modalStyle.insertWeightContainer}>

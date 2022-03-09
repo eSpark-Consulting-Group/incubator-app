@@ -33,7 +33,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: width * 0.02,
-    // borderRadius:width * .003
     borderBottomLeftRadius: width * 0.005,
     borderTopRightRadius: width * 0.005,
     borderTopLeftRadius: width * 0.025,
@@ -43,7 +42,6 @@ export default styles = StyleSheet.create({
     fontSize: height * 0.03,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
-    // fontFamily:'MetalMania-Regular'
   },
   toggleContainer: {
     width: width * 0.09,
@@ -71,7 +69,6 @@ export default styles = StyleSheet.create({
     maxHeight: height * 0.58,
     maxWidth: width * 0.5,
     top: height * 0.12,
-    // left:width * .1
   },
   modalInner: {
     flex: 1,
@@ -85,9 +82,6 @@ export default styles = StyleSheet.create({
   boxInner: {
     flex: 1,
     backgroundColor: 'white',
-    // borderBottomLeftRadius: width * 0.005,
-    // borderTopRightRadius: width * 0.005,
-    // borderTopLeftRadius: width * 0.025,
     borderRadius: width * 0.025,
     elevation: width * 0.015,
   },
@@ -100,7 +94,6 @@ export default styles = StyleSheet.create({
     borderTopRightRadius: width * 0.025,
     borderTopLeftRadius: width * 0.025,
     justifyContent: 'space-around',
-    // paddingHorizontal: width * .02,
     alignItems: 'center',
     flexDirection: 'row',
     elevation: width * 0.002,
@@ -111,7 +104,6 @@ export default styles = StyleSheet.create({
     fontSize: width * 0.03,
     color: 'white',
     marginHorizontal: width * 0.05,
-    // marginLeft: width * .09,
   },
   headerbotton: {
     height: height * 0.1,
@@ -126,7 +118,6 @@ export default styles = StyleSheet.create({
     fontFamily: Fonts.Handlee,
     fontSize: height * 0.028,
     color: 'gray',
-    // marginLeft: width * .09,
   },
   boxBody: {
     width: width * 0.47,
@@ -134,9 +125,6 @@ export default styles = StyleSheet.create({
   },
   boxBodyInner: {
     flex: 1,
-    // backgroundColor:'red',
-    // borderTopRightRadius: width * .005,
-    // borderTopLeftRadius: width * .025,
     justifyContent: 'center',
     alignItems: 'center',
   },

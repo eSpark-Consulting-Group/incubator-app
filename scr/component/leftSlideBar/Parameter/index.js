@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Image,
-  StatusBar,
   TextInput,
   Dimensions,
   TouchableOpacity,
@@ -18,21 +14,9 @@ import Modal from 'react-native-modal';
 import SwitchToggle from 'react-native-switch-toggle';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import User from 'react-native-vector-icons/EvilIcons';
-// import SysSettings from 'react-native-vector-icons/Octicons';
-import SelectMultiple from 'react-native-select-multiple';
-import {Fonts} from '../../../utils/fonts';
 
-// import {TextInput} from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
 const {height, width} = Dimensions.get('window');
-const Parameter = [
-  {label: 'Air Temperature', value: '1'},
-  {label: 'Skin Temperature', value: '2'},
-  {label: 'Spo2/Hr', value: '3'},
-  {label: 'Baby Weight', value: '4'},
-  {label: 'Humidy', value: '5'},
-  {label: 'Oxygen Level', value: '6'},
-];
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -54,8 +38,6 @@ export default class App extends Component {
     };
   }
   onSelectionsChange = selectedParameter => {
-    // selectedFruits is array of { label, value }
-
     this.setState({selectedParameter});
   };
   _logOut = () => {

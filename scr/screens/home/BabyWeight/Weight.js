@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Switch,
   Alert,
-  StatusBar,
   Dimensions,
   TouchableOpacity,
   FlatList,
@@ -15,18 +11,9 @@ import {
 } from 'react-native';
 import style from './weightStyle';
 import comStyle from './weightCompStyle';
-import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
-import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
-import Status from 'react-native-vector-icons/MaterialIcons';
-import Send from 'react-native-vector-icons/FontAwesome';
-// import {TextInput, ScrollView} from 'react-native-gesture-handler';
-import SwitchToggle from 'react-native-switch-toggle';
-import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Fonts} from '../../../utils/fonts';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
-import NumericInput from 'react-native-numeric-input';
 import Check from 'react-native-vector-icons/AntDesign';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -54,10 +41,6 @@ export default class App extends Component {
     };
   }
 
-  componentDidMount() {
-    // this.sendBabyTemp();
-  }
-
   sendBabyTemp = async () => {
     const {currentTemp, setTemp} = this.state;
 
@@ -75,7 +58,6 @@ export default class App extends Component {
         Alert.alert('Success', 'Successfully Added Baby Weight!');
       })
       .catch(error => {
-        // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
           console.log(error.response.data);
@@ -206,10 +188,7 @@ export default class App extends Component {
                         />
                       </View>
                     </View>
-                    <View
-                      style={comStyle.zeroBotton2}
-                      // onPress={() => this.setState({ currentWei: 0 })}
-                    >
+                    <View style={comStyle.zeroBotton2}>
                       <Text style={comStyle.zeroText}>Auto Zero</Text>
                     </View>
                   </View>
@@ -223,9 +202,7 @@ export default class App extends Component {
           animationIn="bounceIn"
           animationOut="bounceOut"
           statusBarTranslucent
-          isVisible={this.state.toggle}
-          // style={style.insertWeightModal}
-        >
+          isVisible={this.state.toggle}>
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View style={style.insertWeightContainer}>

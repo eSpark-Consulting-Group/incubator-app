@@ -1,24 +1,17 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Alert,
-  StatusBar,
   Dimensions,
   TouchableOpacity,
-  ScrollView,
   FlatList,
 } from 'react-native';
 import style from './oxygenStyle';
-import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
-import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RNFS from 'react-native-fs';
 
 import {createResource} from '../../../config/SimpleApiCall';
 import {oxygen} from '../../../config/WebServices';
@@ -60,7 +53,6 @@ export default class App extends Component {
         Alert.alert('Success', 'Successfully Added Oxygen!');
       })
       .catch(error => {
-        // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
           console.log(error.response.data);
@@ -171,7 +163,6 @@ export default class App extends Component {
                   <View style={style.boxUperStyle}>
                     <View style={style.likeInputOxygen}>
                       <Text style={style.tempInputCur}>
-                        {/* //todo: here is the value of oxygen */}
                         {this.renderValue()}
                       </Text>
                     </View>

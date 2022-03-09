@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Image,
-  StatusBar,
   Dimensions,
   TouchableOpacity,
   Alert,
@@ -19,25 +15,14 @@ import SwitchToggle from 'react-native-switch-toggle';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
-// import AirTemp from './airTemp/index';
-// import SkinTemp from './skinTemp/index';
-// import Spo2 from './spo2/index';
-// import Hr from './hr/index';
+
 import {RadioButton} from 'react-native-paper';
 
-import RNFS from 'react-native-fs';
-import XLSX from 'xlsx';
-
-// const [checked, setChecked] = React.useState('first');
-
-// import SysSettings from 'react-native-vector-icons/Octicons';
 import {Fonts} from '../../../utils/fonts';
-// import {TextInput, ScrollView} from 'react-native-gesture-handler';
 
 var clc = require('cli-color');
 
 const {height, width} = Dimensions.get('window');
-let d = new Date();
 
 export default class App extends Component {
   constructor(props) {
@@ -80,14 +65,7 @@ export default class App extends Component {
   componentWillUnmount() {
     console.log(clc.xterm(218)('ye ruka?'));
   }
-  //   this.handleAirHigher = this.handleAirHigher.bind(this);
-  // this.handleAirlower = this.handleAirlower.bind(this);
-  // // this.handleSkinCurrent = this.handleSkinCurrent.bind(this);
-  // this.handleSkinLow = this.handleSkinLow.bind(this);
-  // this.handleSkinHigh = this.handleSkinHigh.bind(this);
-  // state = {
-  //   checked: 'first',
-  // };
+
   toggleModal = () => {
     this.setState({
       isModalVisible: !this.state.isModalVisible,
@@ -99,21 +77,6 @@ export default class App extends Component {
     });
   };
 
-  // collectData = () => {
-  //     this.setState({ isModalVisible: !this.state.isModalVisible },
-  //         () =>
-  //         this.props.airHigTemp(this.state.higherAirValue),
-  //         this.props.airLowTemp(this.state.lowerAirValue),
-  //         this.props.skinHighTemp(this.state.skinHighTemp),
-  //         this.props.skinLowTemp(this.state.skinLowTemp),
-  //         this.props.spo2Uper(this.state.spo2Upper),
-  //         this.props.spo2Lower(this.state.spo2Lower),
-  //         this.props.hrUper(this.state.hrUpper),
-  //         this.props.hrLower(this.state.hrLower),
-  //         this.props.modalOff(!this.state.isModalVisible),
-
-  //         );
-  // }
   handleAirHigher(child) {
     this.setState({
       higherAirValue: child,

@@ -108,19 +108,8 @@ export default class LoginView extends Component {
   _permissionDone = async () => {
     try {
       await AsyncStorage.setItem('permission', '1');
-    } catch (e) {
-      // console.warn('permission', e);
-    }
+    } catch (e) {}
   };
-
-  // _storeData = async value => {
-  //   try {
-  //     await setItem(JSON.stringify(value));
-  //   } catch (error) {
-  //     console.log('LoginView -> error', error);
-  //     // Error saving data
-  //   }
-  // };
 
   _check = async () => {
     Alert.alert(
@@ -245,9 +234,7 @@ export default class LoginView extends Component {
 
     return (
       <View style={styles.container}>
-        {/* {this.state.focused && ( */}
         <View style={{height: 50, backgroundColor: 'pink'}} />
-        {/* )} */}
         <Spinner visible={this.state.spinner} color="red" />
         <View style={styles.inputContainer}>
           <TextInput
@@ -300,7 +287,6 @@ export default class LoginView extends Component {
           disabled={isLoading}
           underlayColor={'#9c9c9c'}
           style={[styles.buttonContainer, styles.loginButton]}
-          // onPress={() => this.onClickListener('login')}
           onPress={() => {
             this.ReadTxtFile(false);
           }}>
@@ -348,8 +334,6 @@ export default class LoginView extends Component {
             </View>
           </TouchableOpacity>
         </View>
-
-        {/* {isLoading && this.renderLoader()} */}
       </View>
     );
   }
@@ -377,10 +361,8 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     padding: 0,
     margin: 0,
-    // height: height * 0.1,
     marginLeft: width * 0.01,
     borderBottomColor: '#FFFFFF',
-    // flex: 1,
     width: width * 0.38,
   },
   inputIcon: {
@@ -406,7 +388,6 @@ const styles = StyleSheet.create({
   },
   containers: {
     position: 'absolute',
-    // flex: 1,
     justifyContent: 'center',
   },
   horizontal: {

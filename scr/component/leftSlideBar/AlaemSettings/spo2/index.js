@@ -1,25 +1,18 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Image,
-  StatusBar,
   Dimensions,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
-import SwitchToggle from 'react-native-switch-toggle';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import Check from 'react-native-vector-icons/AntDesign';
 import NumericInput from 'react-native-numeric-input';
-// import SysSettings from 'react-native-vector-icons/Octicons';
-import {Fonts} from '../../../../utils/fonts';
-import {TextInput} from 'react-native-gesture-handler';
+
 const {height, width} = Dimensions.get('window');
 export default class App extends Component {
   constructor(props) {
@@ -85,8 +78,6 @@ export default class App extends Component {
   }
 
   render() {
-    // console.log(this.state.uperLimit)
-    // console.log(this.state.lowerLimit)
     return (
       <View>
         <TouchableOpacity style={style.listView} onPress={this.toggleAir}>
@@ -97,14 +88,11 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.state.airTemp}
-          // style={style.modal}
-        >
+          isVisible={this.state.airTemp}>
           <KeyboardAvoidingView
             style={{
               height: height,
               alignItems: 'center',
-              // backgroundColor: 'pink',
             }}
             behavior="position">
             <View style={style.modalInner}>
@@ -127,14 +115,7 @@ export default class App extends Component {
                   <View style={style.bodyContainer}>
                     <View style={style.bodyInner}>
                       <Text style={style.currentHeading}>Upper Limit</Text>
-                      {/* <TextInput
-                                                placeholder='Type Here'
-                                                keyboardType="number-pad"
-                                                maxLength={5}
-                                                style={style.currentInput}
-                                                onChangeText={airCurrentTemp => this.setState({airCurrentTemp})}
-                                                
-                                            /> */}
+
                       <NumericInput
                         onChange={uperLimit => this.setState({uperLimit})}
                         totalWidth={width * 0.15}

@@ -1,21 +1,7 @@
 import React, {Component} from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  StatusBar,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import {Text, View, Dimensions, TouchableOpacity, Alert} from 'react-native';
 import style from './style';
-import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
-import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -49,8 +35,6 @@ export default class App extends Component {
     const high = this.props.skinHighTemp;
     const lower = this.props.skinLowerTemp;
 
-    // this.sendSPHRTemp();
-
     if (
       this.state.currentSkinemperature > high ||
       this.state.currentSkinemperature < lower
@@ -78,7 +62,6 @@ export default class App extends Component {
         Alert.alert('Success', 'Successfully Added SPhr!');
       })
       .catch(error => {
-        // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
           console.log(error.response.data);
@@ -120,8 +103,6 @@ export default class App extends Component {
     });
   };
   submitCondition = () => {
-    const historyData = this.state.currentTemp;
-    const historyData2 = this.state.setTemp;
     let unit;
     !this.props.value ? (unit = '\u2103') : (unit = '\u2109');
     if (this.state.currentTemp == null || this.state.setTemp == null) {

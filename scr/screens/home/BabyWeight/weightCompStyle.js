@@ -23,12 +23,10 @@ export default styles = StyleSheet.create({
   },
   currentTempText: {
     fontSize: height * 0.04,
-    // fontWeight: "bold",
     color: '#FF420E',
     fontFamily: Fonts.BalooChettan2,
   },
   tempInputCur: {
-    // position: 'absolute',
     fontSize: width * 0.05,
     fontFamily: Fonts.BalooChettan2,
     color: '#484149c5',
@@ -75,14 +73,12 @@ export default styles = StyleSheet.create({
     fontSize: width * 0.03,
     fontFamily: Fonts.BalooChettan2,
     color: '#484149c5',
-    // top: height * .005,
     marginRight: height * 0.02,
   },
 
   weighHeaderContainer: {
     height: height * 0.27,
     width: width * 0.29,
-    // backgroundColor:'red'
   },
   footerContainer: {
     height: height * 0.12,
@@ -106,28 +102,16 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // marginBottom: height * .02,
   },
   likeInputMin: {
     width: width * 0.2,
     height: height * 0.07,
     borderWidth: 1,
-    // flexDirection:"row-reverse",
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: height * 0.005,
   },
-  // zeroBotton: {
-  //   width: height * 0.1,
-  //   height: height * 0.07,
-  //   borderRadius: 2,
-  //   backgroundColor: 'red',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   position: 'absolute',
-  //   right: 10,
-  //   bottom: 1,
-  // },
+
   zeroBotton2: {
     width: height * 0.1,
     height: height * 0.07,

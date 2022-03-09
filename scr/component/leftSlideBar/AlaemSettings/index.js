@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  StatusBar,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {Text, View, Dimensions, TouchableOpacity} from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
-import SwitchToggle from 'react-native-switch-toggle';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import Back from 'react-native-vector-icons/MaterialCommunityIcons';
 import AirTemp from './airTemp/index';
@@ -19,9 +9,6 @@ import SkinTemp from './skinTemp/index';
 import Spo2 from './spo2/index';
 import Hr from './hr/index';
 
-// import SysSettings from 'react-native-vector-icons/Octicons';
-import {Fonts} from '../../../utils/fonts';
-import {TextInput} from 'react-native-gesture-handler';
 const {height, width} = Dimensions.get('window');
 export default class App extends Component {
   constructor(props) {
@@ -42,7 +29,6 @@ export default class App extends Component {
     }),
       (this.handleAirHigher = this.handleAirHigher.bind(this));
     this.handleAirlower = this.handleAirlower.bind(this);
-    // this.handleSkinCurrent = this.handleSkinCurrent.bind(this);
     this.handleSkinLow = this.handleSkinLow.bind(this);
     this.handleSkinHigh = this.handleSkinHigh.bind(this);
   }
@@ -55,11 +41,6 @@ export default class App extends Component {
     this.props.airLowTemp(this.state.lowerAirValue);
     this.props.skinHighTemp(this.state.skinHighTemp);
     this.props.skinLowTemp(this.state.skinLowTemp);
-    // this.props.spo2Uper(this.state.spo2Upper);
-    // this.props.spo2Lower(this.state.spo2Lower);
-    // this.props.hrUper(this.state.hrUpper);
-    // this.props.hrLower(this.state.hrLower);
-    // this.props.modalOff(!this.state.isModalVisible);
   };
   handleAirHigher(child) {
     this.setState({
@@ -121,8 +102,6 @@ export default class App extends Component {
   }
 
   render() {
-    // console.log(this.state.skinCurrentTemp)
-    // console.log(this.state.skinSetTemp)
     return (
       <View>
         {/* Component */}
@@ -135,10 +114,7 @@ export default class App extends Component {
           animationIn="slideInDown"
           animationOut="slideOutUp"
           statusBarTranslucent
-          isVisible={this.state.isModalVisible}
-          // isVisible={true}
-          // style={style.modalContainer}
-        >
+          isVisible={this.state.isModalVisible}>
           <View style={style.modalInner}>
             <View style={style.boxConatainer}>
               <View style={style.boxInner}>

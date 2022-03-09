@@ -132,8 +132,6 @@ export default styles = StyleSheet.create({
     color: '#e44f3bd5',
   },
 
-  // Weight Type Modal
-
   insertWeightModal: {
     backgroundColor: 'white',
     maxHeight: height * 0.5,
@@ -159,7 +157,6 @@ export default styles = StyleSheet.create({
     borderTopLeftRadius: width * 0.025,
     borderBottomRightRadius: width * 0.025,
     elevation: width * 0.01,
-    // alignSelf:'center'
   },
   insertWeightHeader: {
     height: height * 0.1,
@@ -215,7 +212,6 @@ export default styles = StyleSheet.create({
     borderColor: '#e44f3bd5',
   },
   inserTextinput: {
-    // height: height * 0.08,
     fontFamily: Fonts.BalooChettan2,
     fontSize: height * 0.028,
     color: '#e44f3bd5',

@@ -33,7 +33,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: width * 0.02,
-    // borderRadius:width * .003
     borderBottomLeftRadius: width * 0.005,
     borderTopRightRadius: width * 0.005,
     borderTopLeftRadius: width * 0.025,
@@ -43,7 +42,6 @@ export default styles = StyleSheet.create({
     fontSize: width * 0.015,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
-    // fontFamily:'MetalMania-Regular'
   },
   toggleContainer: {
     width: width * 0.09,
@@ -85,9 +83,6 @@ export default styles = StyleSheet.create({
   modalContainerInner: {
     flex: 1,
     backgroundColor: 'white',
-    // borderBottomLeftRadius: width * 0.005,
-    // borderTopRightRadius: width * 0.005,
-    // borderTopLeftRadius: width * 0.025,
     borderRadius: width * 0.025,
     elevation: width * 0.015,
   },
@@ -125,9 +120,6 @@ export default styles = StyleSheet.create({
   },
   bodyInner: {
     flex: 1,
-    // backgroundColor:'red',
-    // borderTopRightRadius: width * .005,
-    // borderTopLeftRadius: width * .025,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -135,7 +127,6 @@ export default styles = StyleSheet.create({
     fontFamily: Fonts.Handlee,
     fontSize: width * 0.02,
     color: 'red',
-    // marginLeft: width * .05,
   },
   currentInputView: {
     width: width * 0.1,
@@ -155,7 +146,6 @@ export default styles = StyleSheet.create({
     fontFamily: Fonts.Handlee,
     fontSize: width * 0.02,
     color: 'red',
-    // marginLeft: width * .05,
   },
   footerContainer: {
     width: width * 0.4,
@@ -163,9 +153,6 @@ export default styles = StyleSheet.create({
   },
   footerInner: {
     flex: 1,
-    // backgroundColor:'red',
-    // borderTopRightRadius: width * .005,
-    // borderTopLeftRadius: width * .025,
     justifyContent: 'center',
     alignItems: 'center',
   },

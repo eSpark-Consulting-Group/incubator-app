@@ -1,21 +1,15 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Alert,
-  StatusBar,
   Dimensions,
   TouchableOpacity,
   TextInput,
-  ScrollView,
   FlatList,
 } from 'react-native';
 import style from './Style';
-import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
-import Notification from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import modalStyle from './modalsStyling';
@@ -52,7 +46,6 @@ export default class App extends Component {
     const high = this.props.skinHighTemp;
     const lower = this.props.skinLowerTemp;
 
-    // this.sendSkinTemp();
     if (
       this.state.currentSkinemperature > high ||
       this.state.currentSkinemperature < lower
@@ -97,7 +90,6 @@ export default class App extends Component {
         Alert.alert('Success', 'Successfully Added Skin Temprature!');
       })
       .catch(error => {
-        // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
           console.log(error.response.data);
@@ -139,8 +131,6 @@ export default class App extends Component {
     });
   };
   submitCondition = () => {
-    const historyData = this.state.currentTemp;
-    const historyData2 = this.state.setTemp;
     let unit;
     !this.props.value ? (unit = '\u2103') : (unit = '\u2109');
     if (this.state.currentTemp == null || this.state.setTemp == null) {
@@ -226,7 +216,6 @@ export default class App extends Component {
                         onPress={() => this.openToggel()}>
                         <Text style={style.tempInputCur}>
                           {this.renderValue()}
-                          {/* val  //todo: here is the */}
                         </Text>
                       </TouchableOpacity>
                       {!this.props.value ? (
@@ -349,9 +338,7 @@ export default class App extends Component {
           animationIn="bounceIn"
           animationOut="bounceOut"
           statusBarTranslucent
-          isVisible={this.state.toggle}
-          // style={modalStyle.insertWeightModal}
-        >
+          isVisible={this.state.toggle}>
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View style={modalStyle.insertWeightContainer}>

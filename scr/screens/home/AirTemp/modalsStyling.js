@@ -7,7 +7,6 @@ import {Fonts} from '../../../utils/fonts';
 const {height, width} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
-  // History Modal Styling
   modalMainContainer: {
     backgroundColor: '#81c2f7',
     maxHeight: height * 0.8,
@@ -132,8 +131,6 @@ export default styles = StyleSheet.create({
     color: '#e44f3bd5',
   },
 
-  // Weight Type Modal
-
   insertWeightModal: {
     backgroundColor: 'white',
     maxHeight: height * 0.5,
@@ -156,7 +153,6 @@ export default styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: width * 0.025,
     elevation: width * 0.01,
-    // alignSelf:'center'
   },
   insertWeightHeader: {
     height: height * 0.1,
@@ -212,7 +208,6 @@ export default styles = StyleSheet.create({
     borderColor: '#e44f3bd5',
   },
   inserTextinput: {
-    // height: height * 0.08,
     fontFamily: Fonts.BalooChettan2,
     fontSize: height * 0.028,
     color: '#e44f3bd5',

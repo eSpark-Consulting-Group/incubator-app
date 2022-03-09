@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Image,
-  StatusBar,
   Dimensions,
   TouchableOpacity,
   Alert,
@@ -19,10 +15,7 @@ import Modal from 'react-native-modal';
 import MenuOpen from 'react-native-vector-icons/AntDesign';
 import MenuClose from 'react-native-vector-icons/AntDesign';
 import Setting from 'react-native-vector-icons/Feather';
-import Lock from 'react-native-vector-icons/SimpleLineIcons';
-import SysSettings from 'react-native-vector-icons/Octicons';
-import Graph from 'react-native-vector-icons/Entypo';
-import Pass from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import Back from 'react-native-vector-icons/Feather';
 import Bright from 'react-native-vector-icons/MaterialCommunityIcons';
 import Close from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,19 +24,13 @@ import Slider from '@react-native-community/slider';
 import SwitchToggle from 'react-native-switch-toggle';
 import SystemSetting from 'react-native-system-setting';
 import Spinner from 'react-native-loading-spinner-overlay';
-import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 
-import Alarm from 'react-native-vector-icons/MaterialCommunityIcons';
 import AlarmSetting from './AlaemSettings/index';
 import SystemSettings from './SystemSettings/index';
 import Parameter from './Parameter/index';
 import PatientInfo from './PatientInfo/index';
-// import SysSettings from 'react-native-vector-icons/Octicons';
 import {Fonts} from '../../utils/fonts';
-import {ScrollView} from 'react-native-gesture-handler';
-import styles from '../../screens/home/styles';
-import systemSetting from 'react-native-system-setting';
 
 const {height, width} = Dimensions.get('window');
 
@@ -302,11 +289,6 @@ export default class App extends Component {
     console.log(clc.xterm(191)('no longer discharged'));
   };
 
-  // handleNewDataArray = (child) => {
-  //   this.setState({newDataArray: child});
-  //   console.log('aya new data slider me');
-  // };
-
   setHistoryData = () => {
     if (this.state.patientId == '') {
       return console.log(clc.xterm(49)('history empty hai'));
@@ -428,7 +410,6 @@ export default class App extends Component {
       );
     } else {
       this.setState({password: ''});
-      // return ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
     }
   };
 
@@ -542,7 +523,6 @@ export default class App extends Component {
   };
 
   markIt = () => {
-    // this.readHistoryData();
     this.checkCredentials();
   };
 
@@ -691,10 +671,6 @@ export default class App extends Component {
                   spo2Lower={this.handleSpo2Lower}
                   alarmFlag={this.props.alarmFlag}
                 />
-                {/* <TouchableOpacity style={style.listView}>
-                  <Text style={style.listText}>System Setting</Text>
-                  <SysSettings name={'settings'} size={width * 0.02} />
-                </TouchableOpacity> */}
                 <SystemSettings
                   switchAir={this.handleSwitchAir}
                   switchSkin={this.handleSwitchSkin}
@@ -774,14 +750,6 @@ export default class App extends Component {
                   handleRunData={this.handleRunData}
                   alarmFlag={this.props.alarmFlag}
                 />
-                {/* <TouchableOpacity style={style.listView}>
-                                    <Text style={style.listText}>Patient Information</Text>
-                  <Graph name={'area-graph'} size={width * .02} />
-                                </TouchableOpacity> */}
-                {/* <TouchableOpacity style={style.listView}>
-                  <Text style={style.listText}>Calibaration</Text>
-                  <Pass name={'lastpass'} size={width * 0.02} />
-                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={style.listView}
                   onPress={() => this.checkForData(this.props.isGuest)}>
@@ -824,25 +792,11 @@ export default class App extends Component {
               animationIn="slideInRight"
               animationOut="slideOutRight"
               statusBarTranslucent
-              isVisible={this.state.checker}
-              // isVisible={true}
-              // style={{
-              //   elevation: width * 0.005,
-              //   borderBottomLeftRadius: width * 0.005,
-              //   borderTopRightRadius: width * 0.005,
-              //   borderTopLeftRadius: width * 0.025,
-              //   borderBottomRightRadius: width * 0.025,
-              //   backgroundColor: 'white',
-              //   maxHeight: height * 0.5,
-              //   maxWidth: width * 0.35,
-              //   top: height * 0.15,
-              // }}
-            >
+              isVisible={this.state.checker}>
               <KeyboardAvoidingView
                 style={{
                   height: height,
                   alignItems: 'center',
-                  // backgroundColor: 'pink',
                 }}
                 behavior="padding">
                 <View
@@ -985,9 +939,7 @@ export default class App extends Component {
               animationIn="slideInDown"
               animationOut="slideOutUp"
               statusBarTranslucent
-              isVisible={this.state.showDataModal}
-              // isVisible={true}
-            >
+              isVisible={this.state.showDataModal}>
               <KeyboardAvoidingView
                 style={{
                   height: height,
@@ -1007,21 +959,11 @@ export default class App extends Component {
                       width: width * 0.32,
                       height: height * 0.55,
                     }}>
-                    {/* <View
-                      style={{
-                        width: width * 0.32,
-                        height: StatusBar.currentHeight,
-                        backgroundColor: 'pink',
-                        borderBottomWidth: 1,
-                        borderColor: 'red',
-                      }}
-                    /> */}
                     <View
                       style={{
                         flex: 1,
                         backgroundColor: 'white',
                         borderRadius: width * 0.025,
-                        // borderBottomLeftRadius: width * 0.025,
                         elevation: width * 0.015,
                       }}>
                       <View
@@ -1075,7 +1017,6 @@ export default class App extends Component {
                               style={{
                                 fontFamily: Fonts.BalooChettan2,
                                 width: height * 0.28,
-                                // height: height * 0.07,
                                 fontSize: height * 0.025,
                                 backgroundColor: '#23212016',
                                 includeFontPadding: false,
@@ -1128,7 +1069,6 @@ export default class App extends Component {
                         <FlatList
                           data={this.state.theHistoryArray}
                           renderItem={this.renderItem}
-                          // ItemSeparatorComponent={this.ListViewItemSeparator}
                           keyExtractor={item => item.patientId}
                           removeClippedSubviews={true}
                         />
@@ -1145,9 +1085,7 @@ export default class App extends Component {
               animationIn="slideInDown"
               animationOut="slideOutUp"
               statusBarTranslucent
-              isVisible={this.state.showListModal}
-              // isVisible={true}
-            >
+              isVisible={this.state.showListModal}>
               <View style={{height: height}}>
                 <View
                   style={{
@@ -1155,21 +1093,18 @@ export default class App extends Component {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: width * 0.025,
-                    // borderBottomLeftRadius: width * 0.025,
                   }}>
                   <View
                     style={{
                       width: width * 0.75,
                       height: height * 0.75,
                       borderRadius: width * 0.025,
-                      // borderBottomLeftRadius: width * 0.025,
                     }}>
                     <View
                       style={{
                         flex: 1,
                         backgroundColor: 'white',
                         borderRadius: width * 0.025,
-                        // borderBottomLeftRadius: width * 0.025,
                         elevation: width * 0.015,
                       }}>
                       <View
@@ -1288,23 +1223,7 @@ export default class App extends Component {
               animationIn="slideInRight"
               animationOut="slideOutRight"
               statusBarTranslucent
-              // onBackdropPress={() => this.toggleModalLock()}
-              // onSwipeComplete={() => this.toggleModalLock()}
-              // swipeDirection="right"
-              isVisible={this.state.LockorUnlo}
-              // isVisible={true}
-              // style={{
-              //   elevation: width * 0.005,
-              //   borderBottomLeftRadius: width * 0.005,
-              //   borderTopRightRadius: width * 0.005,
-              //   borderTopLeftRadius: width * 0.025,
-              //   borderBottomRightRadius: width * 0.025,
-              //   backgroundColor: 'white',
-              //   maxHeight: height * 0.5,
-              //   maxWidth: width * 0.35,
-              //   top: height * 0.15,
-              // }}
-            >
+              isVisible={this.state.LockorUnlo}>
               <View
                 style={{
                   flex: 1,
@@ -1354,9 +1273,7 @@ export default class App extends Component {
                       <View
                         style={{
                           flex: 1,
-                          // backgroundColor:'red',
-                          // borderTopRightRadius: width * .005,
-                          // borderTopLeftRadius: width * .025,
+
                           justifyContent: 'center',
                           alignItems: 'center',
                         }}>
@@ -1394,7 +1311,6 @@ export default class App extends Component {
                             style={{
                               fontSize: width * 0.023,
                               fontFamily: Fonts.BalooChettanBold,
-                              // fontWeight: 'bold',
                               marginLeft: width * 0.005,
                             }}>
                             Kgs/lbs
@@ -1432,7 +1348,6 @@ export default class App extends Component {
                           <Text
                             style={{
                               fontSize: width * 0.023,
-                              // fontWeight: 'bold',
                               fontFamily: Fonts.BalooChettanBold,
                               marginLeft: width * 0.005,
                             }}>

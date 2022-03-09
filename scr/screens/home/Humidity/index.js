@@ -1,19 +1,7 @@
 import React, {Component} from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Alert,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {Text, View, Alert, Dimensions, TouchableOpacity} from 'react-native';
 import style from './style';
-import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
-import Notification from 'react-native-vector-icons/MaterialIcons';
-import Modal from 'react-native-modal';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,10 +14,6 @@ export default class App extends Component {
   state = {
     isModalVisible: false,
   };
-
-  componentDidMount() {
-    // this.sendHumidityTemp();
-  }
 
   sendHumidityTemp = async () => {
     const {currentTemp, setTemp} = this.state;
@@ -48,7 +32,6 @@ export default class App extends Component {
         Alert.alert('Success', 'Successfully Added Humidity!');
       })
       .catch(error => {
-        // this.setState({isloading: false});
         if (error.response) {
           Alert.alert('Error', error.response.data.msg);
           console.log(error.response.data);
@@ -119,28 +102,6 @@ export default class App extends Component {
             </View>
           </View>
         </View>
-        {/* <Modal 
-          animationIn="slideInUp" 
-          animationOut="slideOutDown" 
-          onBackdropPress={() => this.toggleModal()} 
-          onSwipeComplete={() => this.toggleModal()} 
-          swipeDirection="right" 
-          isVisible={this.state.isModalVisible} 
-          style={{ 
-              backgroundColor: 'white',
-              maxHeight:height * .7,
-              maxWidth:width * 1,
-              top:width * .13,
-              // left:width *.1,
-              borderTopRightRadius:width * .05,
-              borderTopLeftRadius:width * .05,
-              maxHeight:height * .7,
-              
-              }}>
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                  
-              </View>
-          </Modal> */}
       </View>
     );
   }

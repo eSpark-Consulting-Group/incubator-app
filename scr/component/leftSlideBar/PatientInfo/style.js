@@ -33,7 +33,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: width * 0.02,
-    // borderRadius:width * .003
     borderBottomLeftRadius: width * 0.005,
     borderTopRightRadius: width * 0.005,
     borderTopLeftRadius: width * 0.025,
@@ -43,7 +42,6 @@ export default styles = StyleSheet.create({
     fontSize: height * 0.03,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
-    // fontFamily:'MetalMania-Regular'
   },
   toggleContainer: {
     width: width * 0.045,
@@ -69,10 +67,8 @@ export default styles = StyleSheet.create({
     maxHeight: height * 0.7,
     maxWidth: width * 0.5,
     top: height * 0.1,
-    // left:width * .1
   },
   modalInner: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -95,7 +91,6 @@ export default styles = StyleSheet.create({
     borderTopLeftRadius: width * 0.025,
     borderTopRightRadius: width * 0.025,
     justifyContent: 'space-around',
-    // paddingHorizontal: width * .02,
     alignItems: 'center',
     flexDirection: 'row',
     elevation: width * 0.002,
@@ -106,7 +101,6 @@ export default styles = StyleSheet.create({
     fontSize: width * 0.03,
     color: 'white',
     marginHorizontal: width * 0.05,
-    // marginLeft: width * .09,
   },
   headerbotton: {
     height: height * 0.085,
@@ -124,15 +118,12 @@ export default styles = StyleSheet.create({
     fontFamily: Fonts.Handlee,
     fontSize: height * 0.028,
     color: 'gray',
-    // marginLeft: width * .09,
   },
   boxBody: {
     flexDirection: 'column',
     width: height * 0.9,
     height: height * 0.2,
     padding: height * 0.012,
-    // justifyContent: "flex-end" ,
-    // alignItems: "center"
   },
   passInputValue: {
     width: height * 0.5,
@@ -147,7 +138,6 @@ export default styles = StyleSheet.create({
     fontSize: height * 0.037,
     color: 'gray',
     width: width * 0.15,
-    // height: height * 0.1,
     includeFontPadding: false,
     padding: 0,
     margin: 0,
@@ -158,12 +148,10 @@ export default styles = StyleSheet.create({
     color: 'red',
   },
   boxBodyInner: {
-    // flex: 4,
     padding: width * 0.002,
     paddingLeft: width * 0.04,
     paddingRight: width * 0.04,
     flexDirection: 'row',
-    // backgroundColor:'red',
     borderTopRightRadius: width * 0.005,
     borderTopLeftRadius: width * 0.025,
     justifyContent: 'space-between',

@@ -32,8 +32,6 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    // paddingHorizontal: width * 0.02,
-    // borderRadius:width * .003
     borderBottomLeftRadius: width * 0.005,
     borderTopRightRadius: width * 0.005,
     borderTopLeftRadius: width * 0.025,
@@ -43,7 +41,6 @@ export default styles = StyleSheet.create({
     fontSize: height * 0.03,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
-    // fontFamily:'MetalMania-Regular'
   },
   switchView: {
     flexDirection: 'row',
@@ -74,12 +71,10 @@ export default styles = StyleSheet.create({
 
   modalContainer: {
     elevation: width * 0.005,
-    // borderBottomLeftRadius: width * 0.025,
     borderRadius: width * 0.025,
     backgroundColor: 'white',
     maxHeight: height * 0.59,
     maxWidth: width * 0.5,
-    // top: height * -0.082,
     left: width * 0.2,
   },
   modalInner: {
@@ -105,7 +100,6 @@ export default styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     borderRadius: width * 0.025,
-    // borderBottomRightRadius: width * 0.025,
     elevation: 2,
   },
   boxHeader: {
@@ -117,7 +111,6 @@ export default styles = StyleSheet.create({
     borderTopRightRadius: width * 0.025,
     borderTopLeftRadius: width * 0.025,
     justifyContent: 'center',
-    // paddingHorizontal: width * .02,
     alignItems: 'center',
     flexDirection: 'row',
     elevation: width * 0.002,
@@ -128,7 +121,6 @@ export default styles = StyleSheet.create({
     fontSize: width * 0.04,
     color: 'white',
     marginHorizontal: width * 0.05,
-    // marginLeft: width * .09,
   },
   headerbotton: {
     height: height * 0.06,
@@ -164,7 +156,6 @@ export default styles = StyleSheet.create({
   },
   boxBodyInner: {
     flex: 1,
-    // marginTop: height * 0.005,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -173,7 +164,6 @@ export default styles = StyleSheet.create({
     fontSize: width * 0.02,
     color: 'gray',
     width: width * 0.25,
-    // height: height * 0.1,
     includeFontPadding: false,
     padding: 0,
     margin: 0,

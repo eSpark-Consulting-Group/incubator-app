@@ -1,33 +1,24 @@
 import React, {Component} from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Image,
   StatusBar,
   Dimensions,
   TouchableOpacity,
-  // Modal,
   BackHandler,
   Alert,
 } from 'react-native';
 import style from './styles';
-import Modal2 from 'react-native-modal';
-import Menu from 'react-native-vector-icons/MaterialCommunityIcons';
-import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
-import Notification from 'react-native-vector-icons/MaterialIcons';
 import Lock from 'react-native-vector-icons/FontAwesome';
 import Unlock from 'react-native-vector-icons/FontAwesome';
 import Oxygen from './Oxygen/oxygen';
 import Weight from './BabyWeight/Weight';
-import Graph from './Graph/index';
 import SkinTemp from './SkinTemp/index';
 import SPO2 from './Spo2/index';
 import Humidity from './Humidity/index';
 import AirTemp from './AirTemp/airTemp';
 import LeftSlider from '../../component/leftSlideBar/index';
-import PatientInfo from '../../component/leftSlideBar/PatientInfo/index';
 import Close from 'react-native-vector-icons/Fontisto';
 import Sound from 'react-native-sound';
 import Modal from 'react-native-modal';
@@ -80,10 +71,6 @@ var clc = require('cli-color');
 export default class App extends Component {
   constructor(props) {
     super(props);
-    // this.onButtonStart = this.onButtonStart.bind(this);
-    // this.onButtonStop = this.onButtonStop.bind(this);
-    // this.onButtonClear = this.onButtonClear.bind(this);
-    // this.start = this.start.bind(this);
     (this.state = {
       valueX: null,
       valuey: null,
@@ -93,13 +80,11 @@ export default class App extends Component {
       alarmFan: 16,
       alarmAir: 20,
       snooze: false,
-      // alarmAirOver:0,
       alarmSystem: 14,
       time: null,
       airCondi: true,
       senCondi: true,
       fanCondi: true,
-      // airOvCondi:true,
       sysCondi: true,
       powCondi: true,
       weightSign: false,
@@ -368,9 +353,6 @@ export default class App extends Component {
     siren.setNumberOfLoops(-1);
     console.log('kia hai air temp', this.state.airTemp);
     if (this.state.airTemp > this.state.higherAirValue) {
-      // siren.isPlaying
-      //   ? console.log(clc.xterm(10)('Air Temp Siren is already on'))
-      //   :
       if (!this.state.snooze)
         siren.stop(() => {
           siren.play();
@@ -378,9 +360,6 @@ export default class App extends Component {
       airHigh = true;
       this.setState({msgBoxShow: true});
     } else if (this.state.airTemp < this.state.lowAirValue) {
-      // siren.isPlaying
-      //   ? console.log(clc.xterm(10)('Air Temp Siren is already on'))
-      //   :
       if (!this.state.snooze)
         siren.stop(() => {
           siren.play();
@@ -403,9 +382,6 @@ export default class App extends Component {
     console.log('kia hai skin temp alarm high', this.state.skinHigherTemp);
     console.log('kia hai skin temp alarm low', this.state.skinLowTemp);
     if (this.state.skinTemp > this.state.skinHigherTemp) {
-      // siren2.isPlaying
-      //   ? console.log(clc.xterm(189)('Skin Temp Siren is already on'))
-      //   :
       console.log(clc.xterm(193)('skin high aya'));
       if (!this.state.snooze)
         siren.stop(() => {
@@ -414,9 +390,6 @@ export default class App extends Component {
       skinHigh = true;
       this.setState({msgBoxShow: true});
     } else if (this.state.skinTemp < this.state.skinLowTemp) {
-      // siren2.isPlaying
-      //   ? console.log(clc.xterm(189)('Skin Temp Siren is already on'))
-      //   :
       console.log(clc.xterm(193)('skin low aya'));
       if (!this.state.snooze)
         siren.stop(() => {
@@ -558,7 +531,7 @@ export default class App extends Component {
     siren.stop();
     siren2.stop();
     this.setState({msgBoxShow: !this.state.msgBoxShow, snooze: true});
-    console.log(clc.bgGreenBright('Snooze Over++++'));
+    console.log(clc.bgGreenBright('Snooze On++++'));
     setTimeout(() => {
       this.setState({snooze: false});
       console.log(clc.bgRedBright('Snooze Over++++'));
@@ -585,7 +558,6 @@ export default class App extends Component {
   };
 
   render() {
-    // this._getData();
     console.log(
       clc.xterm(227)(
         'Kia aya air high alarm Home me',
@@ -661,24 +633,6 @@ export default class App extends Component {
               left: width * 0.11,
             }}></View>
           <View style={{marginHorizontal: width * 0.03}}></View>
-
-          {/* <Graph /> */}
-          {/* <View style={style.iconAndText}>
-            <Notification name="notifications-active" size={width * .05} color={this.state.powCondi ? '#0ae916' : 'red'} style={{ marginHorizontal: width * .01 }} />
-            <Text style={style.alarmText}>Power Failure</Text>
-          </View>
-          <View style={style.iconAndText}>
-            <Notification name="notifications-active" size={width * .05} color={this.state.senCondi ? '#0ae916' : 'red'} style={{ marginHorizontal: width * .01 }} />
-            <Text style={style.alarmText}>Sensor Failure</Text>
-          </View>
-          <View style={style.iconAndText}>
-            <Notification name="notifications-active" size={width * .05} color={this.state.fanCondi ? '#0ae916' : 'red'} style={{ marginHorizontal: width * .01 }} />
-            <Text style={style.alarmText}>Fan Failure</Text>
-          </View>
-          <View style={style.iconAndText}>
-            <Notification name="notifications-active" size={width * .05} color={this.state.sysCondi ? '#0ae916' : 'red'} style={{ marginHorizontal: width * .01 }} />
-            <Text style={style.alarmText}>System Failure</Text>
-          </View> */}
           <View style={style.iconAndText}>
             <Text style={style.aboveTopText}>Patient ID</Text>
             <Text style={style.topText}>{this.state.patientId}</Text>
@@ -717,17 +671,7 @@ export default class App extends Component {
             animationIn="slideInUp"
             animationOut="slideOutDown"
             statusBarTranslucent
-            isVisible={!this.state.snooze ? this.state.msgBoxShow : false}
-            // isVisible={true}
-            // onBackdropPress={() => this.setState({msgBoxShow: false})}
-            // visible={this.state.msgBoxShow}
-            // visible={true}
-            // transparent={true}
-            // presentationStyle="fullScreen"
-            // statusBarTranslucent
-            // style={{backgroundColor: 'black'}}
-            // animationType="fade"
-          >
+            isVisible={!this.state.snooze ? this.state.msgBoxShow : false}>
             <View
               style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
               <View
@@ -745,7 +689,6 @@ export default class App extends Component {
                     padding: height * 0.02,
                     justifyContent: 'flex-end',
                     flexDirection: 'row',
-                    // backgroundColor: 'yellow',
                   }}>
                   <View style={{flex: 1.2}} />
                   <View
@@ -784,13 +727,11 @@ export default class App extends Component {
                       flex: 2.5,
                       borderRadius: height * 0.035,
                       top: 10,
-                      // alignSelf: 'center',
                     }}>
                     <Image
                       source={require('../../../images/alarm.gif')}
                       resizeMode="cover"
                       style={{
-                        // flex: 1,
                         height: height * 0.18,
                         width: height * 0.15,
                       }}

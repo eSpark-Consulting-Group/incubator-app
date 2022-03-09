@@ -25,7 +25,6 @@ export default styles = StyleSheet.create({
     fontSize: height * 0.03,
     fontFamily: Fonts.BalooChettanBold,
     color: '#484149c5',
-    // fontFamily:'MetalMania-Regular'
   },
   spinnerTextStyle: {
     color: 'red',
@@ -53,11 +52,9 @@ export default styles = StyleSheet.create({
     backgroundColor: 'white',
     maxHeight: height * 1,
     maxWidth: height * 0.65,
-    // top:width * .13,
     left: height * 0.1,
     borderTopLeftRadius: height * 0.02,
     borderBottomLeftRadius: height * 0.02,
-    // maxHeight:height * .7,
   },
   modalHeaderContainer: {
     height: height * 0.1,
@@ -86,7 +83,6 @@ export default styles = StyleSheet.create({
   modalBodyContainer: {
     height: height * 0.73,
     width: height * 0.65,
-    // backgroundColor:'red',
   },
   modalBodyInner: {
     flex: 1,

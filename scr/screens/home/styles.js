@@ -69,7 +69,6 @@ export default styles = StyleSheet.create({
     },
     textShadowRadius: width * 0.05,
     textShadowColor: 'white',
-    // marginTop:width * .009,
   },
   tempHeading: {
     fontSize: height * 0.045,
@@ -82,7 +81,6 @@ export default styles = StyleSheet.create({
     },
     textShadowRadius: width * 0.05,
     textShadowColor: 'white',
-    // marginTop:width * .009,
   },
   humHeading: {
     fontSize: height * 0.045,
@@ -95,8 +93,6 @@ export default styles = StyleSheet.create({
     },
     textShadowRadius: width * 0.05,
     textShadowColor: 'white',
-
-    // marginTop:width * .009,
   },
   weigHeading: {
     fontSize: height * 0.045,
@@ -109,8 +105,6 @@ export default styles = StyleSheet.create({
     },
     textShadowRadius: width * 0.05,
     textShadowColor: 'white',
-
-    // marginTop:width * .009,
   },
   Spo2Heading: {
     fontSize: height * 0.045,
@@ -123,8 +117,6 @@ export default styles = StyleSheet.create({
     },
     textShadowRadius: width * 0.05,
     textShadowColor: 'white',
-
-    // marginTop:width * .009,
   },
   oxygenHeading: {
     fontSize: height * 0.045,
@@ -137,8 +129,6 @@ export default styles = StyleSheet.create({
     },
     textShadowRadius: width * 0.05,
     textShadowColor: 'white',
-
-    // marginTop:width * .009,
   },
   inerContainer2: {
     width: width * 1,

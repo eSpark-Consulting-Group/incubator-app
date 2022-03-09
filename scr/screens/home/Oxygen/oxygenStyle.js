@@ -23,13 +23,11 @@ export default styles = StyleSheet.create({
   },
   currentTempText: {
     fontSize: height * 0.04,
-    // fontWeight: "bold",
     color: '#FF420E',
     fontFamily: Fonts.BalooChettan2,
   },
   tempInputCur: {
     flex: 1,
-    // position: 'absolute',
     fontSize: height * 0.0725,
     fontFamily: Fonts.BalooChettan2,
     color: '#484149c5',
@@ -81,7 +79,6 @@ export default styles = StyleSheet.create({
   skinIner: {
     flex: 1,
     paddingHorizontal: height * 0.01,
-    // backgroundColor:'red'
   },
   likeInputOxygen: {
     width: height * 0.35,
@@ -100,7 +97,6 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // marginBottom: height * .02,
   },
   likeInputMin: {
     width: height * 0.3,
@@ -108,7 +104,6 @@ export default styles = StyleSheet.create({
     elevation: width * 0.003,
     backgroundColor: 'white',
     borderWidth: 0.5,
-    // flexDirection:"row-reverse",
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: height * 0.005,
@@ -156,7 +151,6 @@ export default styles = StyleSheet.create({
     elevation: width * 0.003,
   },
   alarmText: {
-    // alignSelf:'center',
     fontSize: width * 0.015,
     fontFamily: Fonts.Handlee,
     color: '#e44f3bfd',
@@ -178,7 +172,6 @@ export default styles = StyleSheet.create({
     marginTop: width * 0.01,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    // backgroundColor: 'pink',
   },
   headingStyle: {
     fontSize: height * 0.03,

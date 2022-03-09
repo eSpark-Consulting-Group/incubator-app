@@ -17,9 +17,7 @@ export default styles = StyleSheet.create({
     height: height * 1,
   },
   activityIndi: {
-    // flex: 1,
     bottom: width * 0.1,
-    // alignSelf:'baseline'
   },
   animationTextStyle: {
     color: 'white',

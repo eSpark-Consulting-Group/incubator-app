@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
   View,
-  Image,
-  ImageBackground,
   ActivityIndicator,
   StatusBar,
   Dimensions,
@@ -15,14 +10,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 
-import {
-  PERMISSIONS,
-  RESULTS,
-  request,
-  check,
-  requestMultiple,
-  openSettings,
-} from 'react-native-permissions';
+import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 const {height, width} = Dimensions.get('window');
 
 import clc from 'cli-color';
@@ -39,9 +27,7 @@ export default class Splash extends Component {
   };
   componentDidMount() {
     const {valueHi, valueWelcome} = this.state;
-    // this._askPermission();
     this._ack();
-    // this._ask();
     Animated.timing(valueHi, {
       toValue: 1,
       duration: 3000,
@@ -133,45 +119,7 @@ export default class Splash extends Component {
           hidden={true}
           translucent
           showHideTransition={'fade'}></StatusBar>
-        <ActivityIndicator
-          size={width * 0.06}
-          color="red"
-          // style={styles.activityIndi}
-        />
-        {/* <ImageBackground
-          source={require('../../images/mainScreen.png')}
-          style={style.image}>
-          <View style={style.container}>
-            {this.state.textView == false ? (
-              <Animated.View
-                style={{
-                  opacity: this.state.valueHi,
-                  flex: 1,
-                  alignSelf: 'center',
-                }}>
-                <Text style={style.animationTextStyle}>Hi</Text>
-              </Animated.View>
-            ) : (
-              <Animated.View
-                style={{
-                  opacity: this.state.valueWelcome,
-                  flex: 1,
-                  alignSelf: 'center',
-                }}>
-                <Text style={style.animationTextStyle}>Welcome</Text>
-              </Animated.View>
-            )}
-            {this.state.loadingSpinner == false ? (
-              <Text></Text>
-            ) : (
-              <ActivityIndicator
-                size={width * 0.06}
-                color="red"
-                style={styles.activityIndi}
-              />
-            )}
-          </View>
-        </ImageBackground> */}
+        <ActivityIndicator size={width * 0.06} color="red" />
       </View>
     );
   }
