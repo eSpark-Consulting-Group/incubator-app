@@ -6,8 +6,10 @@ import {
   Dimensions,
   TouchableOpacity,
   KeyboardAvoidingView,
+  LayoutAnimation,
   Alert,
   ToastAndroid,
+  Keyboard,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
@@ -37,6 +39,15 @@ export default class App extends Component {
       loading: false,
     };
   }
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    });
+  }
+  componentWillUnmount() {
+    Keyboard.removeAllListeners('keyboardDidHide');
+  }
+
   onSelectionsChange = selectedParameter => {
     this.setState({selectedParameter});
   };
@@ -163,6 +174,16 @@ export default class App extends Component {
                               placeholder="Your Password"
                               secureTextEntry={true}
                               style={style.currentInput}
+                              onFocus={() =>
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                )
+                              }
+                              onBlur={() =>
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                )
+                              }
                               onChangeText={password =>
                                 this.setState({password})
                               }

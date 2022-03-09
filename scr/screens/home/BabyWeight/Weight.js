@@ -8,6 +8,8 @@ import {
   FlatList,
   TextInput,
   ScrollView,
+  LayoutAnimation,
+  Keyboard,
 } from 'react-native';
 import style from './weightStyle';
 import comStyle from './weightCompStyle';
@@ -39,6 +41,15 @@ export default class App extends Component {
       hour: new Date().getHours(),
       minutes: new Date().getMinutes(),
     };
+  }
+
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    });
+  }
+  componentWillUnmount() {
+    Keyboard.removeAllListeners('keyboardDidHide');
   }
 
   sendBabyTemp = async () => {
@@ -229,6 +240,16 @@ export default class App extends Component {
                         placeholder="Type Here"
                         keyboardType="number-pad"
                         maxLength={3}
+                        onFocus={() => {
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          );
+                        }}
+                        onBlur={() =>
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          )
+                        }
                         style={style.inserTextinput}
                         onChangeText={e => this.setState({currentWei: e})}
                       />

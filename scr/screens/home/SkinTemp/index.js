@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  LayoutAnimation,
+  Keyboard,
 } from 'react-native';
 import style from './Style';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,9 +31,11 @@ export default class App extends Component {
     skinTemp: true,
     currentSkinemperature: 31,
     currentTemp: 0,
+    result: 0,
     setTemp: 0,
     preWei: 3,
     toggle: false,
+    flag: false,
     currentAirTemperature: 35,
     setTempList: [],
     airTempList: [],
@@ -54,22 +58,32 @@ export default class App extends Component {
     } else {
       this.setState({airTemp: true});
     }
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    });
   }
 
-  populateArray = () => {
+  componentWillUnmount() {
+    Keyboard.removeAllListeners('keyboardDidHide');
+  }
+
+  populateArray = value => {
     this.state.temperatureHistory.push({
       id: id++,
-      currentTemperature: this.state.currentTemp + '\u2103',
-      setTemperature: this.state.currentTemp - 1 + '\u2103',
+      currentTemperature: value + '\u2103',
+      setTemperature: value - 1 + '\u2103',
     });
   };
 
   randomVal() {
     this.skinTemp = setInterval(() => {
-      const rand = Math.random() * 40;
-      this.setState({currentTemp: rand.toFixed()});
-      this.props.handleSkinTemp(this.state.currentTemp);
-      this.populateArray();
+      this.setState({flag: true});
+      setTimeout(() => {
+        const rand = Math.random() * 40;
+        this.setState({currentTemp: rand.toFixed()});
+        this.props.handleSkinTemp(this.state.result);
+        this.populateArray(this.state.result);
+      }, 100);
     }, 30000);
   }
 
@@ -174,12 +188,18 @@ export default class App extends Component {
 
     console.log('current TEMP', currentTemp);
     console.log(
-      '🚀 ~ file: airTemp.js ~ line 189 ~ App ~ calibrateVal',
+      '🚀 ~ file: skinTemp.js ~ line 189 ~ App ~ calibrateVal',
       calibrateVal,
     );
     let result = parseInt(currentTemp) + parseInt(calibrateVal);
-    console.log('🚀 ~ file: airTemp.js ~ line 197 ~ App ~ result', result);
-
+    console.log(
+      '🚀 ~ file: skinTemp.js ~ line 197 ~ App ~ result',
+      result,
+      this.state.flag,
+    );
+    if (this.state.flag) {
+      this.setState({result, flag: false});
+    }
     return parseInt(result);
   };
 
@@ -369,6 +389,16 @@ export default class App extends Component {
                         placeholder="Type Here"
                         keyboardType="number-pad"
                         maxLength={3}
+                        onFocus={() => {
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          );
+                        }}
+                        onBlur={() =>
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          )
+                        }
                         style={modalStyle.inserTextinput}
                         onChangeText={e => this.setState({currentTemp: e})}
                       />
@@ -388,6 +418,16 @@ export default class App extends Component {
                         placeholder="Type Here"
                         keyboardType="number-pad"
                         maxLength={3}
+                        onFocus={() => {
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          );
+                        }}
+                        onBlur={() =>
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          )
+                        }
                         style={modalStyle.inserTextinput}
                         onChangeText={e => this.setState({setTemp: e})}
                       />

@@ -8,6 +8,8 @@ import {
   ToastAndroid,
   TextInput,
   KeyboardAvoidingView,
+  LayoutAnimation,
+  Keyboard,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
@@ -60,10 +62,14 @@ export default class App extends Component {
 
   componentDidMount() {
     console.log(clc.xterm(6)('ye chala patient!'));
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    });
   }
 
   componentWillUnmount() {
     console.log(clc.xterm(218)('ye ruka?'));
+    Keyboard.removeAllListeners('keyboardDidHide');
   }
 
   toggleModal = () => {
@@ -334,10 +340,16 @@ export default class App extends Component {
                           onFocus={() => {
                             this.setState({bottoms: false});
                             console.log('chala');
+                            LayoutAnimation.configureNext(
+                              LayoutAnimation.Presets.linear,
+                            );
                           }}
                           onBlur={() => {
                             this.setState({bottoms: true});
                             console.log('chala');
+                            LayoutAnimation.configureNext(
+                              LayoutAnimation.Presets.linear,
+                            );
                           }}
                         />
                       </View>
@@ -358,7 +370,15 @@ export default class App extends Component {
                             onFocus={() => {
                               this.setState({bottoms: false});
                               console.log('chala');
+                              LayoutAnimation.configureNext(
+                                LayoutAnimation.Presets.linear,
+                              );
                             }}
+                            onBlur={() =>
+                              LayoutAnimation.configureNext(
+                                LayoutAnimation.Presets.linear,
+                              )
+                            }
                           />
                         </View>
                         <View
@@ -420,7 +440,15 @@ export default class App extends Component {
                             onFocus={() => {
                               this.setState({bottoms: false});
                               console.log('chala');
+                              LayoutAnimation.configureNext(
+                                LayoutAnimation.Presets.linear,
+                              );
                             }}
+                            onBlur={() =>
+                              LayoutAnimation.configureNext(
+                                LayoutAnimation.Presets.linear,
+                              )
+                            }
                           />
                         </View>
                         <View
@@ -484,7 +512,15 @@ export default class App extends Component {
                           onFocus={() => {
                             this.setState({bottoms: true});
                             console.log('chala');
+                            LayoutAnimation.configureNext(
+                              LayoutAnimation.Presets.linear,
+                            );
                           }}
+                          onBlur={() =>
+                            LayoutAnimation.configureNext(
+                              LayoutAnimation.Presets.linear,
+                            )
+                          }
                         />
                       </View>
                     </View>
@@ -495,6 +531,16 @@ export default class App extends Component {
                           placeholder="Type Here"
                           onChangeText={val =>
                             this.setState({drName: this.state.dr + val})
+                          }
+                          onFocus={() => {
+                            LayoutAnimation.configureNext(
+                              LayoutAnimation.Presets.linear,
+                            );
+                          }}
+                          onBlur={() =>
+                            LayoutAnimation.configureNext(
+                              LayoutAnimation.Presets.linear,
+                            )
                           }
                           style={[style.currentInput, {width: width * 0.23}]}
                         />

@@ -7,8 +7,10 @@ import {
   Alert,
   ToastAndroid,
   TextInput,
+  LayoutAnimation,
   FlatList,
   KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
 import style from './styles';
 import Modal from 'react-native-modal';
@@ -96,10 +98,14 @@ export default class App extends Component {
     this.readTxtFile();
     this.readHistoryData();
     console.log(clc.xterm(216)('Left Slider Component chala'));
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    });
   }
 
   componentWillUnmount() {
     console.log(clc.xterm(85)('Left Slider Component bnd hoa'));
+    Keyboard.removeAllListeners('keyboardDidHide');
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -357,6 +363,7 @@ export default class App extends Component {
               this.props.handleAirTempDeactivate(true);
               this.props.handleSkinTempDeactivate(true);
               this.props.handleOxygenDeactivate(true);
+              this.props.stopAlarm();
               this.setState({isDischarged: true});
 
               ToastAndroid.show('Discharged', ToastAndroid.SHORT);
@@ -542,7 +549,6 @@ export default class App extends Component {
           d.getSeconds() +
           '.' +
           d.getMilliseconds();
-
         let newData = this.state.newDataArray.slice();
         newData.push({
           date: date,
@@ -553,7 +559,7 @@ export default class App extends Component {
         });
         this.setState({newDataArray: newData});
         console.log('data Array', this.state.newDataArray);
-      }, 15100);
+      }, 30100);
     } else return null;
   };
 
@@ -879,6 +885,16 @@ export default class App extends Component {
                               onChangeText={val =>
                                 this.setState({password: val})
                               }
+                              onFocus={() =>
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                )
+                              }
+                              onBlur={() =>
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                )
+                              }
                               secureTextEntry
                               autoCapitalize="none"
                               style={{
@@ -1024,6 +1040,16 @@ export default class App extends Component {
                                 paddingHorizontal: 5,
                                 margin: 0,
                               }}
+                              onFocus={() =>
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                )
+                              }
+                              onBlur={() =>
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                )
+                              }
                               onChangeText={text =>
                                 this.searchFilterFunction(text)
                               }

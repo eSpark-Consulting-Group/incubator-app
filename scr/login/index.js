@@ -4,19 +4,14 @@ import {
   Text,
   View,
   TextInput,
-  Button,
   TouchableHighlight,
-  Image,
   Alert,
   ActivityIndicator,
   ToastAndroid,
   PermissionsAndroid,
-  Linking,
   Platform,
   TouchableOpacity,
   Dimensions,
-  KeyboardAvoidingView,
-  ScrollView,
   Keyboard,
   LayoutAnimation,
   UIManager,
@@ -24,8 +19,7 @@ import {
 import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNFS from 'react-native-fs';
-import RNFetchBlob from 'rn-fetch-blob';
-import axios from 'axios';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');

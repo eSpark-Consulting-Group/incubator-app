@@ -24,6 +24,8 @@ export default class App extends Component {
   state = {
     isModalVisible: false,
     oxygenLevel: 0,
+    result: 0,
+    flag: false,
     oxygenHistory: [],
     date: new Date().getDate(),
     month: new Date().getMonth() + 1,
@@ -70,11 +72,11 @@ export default class App extends Component {
       });
   };
 
-  populateArray = () => {
+  populateArray = value => {
     this.state.oxygenHistory.push({
       id: id++,
-      currentOxygenLevel: this.state.oxygenLevel,
-      setOxygenLevel: this.state.oxygenLevel - 1,
+      currentOxygenLevel: value,
+      setOxygenLevel: value - 1,
     });
   };
 
@@ -97,10 +99,13 @@ export default class App extends Component {
 
   randomVal() {
     this.oxygen = setInterval(() => {
-      const rand = Math.random() * 40;
-      this.setState({oxygenLevel: rand.toFixed()});
-      this.props.handleOxy(this.state.oxygenLevel);
-      this.populateArray();
+      this.setState({flag: true});
+      setTimeout(() => {
+        const rand = Math.random() * 40;
+        this.setState({oxygenLevel: rand.toFixed()});
+        this.props.handleOxy(this.state.result);
+        this.populateArray(this.state.result);
+      }, 100);
     }, 30000);
   }
 
@@ -122,14 +127,20 @@ export default class App extends Component {
     const {calibrateVal} = this.props;
     const {oxygenLevel} = this.state;
 
-    console.log('current TEMP', oxygenLevel);
+    console.log('current Oxygen', oxygenLevel);
     console.log(
-      '🚀 ~ file: airTemp.js ~ line 189 ~ App ~ calibrateVal',
+      '🚀 ~ file: oxygen.js ~ line 189 ~ App ~ calibrateVal',
       calibrateVal,
     );
     let result = parseInt(oxygenLevel) + parseInt(calibrateVal);
-    console.log('🚀 ~ file: airTemp.js ~ line 197 ~ App ~ result', result);
-
+    console.log(
+      '🚀 ~ file: oxygen.js ~ line 197 ~ App ~ result',
+      result,
+      this.state.flag,
+    );
+    if (this.state.flag) {
+      this.setState({result, flag: false});
+    }
     return parseInt(result);
   };
 

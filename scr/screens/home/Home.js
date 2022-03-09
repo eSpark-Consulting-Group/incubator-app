@@ -532,7 +532,7 @@ export default class App extends Component {
     siren2.stop();
     this.setState({msgBoxShow: !this.state.msgBoxShow, snooze: true});
     console.log(clc.bgGreenBright('Snooze On++++'));
-    setTimeout(() => {
+    this.snoozeTimeout = setTimeout(() => {
       this.setState({snooze: false});
       console.log(clc.bgRedBright('Snooze Over++++'));
     }, 120000);
@@ -551,10 +551,20 @@ export default class App extends Component {
         onPress: () => {
           siren.stop();
           siren2.stop();
+          clearTimeout(this.snoozeTimeout);
+          this.setState({snooze: false});
           this.setState({msgBoxShow: false});
         },
       },
     ]);
+  };
+
+  stopAlarmDischarged = () => {
+    siren.stop();
+    siren2.stop();
+    clearTimeout(this.snoozeTimeout);
+    this.setState({snooze: false});
+    this.setState({msgBoxShow: false});
   };
 
   render() {
@@ -808,6 +818,7 @@ export default class App extends Component {
             handleCalibrateAir={this.handleCalibrateAir}
             handleCalibrateSkin={this.handleCalibrateSkin}
             handleCalibrateOxy={this.handleCalibrateOxy}
+            stopAlarm={this.stopAlarmDischarged}
           />
         </View>
         <View style={style.inerContainer1}>

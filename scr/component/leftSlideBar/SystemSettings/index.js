@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   LayoutAnimation,
   FlatList,
+  Keyboard,
 } from 'react-native';
 import style from './style';
 import Modal from 'react-native-modal';
@@ -81,6 +82,16 @@ export default class App extends Component {
     this.oxyCount = 0;
     this.oxyDone = 0;
   }
+
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    });
+  }
+  componentWillUnmount() {
+    Keyboard.removeAllListeners('keyboardDidHide');
+  }
+
   onSelectionsChange = selectedParameter => {
     this.setState({selectedParameter});
   };
@@ -437,6 +448,16 @@ export default class App extends Component {
                               value={this.state.password}
                               placeholder="Your Password"
                               secureTextEntry={true}
+                              onFocus={() => {
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                );
+                              }}
+                              onBlur={() =>
+                                LayoutAnimation.configureNext(
+                                  LayoutAnimation.Presets.linear,
+                                )
+                              }
                               style={style.currentInput}
                               onChangeText={password =>
                                 this.setState({password})

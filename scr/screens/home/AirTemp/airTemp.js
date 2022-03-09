@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  LayoutAnimation,
+  Keyboard,
 } from 'react-native';
 import style from './style';
 import NewOpen from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,8 +30,10 @@ export default class App extends Component {
     isModalVisible: false,
     airTemp: true,
     currentTemp: 0,
+    result: 0,
     setTemp: 0,
     preWei: 3,
+    flag: false,
     toggle: false,
     currentAirTemperature: 35,
     setTempList: [],
@@ -54,6 +58,12 @@ export default class App extends Component {
     } else {
       this.setState({airTemp: true});
     }
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    });
+  }
+  componentWillUnmount() {
+    Keyboard.removeAllListeners('keyboardDidHide');
   }
 
   sendAirTemp = async () => {
@@ -148,13 +158,18 @@ export default class App extends Component {
 
   randomVal() {
     this.airTemp = setInterval(() => {
-      console.log(clc.xterm(141)('~ Kia mila ~ this.result', this.result));
-      this.hour = new Date().getHours();
-      this.mins = new Date().getMinutes();
-      const rand = Math.random() * 40;
-      this.setState({currentTemp: rand.toFixed()});
-      this.props.handleAirTemp(this.result);
-      this.populateArray(this.result);
+      this.setState({flag: true});
+      setTimeout(() => {
+        console.log(
+          clc.xterm(141)('~ Kia mila ~ this.result', this.state.result),
+        );
+        this.hour = new Date().getHours();
+        this.mins = new Date().getMinutes();
+        const rand = Math.random() * 40;
+        this.setState({currentTemp: rand.toFixed()});
+        this.props.handleAirTemp(this.state.result);
+        this.populateArray(this.state.result);
+      }, 100);
     }, 30000);
   }
 
@@ -183,8 +198,14 @@ export default class App extends Component {
       calibrateVal,
     );
     let result = parseInt(currentTemp) + parseInt(calibrateVal);
-    console.log('🚀 ~ file: airTemp.js ~ line 197 ~ App ~ result', result);
-    this.result = result;
+    console.log(
+      '🚀 ~ file: airTemp.js ~ line 197 ~ App ~ result',
+      result,
+      this.state.flag,
+    );
+    if (this.state.flag) {
+      this.setState({result, flag: false});
+    }
     return parseInt(result);
   };
 
@@ -220,7 +241,6 @@ export default class App extends Component {
                         onPress={() => this.openToggel()}>
                         <Text style={style.tempInputCur}>
                           {this.renderValue()}
-                          {/* val //todo: here is the*/}
                         </Text>
                       </TouchableOpacity>
                       {!this.props.value ? (
@@ -286,7 +306,9 @@ export default class App extends Component {
                     </Text>
                     <View style={style.boxUperStyle}>
                       <View style={style.likeInputOxygen}>
-                        <Text style={style.tempInputCur}>{renderValue()}</Text>
+                        <Text style={style.tempInputCur}>
+                          {this.renderValue()}
+                        </Text>
                       </View>
                       {!this.props.value ? (
                         <Text style={style.centiUper}>{'\u2103'}</Text>
@@ -372,6 +394,16 @@ export default class App extends Component {
                         placeholder="Type Here"
                         keyboardType="number-pad"
                         maxLength={3}
+                        onFocus={() => {
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          );
+                        }}
+                        onBlur={() =>
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          )
+                        }
                         style={modalStyle.inserTextinput}
                         onChangeText={e => this.setState({currentTemp: e})}
                       />
@@ -391,6 +423,16 @@ export default class App extends Component {
                         placeholder="Type Here"
                         keyboardType="number-pad"
                         maxLength={3}
+                        onFocus={() => {
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          );
+                        }}
+                        onBlur={() =>
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.linear,
+                          )
+                        }
                         style={modalStyle.inserTextinput}
                         onChangeText={e => this.setState({setTemp: e})}
                       />
