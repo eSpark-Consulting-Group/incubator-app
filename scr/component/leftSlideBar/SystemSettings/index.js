@@ -192,6 +192,7 @@ export default class App extends Component {
                 width: height * 0.25,
                 textAlign: 'center',
                 textAlignVertical: 'center',
+                fontSize: width * 0.015,
               },
             ]}>
             {item.code}
@@ -203,6 +204,7 @@ export default class App extends Component {
                 width: height * 0.25,
                 textAlign: 'center',
                 textAlignVertical: 'center',
+                fontSize: width * 0.015,
               },
             ]}>
             {item.name}
@@ -265,30 +267,32 @@ export default class App extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     console.log('kia hai alarm FlagXXXXX--------->>>', this.props.alarmFlag);
-    if (this.props !== nextProps.alarmFlag) {
+    if (this.props !== nextProps) {
       if (this.props.alarmFlag) {
         this.setState({
           isModalVisible: false,
         });
       }
-    }
-    if (this.props !== nextProps.airTemp) {
-      if (this.props.airTemp) {
-        this.airCount = this.props.airTemp;
-        this.setState({airVal: this.props.airTemp});
-      }
-    }
-    if (this.props !== nextProps.skinTemp) {
-      if (this.props.skinTemp) {
-        this.skinCount = this.props.skinTemp;
-        this.setState({skinVal: this.props.skinTemp});
-      }
-    }
-    if (this.props !== nextProps.oxy) {
-      if (this.props.oxy) {
-        this.oxyCount = this.props.oxy;
-        this.setState({oxyVal: this.props.oxy});
-      }
+      console.log(
+        '🚀 ~ file: index.js ~ line 278 ~ App ~ UNSAFE_componentWillReceiveProps ~ nextProps.airTemp',
+        nextProps.airTemp,
+      );
+      this.airCount = this.props.airTemp;
+      this.setState({airVal: this.props.airTemp});
+
+      console.log(
+        '🚀 ~ file: index.js ~ line 283 ~ App ~ UNSAFE_componentWillReceiveProps ~ this.props.skinTemp',
+        this.props.skinTemp,
+      );
+      this.skinCount = this.props.skinTemp;
+      this.setState({skinVal: this.props.skinTemp});
+
+      console.log(
+        '🚀 ~ file: index.js ~ line 288 ~ App ~ UNSAFE_componentWillReceiveProps ~ this.props.oxy',
+        this.props.oxy,
+      );
+      this.oxyCount = this.props.oxy;
+      this.setState({oxyVal: this.props.oxy});
     }
   }
 
@@ -312,8 +316,7 @@ export default class App extends Component {
           style={style.mainList}
           // onLongPress={() => this.toggleModal(this.props.isGuest)}
           onPress={() => this.toggleModal(this.props.isGuest)}
-          // delayLongPress={3000}
-        >
+          delayLongPress={3000}>
           <Text style={style.listText}>System Settings</Text>
           <SysSettings name={'settings'} size={height * 0.04} />
         </TouchableOpacity>
@@ -489,70 +492,82 @@ export default class App extends Component {
                           {!this.state.showErrorView &&
                             !this.state.showCaliView &&
                             !this.state.showSenseView && (
-                              <View
-                                style={{
-                                  height: height * 0.3,
-                                }}>
-                                <TouchableOpacity
-                                  onPress={() => {
-                                    LayoutAnimation.configureNext(
-                                      LayoutAnimation.Presets.easeInEaseOut,
-                                    );
-                                    this.setState({showErrorView: true});
+                              <>
+                                <View
+                                  style={{
+                                    width: '100%',
+                                    height: '20%',
+                                    alignItems: 'center',
                                   }}>
-                                  <View style={style.listView}>
-                                    <Text style={style.listText}>
-                                      Error Codes
-                                    </Text>
-                                    <Error
-                                      name={'error'}
-                                      size={width * 0.02}
-                                      color="#000000cf"
-                                    />
-                                  </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                  onPress={() => {
-                                    LayoutAnimation.configureNext(
-                                      LayoutAnimation.Presets.easeInEaseOut,
-                                    );
-                                    this.setState({showSenseView: true});
+                                  <Text style={style.subheader}>
+                                    Settings Options
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    height: '80%',
                                   }}>
-                                  <View style={style.listView}>
-                                    <Text style={style.listText}>
-                                      Sensor Data
-                                    </Text>
-                                    <Cali
-                                      name={'radar'}
-                                      size={width * 0.02}
-                                      color="#000000cf"
-                                    />
-                                  </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                  onPress={() => {
-                                    LayoutAnimation.configureNext(
-                                      LayoutAnimation.Presets.easeInEaseOut,
-                                    );
-                                    this.setState({
-                                      showCaliView: true,
-                                      airVal: this.state.calibrateAir,
-                                      skinVal: this.state.calibrateSkin,
-                                      oxyVal: this.state.calibrateOxy,
-                                    });
-                                  }}>
-                                  <View style={style.listView}>
-                                    <Text style={style.listText}>
-                                      Calibration Mode
-                                    </Text>
-                                    <Cali
-                                      name={'speedometer-medium'}
-                                      size={width * 0.02}
-                                      color="#000000cf"
-                                    />
-                                  </View>
-                                </TouchableOpacity>
-                              </View>
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      LayoutAnimation.configureNext(
+                                        LayoutAnimation.Presets.easeInEaseOut,
+                                      );
+                                      this.setState({showErrorView: true});
+                                    }}>
+                                    <View style={style.listView}>
+                                      <Text style={style.listText}>
+                                        Error Codes
+                                      </Text>
+                                      <Error
+                                        name={'error'}
+                                        size={width * 0.02}
+                                        color="#000000cf"
+                                      />
+                                    </View>
+                                  </TouchableOpacity>
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      LayoutAnimation.configureNext(
+                                        LayoutAnimation.Presets.easeInEaseOut,
+                                      );
+                                      this.setState({showSenseView: true});
+                                    }}>
+                                    <View style={style.listView}>
+                                      <Text style={style.listText}>
+                                        Sensor Data
+                                      </Text>
+                                      <Cali
+                                        name={'radar'}
+                                        size={width * 0.02}
+                                        color="#000000cf"
+                                      />
+                                    </View>
+                                  </TouchableOpacity>
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      LayoutAnimation.configureNext(
+                                        LayoutAnimation.Presets.easeInEaseOut,
+                                      );
+                                      this.setState({
+                                        showCaliView: true,
+                                        airVal: this.state.calibrateAir,
+                                        skinVal: this.state.calibrateSkin,
+                                        oxyVal: this.state.calibrateOxy,
+                                      });
+                                    }}>
+                                    <View style={style.listView}>
+                                      <Text style={style.listText}>
+                                        Calibration Mode
+                                      </Text>
+                                      <Cali
+                                        name={'speedometer-medium'}
+                                        size={width * 0.02}
+                                        color="#000000cf"
+                                      />
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              </>
                             )}
                           {this.state.showErrorView && (
                             <View
@@ -561,7 +576,10 @@ export default class App extends Component {
                                 height: '100%',
                               }}>
                               <View
-                                style={{width: '100%', alignItems: 'center'}}>
+                                style={{
+                                  width: '100%',
+                                  alignItems: 'center',
+                                }}>
                                 <Text style={style.subheader}>Error Codes</Text>
                               </View>
                               <View
@@ -597,7 +615,11 @@ export default class App extends Component {
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                 }}>
-                                <View style={style.listcontainer}>
+                                <View
+                                  style={[
+                                    style.listcontainer,
+                                    {justifyContent: 'space-between'},
+                                  ]}>
                                   <Text style={style.switchText}>Name</Text>
                                   <Text style={style.switchText}>
                                     Good State

@@ -33,7 +33,7 @@ export default class App extends Component {
     result: 0,
     setTemp: 0,
     preWei: 3,
-    flag: false,
+    flag: 5,
     toggle: false,
     currentAirTemperature: 35,
     setTempList: [],
@@ -158,7 +158,7 @@ export default class App extends Component {
 
   randomVal() {
     this.airTemp = setInterval(() => {
-      this.setState({flag: true});
+      this.setState({flag: 0});
       setTimeout(() => {
         console.log(
           clc.xterm(141)('~ Kia mila ~ this.result', this.state.result),
@@ -167,7 +167,6 @@ export default class App extends Component {
         this.mins = new Date().getMinutes();
         const rand = Math.random() * 40;
         this.setState({currentTemp: rand.toFixed()});
-        this.props.handleAirTemp(this.state.result);
         this.populateArray(this.state.result);
       }, 100);
     }, 30000);
@@ -203,10 +202,14 @@ export default class App extends Component {
       result,
       this.state.flag,
     );
-    if (this.state.flag) {
-      this.setState({result, flag: false});
+    if (this.state.flag < 5) {
+      console.log(clc.greenBright('WHAT is Send in AIR TEMPP', result));
+      this.props.handleAirTemp(result);
+      this.setState({result, flag: this.state.flag + 1});
     }
-    return parseInt(result);
+    if (this.props.activate) return parseInt(result);
+    if (this.props.deactivate) return 0;
+    else return 0;
   };
 
   render() {

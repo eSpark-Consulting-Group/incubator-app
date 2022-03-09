@@ -182,9 +182,10 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: width * 0.45,
-    padding: 10,
+    paddingVertical: 5,
     paddingHorizontal: 15,
-    margin: 10,
+    margin: 5,
+    left: 5,
   },
   currentInput: {
     fontFamily: Fonts.BalooChettan2,

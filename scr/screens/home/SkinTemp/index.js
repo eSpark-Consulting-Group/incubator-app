@@ -200,7 +200,9 @@ export default class App extends Component {
     if (this.state.flag) {
       this.setState({result, flag: false});
     }
-    return parseInt(result);
+    if (this.props.activate) return parseInt(result);
+    if (this.props.deactivate) return 0;
+    else return 0;
   };
 
   render() {
