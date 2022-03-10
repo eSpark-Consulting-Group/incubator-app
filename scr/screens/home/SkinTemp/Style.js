@@ -101,8 +101,8 @@ export default styles = StyleSheet.create({
     right: width * -0.01,
     top: height * 0.09,
   },
-  innerContainer: {
-    width: width * 0.47,
-    height: modalInnerHeight,
-  },
+  // innerContainer: {
+  //   width: width * 0.47,
+  //   height: modalInnerHeight,
+  // },
 });
