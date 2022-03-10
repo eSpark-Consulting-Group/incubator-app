@@ -590,33 +590,18 @@ export default class App extends Component {
           showHideTransition={'fade'}></StatusBar>
         <Image
           source={require('../../../images/background1.jpg')}
-          style={{
-            width: width * 1,
-            height: height * 1,
-            position: 'absolute',
-            opacity: 0.5,
-          }}
+          style={style.containerBackImg}
         />
         <View style={style.headerContainer}>
           <Image
             source={require('../../../images/background.jpg')}
-            style={{
-              width: width * 1,
-              height: height * 0.14,
-              position: 'absolute',
-              opacity: 0.3,
-            }}
+            style={style.headerBackImg}
           />
           {this.state.lock == true ? (
             <TouchableOpacity
               delayLongPress={1000}
               onLongPress={this._lockOff}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                left: width * 0.02,
-                position: 'absolute',
-              }}>
+              style={style.lockBtnStyle}>
               <Unlock name={'unlock'} size={width * 0.05} color="#0ae916" />
               <Text style={style.alarmText}>Unlocked</Text>
             </TouchableOpacity>
@@ -624,24 +609,12 @@ export default class App extends Component {
             <TouchableOpacity
               delayLongPress={1000}
               onLongPress={this._lockOn}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                left: width * 0.03,
-                position: 'absolute',
-              }}>
+              style={[style.lockBtnStyle, {left: width * 0.03}]}>
               <Lock name={'lock'} size={width * 0.05} color="red" />
               <Text style={style.alarmText}>Locked</Text>
             </TouchableOpacity>
           )}
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: '#6b6a6a59',
-              height: height * 0.12,
-              position: 'absolute',
-              left: width * 0.11,
-            }}></View>
+          <View style={[style.headerVerticalBorder, {left: width * 0.11}]} />
           <View style={{marginHorizontal: width * 0.03}}></View>
           <View style={style.iconAndText}>
             <Text style={style.aboveTopText}>Patient ID</Text>
@@ -669,45 +642,17 @@ export default class App extends Component {
             <Text style={style.aboveTopText}>Doctor Name</Text>
             <Text style={style.topText}>{this.state.DrName}</Text>
           </View>
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: '#6b6a6a59',
-              height: height * 0.12,
-              position: 'absolute',
-              right: width * 0.1,
-            }}></View>
+          <View style={[style.headerVerticalBorder, {right: width * 0.1}]} />
           <Modal
             animationIn="slideInUp"
             animationOut="slideOutDown"
             statusBarTranslucent
             isVisible={!this.state.snooze ? this.state.msgBoxShow : false}>
-            <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <View
-                style={{
-                  width: width * 0.4,
-                  height: height * 0.4,
-                  borderWidth: height * 0.005,
-                  borderColor: 'red',
-                  backgroundColor: '#ffffff',
-                  alignSelf: 'center',
-                  borderRadius: width * 0.025,
-                }}>
-                <View
-                  style={{
-                    padding: height * 0.02,
-                    justifyContent: 'flex-end',
-                    flexDirection: 'row',
-                  }}>
+            <View style={style.alarmModalContainer}>
+              <View style={style.alarmInnerContainer}>
+                <View style={style.alarmBoxContainer}>
                   <View style={{flex: 1.2}} />
-                  <View
-                    style={{
-                      flex: 10,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginHorizontal: height * 0.05,
-                    }}>
+                  <View style={style.alarmBoxHeader}>
                     <Text style={{color: 'red', fontSize: height * 0.05}}>
                       Alarm Alert
                     </Text>
@@ -722,51 +667,25 @@ export default class App extends Component {
                   </View>
                 </View>
                 <View style={{flex: 1, flexDirection: 'row'}}>
-                  <View
-                    style={{
-                      flex: 6,
-                      padding: height * 0.02,
-                      alignItems: 'flex-start',
-                      borderRadius: height * 0.035,
-                    }}>
+                  <View style={style.alarmMsgList}>
                     {this.renderAirTempAlert()}
                     {this.renderSkinTempAlert()}
                   </View>
-                  <View
-                    style={{
-                      flex: 2.5,
-                      borderRadius: height * 0.035,
-                      top: 10,
-                    }}>
+                  <View style={style.alarmAnimationContainer}>
                     <Image
                       source={require('../../../images/alarm.gif')}
                       resizeMode="cover"
-                      style={{
-                        height: height * 0.18,
-                        width: height * 0.15,
-                      }}
+                      style={style.alarmAnimationStyle}
                     />
                   </View>
                 </View>
               </View>
               <TouchableOpacity
-                style={{
-                  position: 'absolute',
-                  height: height * 0.1,
-                  width: height * 0.15,
-                  backgroundColor: 'red',
-                  right: 0,
-                  bottom: 0,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 5,
-                }}
+                style={style.snoozeBtnStyle}
                 onPress={() => {
                   this.snoozeAlarm();
                 }}>
-                <View>
-                  <Text style={style.snoozeText}>Snooze 2 mins</Text>
-                </View>
+                <Text style={style.snoozeText}>Snooze 2 mins</Text>
               </TouchableOpacity>
             </View>
           </Modal>

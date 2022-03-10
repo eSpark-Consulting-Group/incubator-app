@@ -21,10 +21,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {createResource} from '../../../config/SimpleApiCall';
 import {skin_Temp} from '../../../config/WebServices';
+import clc from 'cli-color';
 
 const {height, width} = Dimensions.get('window');
 let id = 0;
-
+let flag = false;
 export default class App extends Component {
   state = {
     isModalVisible: false,
@@ -35,7 +36,6 @@ export default class App extends Component {
     setTemp: 0,
     preWei: 3,
     toggle: false,
-    flag: false,
     currentAirTemperature: 35,
     setTempList: [],
     airTempList: [],
@@ -77,12 +77,10 @@ export default class App extends Component {
 
   randomVal() {
     this.skinTemp = setInterval(() => {
-      this.setState({flag: true});
       setTimeout(() => {
+        flag = true;
         const rand = Math.random() * 40;
         this.setState({currentTemp: rand.toFixed()});
-        this.props.handleSkinTemp(this.state.result);
-        this.populateArray(this.state.result);
       }, 100);
     }, 30000);
   }
@@ -192,21 +190,21 @@ export default class App extends Component {
       calibrateVal,
     );
     let result = parseInt(currentTemp) + parseInt(calibrateVal);
-    console.log(
-      '🚀 ~ file: skinTemp.js ~ line 197 ~ App ~ result',
-      result,
-      this.state.flag,
-    );
-    if (this.state.flag) {
-      this.setState({result, flag: false});
+    console.log('🚀 ~ file: skinTemp.js ~ line 197 ~ App ~ result', result);
+    if (flag) {
+      console.log(clc.greenBright('WHAT is Send in SKIN TEMP', result));
+      this.props.handleSkinTemp(result);
+      this.populateArray(result);
+      this.setState({result});
+      flag = false;
     }
+
     if (this.props.activate) return parseInt(result);
     if (this.props.deactivate) return 0;
     else return 0;
   };
 
   render() {
-    const {currentTemp} = this.state;
     if (this.props.activate && this.props.run2) {
       setTimeout(() => {
         this.randomVal();
@@ -254,12 +252,7 @@ export default class App extends Component {
                           color="black"
                         />
                       </TouchableOpacity>
-                      <View
-                        style={{
-                          position: 'absolute',
-                          right: width * -0.01,
-                          top: height * 0.09,
-                        }}>
+                      <View style={style.alarmContainer}>
                         <Alarm
                           name={'alarm-light'}
                           size={height * 0.085}
@@ -319,12 +312,7 @@ export default class App extends Component {
                           color="red"
                         />
                       </View>
-                      <View
-                        style={{
-                          position: 'absolute',
-                          right: width * -0.01,
-                          top: height * 0.09,
-                        }}>
+                      <View style={style.alarmContainer}>
                         <Alarm
                           name={'alarm-light'}
                           size={height * 0.085}

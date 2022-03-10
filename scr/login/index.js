@@ -228,7 +228,7 @@ export default class LoginView extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={{height: 50, backgroundColor: 'pink'}} />
+        <View style={{height: 50}} />
         <Spinner visible={this.state.spinner} color="red" />
         <View style={styles.inputContainer}>
           <TextInput
@@ -291,37 +291,15 @@ export default class LoginView extends Component {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <View
-            style={{
-              backgroundColor: '#80808094',
-              height: 1,
-              width: 75,
-            }}
-          />
+          <View style={styles.seperator} />
           <View style={{marginHorizontal: 10}}>
             <Text style={{color: '#212121b0'}}>OR</Text>
           </View>
-          <View
-            style={{
-              backgroundColor: '#80808094',
-              height: 1,
-              width: 75,
-            }}
-          />
+          <View style={styles.seperator} />
         </View>
         <View style={{marginTop: height * 0.02}}>
           <TouchableOpacity underlayColor={'#fff'} onPress={this._guestLogIn}>
-            <View
-              style={{
-                borderWidth: height * 0.0035,
-                borderColor: '#e44f3bd5',
-                borderRadius: height * 0.015,
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: height * 0.08,
-                width: width * 0.12,
-                backgroundColor: 'transparent',
-              }}>
+            <View style={styles.guestBtn}>
               <Text style={{color: '#e44f3bd5', fontSize: height * 0.024}}>
                 Log In as Guest
               </Text>
@@ -388,5 +366,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: height * 0.02,
+  },
+  guestBtn: {
+    borderWidth: height * 0.0035,
+    borderColor: '#e44f3bd5',
+    borderRadius: height * 0.015,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: height * 0.08,
+    width: width * 0.12,
+    backgroundColor: 'transparent',
+  },
+  seperator: {
+    backgroundColor: '#80808094',
+    height: 1,
+    width: 75,
   },
 });

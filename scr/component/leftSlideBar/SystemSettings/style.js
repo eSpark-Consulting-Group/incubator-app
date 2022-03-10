@@ -223,4 +223,30 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  errorCodesContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorCodesInnerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: width * 0.45,
+    backgroundColor: '#23212016',
+    borderRadius: width * 0.035,
+    padding: 10,
+    paddingHorizontal: 15,
+    margin: 10,
+  },
+  errorCodesTextStyles: {
+    width: height * 0.25,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: width * 0.015,
+  },
+  sensorTextStyles: {
+    width: width * 0.06,
+    fontSize: width * 0.015,
+    textAlign: 'center',
+  },
 });

@@ -94,4 +94,9 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: height * 0.005,
   },
+  alarmContainer: {
+    position: 'absolute',
+    right: width * -0.01,
+    top: height * 0.09,
+  },
 });

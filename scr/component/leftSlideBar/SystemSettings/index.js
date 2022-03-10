@@ -87,9 +87,48 @@ export default class App extends Component {
     Keyboard.addListener('keyboardDidHide', () => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     });
+    console.log(clc.xterm(215)('mount hoa system settings!'));
+    this.airCount = this.props.airTemp;
+    this.setState({airVal: this.props.airTemp});
+    this.skinCount = this.props.skinTemp;
+    this.setState({skinVal: this.props.skinTemp});
+    this.oxyCount = this.props.oxy;
+    this.setState({oxyVal: this.props.oxy});
   }
   componentWillUnmount() {
     Keyboard.removeAllListeners('keyboardDidHide');
+    console.log(clc.xterm(215)('unmount hoa system settings!'));
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log('kia hai alarm FlagXXXXX--------->>>', this.props.alarmFlag);
+    if (this.props !== nextProps) {
+      if (this.props.alarmFlag) {
+        this.setState({
+          isModalVisible: false,
+        });
+      }
+      console.log(
+        '🚀 ~ file: index.js ~ line 278 ~ App ~ UNSAFE_componentWillReceiveProps ~ nextProps.airTemp',
+        nextProps.airTemp,
+      );
+      this.airCount = nextProps.airTemp;
+      this.setState({airVal: nextProps.airTemp});
+
+      console.log(
+        '🚀 ~ file: index.js ~ line 283 ~ App ~ UNSAFE_componentWillReceiveProps ~ nextProps.skinTemp',
+        nextProps.skinTemp,
+      );
+      this.skinCount = nextProps.skinTemp;
+      this.setState({skinVal: nextProps.skinTemp});
+
+      console.log(
+        '🚀 ~ file: index.js ~ line 288 ~ App ~ UNSAFE_componentWillReceiveProps ~ nextProps.oxy',
+        nextProps.oxy,
+      );
+      this.oxyCount = nextProps.oxy;
+      this.setState({oxyVal: nextProps.oxy});
+    }
   }
 
   onSelectionsChange = selectedParameter => {
@@ -168,45 +207,12 @@ export default class App extends Component {
 
   renderErrorCodes = ({item, index}) => {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            width: width * 0.45,
-            backgroundColor: '#23212016',
-            borderRadius: width * 0.035,
-            padding: 10,
-            paddingHorizontal: 15,
-            margin: 10,
-          }}>
-          <Text
-            style={[
-              style.switchText,
-              {
-                width: height * 0.25,
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                fontSize: width * 0.015,
-              },
-            ]}>
+      <View style={style.errorCodesContainer}>
+        <View style={style.errorCodesInnerContainer}>
+          <Text style={[style.switchText, style.errorCodesTextStyles]}>
             {item.code}
           </Text>
-          <Text
-            style={[
-              style.switchText,
-              {
-                width: height * 0.25,
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                fontSize: width * 0.015,
-              },
-            ]}>
+          <Text style={[style.switchText, style.errorCodesTextStyles]}>
             {item.name}
           </Text>
         </View>
@@ -216,85 +222,26 @@ export default class App extends Component {
 
   renderSensorsList = ({item, index}) => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: width * 0.45,
-          padding: 10,
-          paddingHorizontal: 15,
-          margin: 10,
-          backgroundColor: '#23212016',
-          borderRadius: width * 0.035,
-        }}>
-        <Text
-          style={[
-            style.switchText,
-            {
-              width: width * 0.06,
-              fontSize: width * 0.015,
-              textAlign: 'center',
-            },
-          ]}>
+      <View style={style.errorCodesInnerContainer}>
+        <Text style={[style.switchText, style.sensorTextStyles]}>
           {item.name}
         </Text>
         <Text
           style={[
             style.switchText,
+            style.sensorTextStyles,
             {
-              width: width * 0.06,
-              fontSize: width * 0.015,
               right: 10,
-              textAlign: 'center',
             },
           ]}>
           {item.gs}
         </Text>
-        <Text
-          style={[
-            style.switchText,
-            {
-              width: width * 0.06,
-              fontSize: width * 0.015,
-              textAlign: 'center',
-            },
-          ]}>
+        <Text style={[style.switchText, style.sensorTextStyles]}>
           {item.bs}
         </Text>
       </View>
     );
   };
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log('kia hai alarm FlagXXXXX--------->>>', this.props.alarmFlag);
-    if (this.props !== nextProps) {
-      if (this.props.alarmFlag) {
-        this.setState({
-          isModalVisible: false,
-        });
-      }
-      console.log(
-        '🚀 ~ file: index.js ~ line 278 ~ App ~ UNSAFE_componentWillReceiveProps ~ nextProps.airTemp',
-        nextProps.airTemp,
-      );
-      this.airCount = this.props.airTemp;
-      this.setState({airVal: this.props.airTemp});
-
-      console.log(
-        '🚀 ~ file: index.js ~ line 283 ~ App ~ UNSAFE_componentWillReceiveProps ~ this.props.skinTemp',
-        this.props.skinTemp,
-      );
-      this.skinCount = this.props.skinTemp;
-      this.setState({skinVal: this.props.skinTemp});
-
-      console.log(
-        '🚀 ~ file: index.js ~ line 288 ~ App ~ UNSAFE_componentWillReceiveProps ~ this.props.oxy',
-        this.props.oxy,
-      );
-      this.oxyCount = this.props.oxy;
-      this.setState({oxyVal: this.props.oxy});
-    }
-  }
 
   render() {
     let heading1;

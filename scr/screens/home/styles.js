@@ -142,4 +142,81 @@ export default styles = StyleSheet.create({
     fontSize: height * 0.022,
     fontFamily: Fonts.BalooChettanBold,
   },
+
+  //* new Added Styles:
+  headerBackImg: {
+    width: width * 1,
+    height: height * 0.14,
+    position: 'absolute',
+    opacity: 0.3,
+  },
+  containerBackImg: {
+    width: width * 1,
+    height: height * 1,
+    position: 'absolute',
+    opacity: 0.5,
+  },
+  lockBtnStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: width * 0.02,
+    position: 'absolute',
+  },
+  headerVerticalBorder: {
+    borderWidth: 1,
+    borderColor: '#6b6a6a59',
+    height: height * 0.12,
+    position: 'absolute',
+  },
+  alarmModalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alarmInnerContainer: {
+    width: width * 0.4,
+    height: height * 0.4,
+    borderWidth: height * 0.005,
+    borderColor: 'red',
+    backgroundColor: '#ffffff',
+    alignSelf: 'center',
+    borderRadius: width * 0.025,
+  },
+  alarmBoxContainer: {
+    padding: height * 0.02,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+  },
+  alarmBoxHeader: {
+    flex: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: height * 0.05,
+  },
+  alarmMsgList: {
+    flex: 6,
+    padding: height * 0.02,
+    alignItems: 'flex-start',
+    borderRadius: height * 0.035,
+  },
+  alarmAnimationContainer: {
+    flex: 2.5,
+    borderRadius: height * 0.035,
+    top: 10,
+  },
+  alarmAnimationStyle: {
+    height: height * 0.18,
+    width: height * 0.15,
+  },
+  snoozeBtnStyle: {
+    position: 'absolute',
+    height: height * 0.1,
+    width: height * 0.15,
+    backgroundColor: 'red',
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
 });

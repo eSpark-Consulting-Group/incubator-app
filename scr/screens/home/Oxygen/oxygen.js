@@ -16,16 +16,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createResource} from '../../../config/SimpleApiCall';
 import {oxygen} from '../../../config/WebServices';
 import modalStyle from './modalsStyling';
+import clc from 'cli-color';
 
 const {height, width} = Dimensions.get('window');
 let id = 0;
-
+let flag = false;
 export default class App extends Component {
   state = {
     isModalVisible: false,
     oxygenLevel: 0,
     result: 0,
-    flag: false,
     oxygenHistory: [],
     date: new Date().getDate(),
     month: new Date().getMonth() + 1,
@@ -99,12 +99,10 @@ export default class App extends Component {
 
   randomVal() {
     this.oxygen = setInterval(() => {
-      this.setState({flag: true});
       setTimeout(() => {
+        flag = true;
         const rand = Math.random() * 40;
         this.setState({oxygenLevel: rand.toFixed()});
-        this.props.handleOxy(this.state.result);
-        this.populateArray(this.state.result);
       }, 100);
     }, 30000);
   }
@@ -133,13 +131,13 @@ export default class App extends Component {
       calibrateVal,
     );
     let result = parseInt(oxygenLevel) + parseInt(calibrateVal);
-    console.log(
-      '🚀 ~ file: oxygen.js ~ line 197 ~ App ~ result',
-      result,
-      this.state.flag,
-    );
-    if (this.state.flag) {
-      this.setState({result, flag: false});
+    console.log('🚀 ~ file: oxygen.js ~ line 197 ~ App ~ result', result);
+    if (flag) {
+      console.log(clc.greenBright('WHAT is Send in Oxygen', result));
+      this.props.handleOxy(result);
+      this.populateArray(result);
+      this.setState({result});
+      flag = false;
     }
     if (this.props.activate) return parseInt(result);
     if (this.props.deactivate) return 0;
@@ -147,8 +145,6 @@ export default class App extends Component {
   };
 
   render() {
-    const {oxygenLevel} = this.state;
-
     if (this.props.activate && this.props.run3) {
       setTimeout(() => {
         this.randomVal();

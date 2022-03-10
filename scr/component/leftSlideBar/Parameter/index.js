@@ -128,11 +128,7 @@ export default class App extends Component {
             maxHeight: modalHeight,
           }}>
           <KeyboardAvoidingView
-            style={{
-              height: height,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            style={style.container}
             keyboardVerticalOffset={-100}
             behavior="position">
             <View style={style.modalInner}>
@@ -229,17 +225,10 @@ export default class App extends Component {
                               circleStyle={style.toggleCircle}
                             />
                           </View>
-                          <View
-                            style={{
-                              borderWidth: 1,
-                              borderColor: '#6b6a6a59',
-                              width: width * 0.47,
-                              marginVertical: height * 0.01,
-                            }}
-                          />
+                          <View style={style.divider} />
                           <View style={style.switchView}>
                             <Text style={style.switchText}>
-                              Skin Temperature{' '}
+                              Skin Temperature
                             </Text>
                             <SwitchToggle
                               switchOn={this.state.skinTemp}
@@ -255,14 +244,7 @@ export default class App extends Component {
                               circleStyle={style.toggleCircle}
                             />
                           </View>
-                          <View
-                            style={{
-                              borderWidth: 1,
-                              borderColor: '#6b6a6a59',
-                              width: width * 0.47,
-                              marginVertical: height * 0.01,
-                            }}
-                          />
+                          <View style={style.divider} />
                           <View style={style.switchView}>
                             <Text style={style.switchText}>SPO2/HR</Text>
                             <SwitchToggle
@@ -279,14 +261,7 @@ export default class App extends Component {
                               circleStyle={style.toggleCircle}
                             />
                           </View>
-                          <View
-                            style={{
-                              borderWidth: 1,
-                              borderColor: '#6b6a6a59',
-                              width: width * 0.47,
-                              marginVertical: height * 0.01,
-                            }}
-                          />
+                          <View style={style.divider} />
                           <View style={style.switchView}>
                             <Text style={style.switchText}>Baby Weight</Text>
                             <SwitchToggle
@@ -305,14 +280,7 @@ export default class App extends Component {
                               circleStyle={style.toggleCircle}
                             />
                           </View>
-                          <View
-                            style={{
-                              borderWidth: 1,
-                              borderColor: '#6b6a6a59',
-                              width: width * 0.47,
-                              marginVertical: height * 0.01,
-                            }}
-                          />
+                          <View style={style.divider} />
                           <View style={style.switchView}>
                             <Text style={style.switchText}>Humidity</Text>
                             <SwitchToggle
@@ -329,14 +297,7 @@ export default class App extends Component {
                               circleStyle={style.toggleCircle}
                             />
                           </View>
-                          <View
-                            style={{
-                              borderWidth: 1,
-                              borderColor: '#6b6a6a59',
-                              width: width * 0.47,
-                              marginVertical: height * 0.01,
-                            }}
-                          />
+                          <View style={style.divider} />
                           <View style={style.switchView}>
                             <Text style={style.switchText}>Oxygen</Text>
                             <SwitchToggle

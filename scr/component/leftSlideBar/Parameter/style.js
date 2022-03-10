@@ -195,4 +195,15 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  container: {
+    height: height,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  divider: {
+    borderWidth: 1,
+    borderColor: '#6b6a6a59',
+    width: width * 0.47,
+    marginVertical: height * 0.01,
+  },
 });

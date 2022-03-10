@@ -381,21 +381,8 @@ export default class App extends Component {
                             }
                           />
                         </View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            marginLeft: height * 0.02,
-                            width: height * 0.15,
-                          }}>
-                          <Text
-                            style={{
-                              fontFamily: Fonts.Handlee,
-                              fontSize: height * 0.025,
-                              color: 'red',
-                            }}>
-                            lb
-                          </Text>
+                        <View style={style.unitContainer}>
+                          <Text style={style.unitText}>lb</Text>
                           <SwitchToggle
                             switchOn={this.state.isKg}
                             onPress={() =>
@@ -409,14 +396,7 @@ export default class App extends Component {
                             containerStyle={style.toggleContainer}
                             circleStyle={style.toggleCircle}
                           />
-                          <Text
-                            style={{
-                              fontFamily: Fonts.Handlee,
-                              fontSize: height * 0.025,
-                              color: 'red',
-                            }}>
-                            kg
-                          </Text>
+                          <Text style={style.unitText}>kg</Text>
                         </View>
                       </View>
                     </View>
@@ -451,33 +431,14 @@ export default class App extends Component {
                             }
                           />
                         </View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            marginLeft: height * 0.02,
-                            width: height * 0.15,
-                          }}>
-                          <Text
-                            style={{
-                              fontFamily: Fonts.Handlee,
-                              fontSize: height * 0.025,
-                              color: 'red',
-                            }}>
-                            Days
-                          </Text>
+                        <View style={style.unitContainer}>
+                          <Text style={style.unitText}>Days</Text>
                         </View>
                       </View>
                     </View>
                     <View style={style.boxBodyInner}>
                       <Text style={style.fieldText}>Sex:</Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignSelf: 'flex-start',
-                          alignItems: 'center',
-                          width: height * 0.5,
-                        }}>
+                      <View style={style.genderContainer}>
                         <RadioButton
                           value="first"
                           status={sex === 'Male' ? 'checked' : 'unchecked'}

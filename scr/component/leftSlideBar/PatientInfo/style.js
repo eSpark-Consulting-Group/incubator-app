@@ -157,4 +157,21 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  unitContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginLeft: height * 0.02,
+    width: height * 0.15,
+  },
+  unitText: {
+    fontFamily: Fonts.Handlee,
+    fontSize: height * 0.025,
+    color: 'red',
+  },
+  genderContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    width: height * 0.5,
+  },
 });

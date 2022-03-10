@@ -23,6 +23,8 @@ import Graph from 'react-native-vector-icons/SimpleLineIcons';
 import {Fonts} from '../../../utils/fonts';
 
 const {height, width} = Dimensions.get('window');
+
+//! This is not Used in the codebase
 export default class App extends Component {
   state = {
     isModalVisibleGraph: false,
