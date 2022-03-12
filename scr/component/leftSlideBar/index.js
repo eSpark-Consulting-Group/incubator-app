@@ -417,6 +417,7 @@ export default class App extends Component {
       );
     } else {
       this.setState({password: ''});
+      ToastAndroid.show('Incorrect Password', ToastAndroid.SHORT);
     }
   };
 
@@ -955,7 +956,9 @@ export default class App extends Component {
               animationIn="slideInDown"
               animationOut="slideOutUp"
               statusBarTranslucent
-              isVisible={this.state.showDataModal}>
+              isVisible={this.state.showDataModal}
+              // isVisible={true}
+            >
               <KeyboardAvoidingView
                 style={{
                   height: height,
@@ -1023,8 +1026,7 @@ export default class App extends Component {
                           <View
                             style={{
                               position: 'absolute',
-                              left: width * 0.12,
-                              margin: width * 0.02,
+                              right: 10,
                               color: 'grey',
                               justifyContent: 'center',
                               alignItems: 'center',
@@ -1063,7 +1065,7 @@ export default class App extends Component {
                               color="grey"
                               style={{
                                 position: 'absolute',
-                                left: width * 0.133,
+                                right: 3,
                               }}
                               onPress={() =>
                                 this.setState({text: ''}, () =>
