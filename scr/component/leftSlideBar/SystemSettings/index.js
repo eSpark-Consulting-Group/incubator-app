@@ -56,7 +56,7 @@ export default class App extends Component {
       LockorUnlo: false,
       toggleWeight: false,
       password: '',
-      turnOnparameter: true, //? Change it later to false
+      turnOnparameter: false, //? Change it later to false
       selectedParameter: [],
       valueParameter: [],
       airTemp: this.props.airFlag,
@@ -261,8 +261,8 @@ export default class App extends Component {
         {/* Component */}
         <TouchableOpacity
           style={style.mainList}
-          // onLongPress={() => this.toggleModal(this.props.isGuest)}
-          onPress={() => this.toggleModal(this.props.isGuest)}
+          onLongPress={() => this.toggleModal(this.props.isGuest)}
+          // onPress={() => this.toggleModal(this.props.isGuest)}
           delayLongPress={3000}>
           <Text style={style.listText}>System Settings</Text>
           <SysSettings name={'settings'} size={height * 0.04} />
@@ -323,9 +323,9 @@ export default class App extends Component {
                                 : this.state.showCaliView
                                 ? (this.setState({
                                     showCaliView: false,
-                                    // airVal: 0,
-                                    // skinVal: 0,
-                                    // oxyVal: 0,
+                                    airVal: 0,
+                                    skinVal: 0,
+                                    oxyVal: 0,
                                   }),
                                   LayoutAnimation.configureNext(
                                     LayoutAnimation.Presets.easeInEaseOut,
@@ -565,7 +565,7 @@ export default class App extends Component {
                                 <View
                                   style={[
                                     style.listcontainer,
-                                    {justifyContent: 'space-between'},
+                                    {justifyContent: 'space-around'},
                                   ]}>
                                   <Text style={style.switchText}>Name</Text>
                                   <Text style={style.switchText}>
