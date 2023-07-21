@@ -43,7 +43,7 @@ export default class LoginView extends Component {
   componentDidMount() {
     this.checkForExists();
     console.log('Kya', Platform.Version);
-    if (Platform.Version > 29) this._permissionCheck();
+    if (Platform.Version < 33) this._permissionCheck();
     Keyboard.addListener('keyboardDidHide', () => {
       this.setState({focused: false});
       console.log('XXXXX');
@@ -79,7 +79,7 @@ export default class LoginView extends Component {
   };
 
   checkForExists = async () => {
-    let appFolder = 'Patenty';
+    let appFolder = 'Patent';
     let path = RNFS.ExternalStorageDirectoryPath + '/' + appFolder;
 
     const res = await RNFS.exists(path);
@@ -122,7 +122,7 @@ export default class LoginView extends Component {
           text: 'No',
           onPress: () =>
             ToastAndroid.show(
-              'Allow Files Access Required in Android 11 and above',
+              'Allow Files Access Required till Android 12',
               ToastAndroid.SHORT,
             ),
           style: 'cancel',
