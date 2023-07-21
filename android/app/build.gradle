@@ -116,9 +116,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.lolec.trailersockettester"
+    namespace "com.incubatorapp"
     defaultConfig {
-        applicationId "com.lolec.trailersockettester"
+        applicationId "com.incubatorapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
