@@ -19,7 +19,7 @@ import {
 import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNFS from 'react-native-fs';
-
+import {StorageAccessFramework, getInfoAsync, readAsStringAsync} from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
@@ -135,7 +135,20 @@ export default class LoginView extends Component {
     const myPath = RNFS.ExternalStorageDirectoryPath;
     try {
       const path = myPath + '/Patent/Login.txt';
-      const contents = await RNFS.readFile(path, 'utf8');
+      const info  = await StorageAccessFramework.requestDirectoryPermissionsAsync(path);
+
+       const files = await StorageAccessFramework.readDirectoryAsync(info.directoryUri + '/Login.txt', {
+        encoding: 'utf8'
+      });
+
+      const contents = await StorageAccessFramework.readAsStringAsync(files[0], {
+        encoding: 'utf8'
+      });
+      console.log("info filesssss",  contents, files, info, );
+      // await ScopedStorage.readFile(
+      //   'content://com.android.externalstorage.documents/tree/primary%3APatent/document/primary%3APatent/Login.txt',
+      //   'utf8',
+      // );
       this.setState({txtFileData: contents.toString()}, () => {
         if (isGuest) this.checkGuest();
         else this.checkCredentials();
@@ -143,7 +156,7 @@ export default class LoginView extends Component {
       console.log(this.state.txtFileData, 'Read Text File mil gae');
     } catch (e) {
       let string = e.toString();
-      console.warn(string);
+      console.warn('info error',string);
       if (string.includes('No such file or directory'))
         ToastAndroid.show('Not Found Error', ToastAndroid.SHORT);
       if (string.includes('Permission denied'))

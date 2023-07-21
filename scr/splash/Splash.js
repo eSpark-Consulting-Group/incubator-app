@@ -10,6 +10,8 @@ import {
 
 import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 const {height, width} = Dimensions.get('window');
+import * as ScopedStorage from 'react-native-scoped-storage';
+import RNFS from 'react-native-fs';
 
 import style from './style';
 
@@ -30,19 +32,31 @@ export default class Splash extends Component {
   }
 
   _ack = async () => {
+
+    console.log("_ack _ack");
+    const myPath = RNFS.ExternalStorageDirectoryPath;
+    const path = myPath + '/Patent/Login.txt';
+    // ScopedStorage.openDocumentTree(true)
+    // .then((res) => {
+    //   console.log("ScopedStorage res", res);
+    // })
     requestMultiple([
       PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
       PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-    ]).then(statuses => {
-      console.log(
-        'Camera',
-        statuses[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE],
-      );
-      console.log(
-        'FaceID',
-        statuses[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE],
-      );
-    });
+    ])
+      .then(statuses => {
+        console.log(
+          'Camera',
+          statuses[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE],
+        );
+        console.log(
+          'FaceID',
+          statuses[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE],
+        );
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
   };
 
   render() {

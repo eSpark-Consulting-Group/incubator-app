@@ -391,7 +391,10 @@ export default class App extends Component {
     const myPath = RNFS.ExternalStorageDirectoryPath;
     try {
       const path = myPath + '/Patent/Login.txt';
-      const contents = await RNFS.readFile(path, 'utf8');
+      const contents = await RNFS.readFile(
+        'content://com.android.externalstorage.documents/tree/primary%3APatent/document/primary%3APatent/Login.txt',
+        'utf8',
+      );
       this.setState({txtFileData: contents.toString()}, () =>
         this.checkCredentials(),
       );
