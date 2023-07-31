@@ -27,12 +27,14 @@ import SwitchToggle from 'react-native-switch-toggle';
 import SystemSetting from 'react-native-system-setting';
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNFS from 'react-native-fs';
+import {StorageAccessFramework} from 'expo-file-system';
 
 import AlarmSetting from './AlaemSettings/index';
 import SystemSettings from './SystemSettings/index';
 import Parameter from './Parameter/index';
 import PatientInfo from './PatientInfo/index';
 import {Fonts} from '../../utils/fonts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {height, width} = Dimensions.get('window');
 
@@ -95,6 +97,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    console.log('component mount chala');
     this.readTxtFile();
     this.readHistoryData();
     console.log(clc.xterm(216)('Left Slider Component chala'));
@@ -312,24 +315,73 @@ export default class App extends Component {
     }
   };
 
-  saveHistoryData = () => {
-    const myPath = RNFS.ExternalStorageDirectoryPath + '/Patent/Data.txt';
-    RNFS.writeFile(myPath, JSON.stringify(this.state.theHistoryArray), 'utf8')
-      .then(success => {
-        console.log(clc.xterm(202)('History Saved!'));
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+  saveHistoryData = async () => {
+    // const myPath = RNFS.ExternalStorageDirectoryPath + '/Patent/Data.txt';
+    // RNFS.writeFile(myPath, JSON.stringify(this.state.theHistoryArray), 'utf8')
+    //   .then(success => {
+    //     console.log(clc.xterm(202)('History Saved!'));
+    //   })
+    //   .catch(err => {
+    //     console.log(err.message);
+    //   });
+    try {
+      let credLocation;
+      const value = await AsyncStorage.getItem('content_Loca');
+      console.log('value', JSON.parse(value));
+      credLocation = JSON.parse(value);
+      const files = await StorageAccessFramework.readDirectoryAsync(
+        credLocation.directoryUri,
+        {
+          encoding: 'utf8',
+        },
+      );
+      if (files.length > 0) {
+        const dataFile = await StorageAccessFramework.writeAsStringAsync(
+          files[1],
+          JSON.stringify(this.state.theHistoryArray),
+          {
+            encoding: 'utf8',
+          },
+        );
+        console.log('dataFile', dataFile);
+      }
+      console.log('check files', files);
+    } catch (error) {
+      alert('No Data of Patients Add a Patient');
+      console.log(e, 'error at history data');
+    }
   };
 
   readHistoryData = async () => {
     const myPath = RNFS.ExternalStorageDirectoryPath + '/Patent/Data.txt';
     try {
-      const contents = await RNFS.readFile(myPath, 'utf8');
-      this.setState({theHistoryArray: JSON.parse(contents)});
-      this.arrayholder = JSON.parse(contents);
-      console.log('aya data', contents);
+      // const contents = await RNFS.readFile(myPath, 'utf8');
+      // this.setState({theHistoryArray: JSON.parse(contents)});
+      // this.arrayholder = JSON.parse(contents);
+      // console.log('aya data', contents);
+      let credLocation;
+      const value = await AsyncStorage.getItem('content_Loca');
+      console.log('value', JSON.parse(value));
+      credLocation = JSON.parse(value);
+      const files = await StorageAccessFramework.readDirectoryAsync(
+        credLocation.directoryUri,
+        {
+          encoding: 'utf8',
+        },
+      );
+      console.log('check files', files);
+
+      if (files.length > 0) {
+        const dataFile = await StorageAccessFramework.readAsStringAsync(
+          files[1],
+          {
+            encoding: 'utf8',
+          },
+        );
+        console.log('dataFile', dataFile);
+        this.setState({theHistoryArray: JSON.parse(dataFile)});
+        this.arrayholder = JSON.parse(dataFile);
+      }
     } catch (e) {
       alert('No Data of Patients Add a Patient');
       console.log(e, 'error at history data');
@@ -390,14 +442,35 @@ export default class App extends Component {
   readTxtFile = async () => {
     const myPath = RNFS.ExternalStorageDirectoryPath;
     try {
-      const path = myPath + '/Patent/Login.txt';
-      const contents = await RNFS.readFile(
-        'content://com.android.externalstorage.documents/tree/primary%3APatent/document/primary%3APatent/Login.txt',
-        'utf8',
+      // const path = myPath + '/Patent/Login.txt';
+      // const contents = await RNFS.readFile(
+      //   'content://com.android.externalstorage.documents/tree/primary%3APatent/document/primary%3APatent/Login.txt',
+      //   'utf8',
+      // );
+      console.log('read txt chala');
+      let credLocation;
+      const value = await AsyncStorage.getItem('content_Loca');
+      console.log('value', JSON.parse(value));
+      credLocation = JSON.parse(value);
+      const files = await StorageAccessFramework.readDirectoryAsync(
+        credLocation.directoryUri,
+        {
+          encoding: 'utf8',
+        },
       );
-      this.setState({txtFileData: contents.toString()}, () =>
-        this.checkCredentials(),
-      );
+
+      if (files.length > 0) {
+        const loginFile = await StorageAccessFramework.readAsStringAsync(
+          files[0],
+          {
+            encoding: 'utf8',
+          },
+        );
+        this.setState({txtFileData: loginFile.toString()}, () =>
+          this.checkCredentials(),
+        );
+      }
+
       console.log(this.state.txtFileData, 'aya kia');
     } catch (e) {
       console.log(e, 'error Read Text File');
@@ -410,6 +483,8 @@ export default class App extends Component {
     const passMatch = StringVal.match(/(pass:)\s.+/g).toString();
     const Pass = passMatch.substr(6);
     this.setState({thePass: Pass});
+    console.log('pass', Pass);
+    console.log('password', password);
     if (Pass == password) {
       this.setState({
         checker: !this.state.checker,

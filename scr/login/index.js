@@ -19,7 +19,7 @@ import {
 import {check, openSettings} from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNFS from 'react-native-fs';
-import {StorageAccessFramework, getInfoAsync, readAsStringAsync} from 'expo-file-system';
+import {StorageAccessFramework} from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
@@ -41,7 +41,7 @@ export default class LoginView extends Component {
   };
 
   componentDidMount() {
-    this.checkForExists();
+    // this.checkForExists();
     console.log('Kya', Platform.Version);
     if (Platform.Version < 33) this._permissionCheck();
     Keyboard.addListener('keyboardDidHide', () => {
@@ -73,31 +73,31 @@ export default class LoginView extends Component {
       if (value !== null && value == '1') {
         console.log('XXXX----Yahoo----XXXX');
       } else {
-        this._check();
+        if (Platform.Version > 29) this._check();
       }
     } catch (e) {}
   };
 
-  checkForExists = async () => {
-    let appFolder = 'Patent';
-    let path = RNFS.ExternalStorageDirectoryPath + '/' + appFolder;
+  // checkForExists = async () => {
+  //   let appFolder = 'Patent';
+  //   let path = RNFS.ExternalStorageDirectoryPath + '/' + appFolder;
 
-    const res = await RNFS.exists(path);
-    if (res) {
-      console.log('Existed');
-    } else {
-      RNFS.mkdir(path)
-        .then(res => {
-          console.log('Done');
-        })
-        .catch(e => {
-          const string = e.toString();
-          if (string.includes('Directory could not be created'))
-            ToastAndroid.show('Permission Error', ToastAndroid.SHORT);
-          console.log('Kia ha Error', e);
-        });
-    }
-  };
+  //   const res = await RNFS.exists(path);
+  //   if (res) {
+  //     console.log('Existed');
+  //   } else {
+  //     RNFS.mkdir(path)
+  //       .then(res => {
+  //         console.log('Done');
+  //       })
+  //       .catch(e => {
+  //         const string = e.toString();
+  //         if (string.includes('Directory could not be created'))
+  //           ToastAndroid.show('Permission Error', ToastAndroid.SHORT);
+  //         console.log('Kia ha Error', e);
+  //       });
+  //   }
+  // };
 
   _permissionDone = async () => {
     try {
@@ -131,32 +131,122 @@ export default class LoginView extends Component {
     );
   };
 
+  findIndexWithWord = (array, word) => {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes(word)) {
+        return i;
+      }
+    }
+    return -1; // Return -1 if the word is not found in any element
+  };
+
   ReadTxtFile = async isGuest => {
-    const myPath = RNFS.ExternalStorageDirectoryPath;
     try {
-      const path = myPath + '/Patent/Login.txt';
-      const info  = await StorageAccessFramework.requestDirectoryPermissionsAsync(path);
+      let contentLoca;
 
-       const files = await StorageAccessFramework.readDirectoryAsync(info.directoryUri + '/Login.txt', {
-        encoding: 'utf8'
-      });
+      const value = await AsyncStorage.getItem('content_Loca');
+      console.log('value', JSON.parse(value));
+      if (value != null) {
+        contentLoca = JSON.parse(value);
+      } else {
+        console.log('else bhi chala');
+        const permissions =
+          await StorageAccessFramework.requestDirectoryPermissionsAsync();
+        console.log('contentLoca info', permissions);
+        const files = await StorageAccessFramework.readDirectoryAsync(
+          permissions.directoryUri,
+          {
+            encoding: 'utf8',
+          },
+        );
+        if (this.findIndexWithWord(files, 'Patent') == -1) {
+          const createFolder = await StorageAccessFramework.makeDirectoryAsync(
+            permissions.directoryUri,
+            'Patent',
+          );
+          console.log('createFolder', createFolder);
+        }
+        const info =
+          await StorageAccessFramework.requestDirectoryPermissionsAsync();
+        console.log('folder info', info);
+        contentLoca = info;
+        const jsonValue = JSON.stringify(info);
+        await AsyncStorage.setItem('content_Loca', jsonValue);
+      }
 
-      const contents = await StorageAccessFramework.readAsStringAsync(files[0], {
-        encoding: 'utf8'
-      });
-      console.log("info filesssss",  contents, files, info, );
+      const files = await StorageAccessFramework.readDirectoryAsync(
+        contentLoca.directoryUri,
+        {
+          encoding: 'utf8',
+        },
+      );
+
+      console.log('Patent files', files);
+
+      if (files.length > 0) {
+        const loginFile = await StorageAccessFramework.readAsStringAsync(
+          files[0],
+          {
+            encoding: 'utf8',
+          },
+        );
+
+        console.log('login file', loginFile);
+
+        if (this.findIndexWithWord(files, 'Data') == -1) {
+          const createFile = await StorageAccessFramework.createFileAsync(
+            contentLoca.directoryUri,
+            'Data',
+            'text/plain',
+          );
+          console.log('create file', createFile);
+        }
+
+        this.setState({txtFileData: loginFile.toString()}, () => {
+          if (isGuest) this.checkGuest();
+          else this.checkCredentials();
+        });
+        console.log(this.state.txtFileData, 'Read Text File mil gae');
+      }
+
+      // const dataFile = await StorageAccessFramework.readAsStringAsync(
+      //   files[1],
+      //   {
+      //     encoding: 'utf8',
+      //   },
+      // );
+      // console.log('data file', dataFile);
+
+      // const contents = await StorageAccessFramework.readAsStringAsync(
+      //   'content://com.android.externalstorage.documents/tree/primary%3ADownload%2FPatent/document/primary%3ADownload%2FPatent%2FData.txt',
+      //   {
+      //     encoding: 'utf8',
+      //   },
+      // );
+
+      // const writeContents = await StorageAccessFramework.writeAsStringAsync(
+      //   'content://com.android.externalstorage.documents/tree/primary%3ADownload%2FPatent/document/primary%3ADownload%2FPatent%2FData.txt',
+      //   'Han bhai write huwa',
+      //   {
+      //     encoding: 'utf8',
+      //   },
+      // );
+
+      // console.log('write file contentsssss', contents);
+      // console.log('info filesssss', contents, files, contentLoca);
       // await ScopedStorage.readFile(
       //   'content://com.android.externalstorage.documents/tree/primary%3APatent/document/primary%3APatent/Login.txt',
       //   'utf8',
       // );
-      this.setState({txtFileData: contents.toString()}, () => {
-        if (isGuest) this.checkGuest();
-        else this.checkCredentials();
-      });
-      console.log(this.state.txtFileData, 'Read Text File mil gae');
+
+      // this.setState({txtFileData: contents.toString()}, () => {
+      //   if (isGuest) this.checkGuest();
+      //   else this.checkCredentials();
+      // });
+      // console.log(this.state.txtFileData, 'Read Text File mil gae');
     } catch (e) {
       let string = e.toString();
-      console.warn('info error',string);
+      console.warn('info error', string);
       if (string.includes('No such file or directory'))
         ToastAndroid.show('Not Found Error', ToastAndroid.SHORT);
       if (string.includes('Permission denied'))
