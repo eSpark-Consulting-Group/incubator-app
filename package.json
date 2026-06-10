@@ -29,7 +29,7 @@
     "react-native-numeric-input": "^1.9.0",
     "react-native-paper": "^4.9.2",
     "react-native-permissions": "^3.1.0",
-    "react-native-rename": "^3.2.13",
+    "react-native-rename": "^3.3.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-scoped-storage": "^1.9.3",
     "react-native-screen-brightness": "^2.0.0-alpha",
