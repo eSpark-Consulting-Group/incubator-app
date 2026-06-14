@@ -28,7 +28,7 @@
     "react-native-modal": "^13.0.0",
     "react-native-numeric-input": "^1.9.1",
     "react-native-paper": "^4.9.2",
-    "react-native-permissions": "^3.1.0",
+    "react-native-permissions": "^5.5.3",
     "react-native-rename": "^3.2.13",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-scoped-storage": "^1.9.3",
