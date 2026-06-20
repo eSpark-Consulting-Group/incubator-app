@@ -33,7 +33,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-scoped-storage": "^1.9.3",
     "react-native-screen-brightness": "^2.0.0-alpha",
-    "react-native-screens": "^3.22.1",
+    "react-native-screens": "^4.25.2",
     "react-native-select-multiple": "^2.1.0",
     "react-native-sensors": "^7.3.3",
     "react-native-shadow": "^1.2.2",
