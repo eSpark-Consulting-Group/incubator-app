@@ -43,7 +43,7 @@
     "xlsx": "^0.16.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
+    "@babel/core": "^8.0.7",
     "@babel/runtime": "^7.10.2",
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.0.1",
